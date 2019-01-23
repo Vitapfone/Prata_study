@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "My_names.h"
 #include "Simple structures.h"
 
@@ -8,44 +8,44 @@ class Inspector
 {
 	
 	Location loc{ 0, 0 };
-	char bg = ' ';//Фон, по умолчанию пробел.
-	char obj;//Объект.
+	char bg = ' ';//Р¤РѕРЅ, РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїСЂРѕР±РµР».
+	char obj;//РћР±СЉРµРєС‚.
 
 public:
 
-	//Конструктор.
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
 	Inspector(int x, int y, char b, char o) : loc{ x, y }, bg(b), obj(o) {}
 
 
-	//Методы движения.
+	//РњРµС‚РѕРґС‹ РґРІРёР¶РµРЅРёСЏ.
 	void moveLeft() { --loc.x; }
 	void moveRight() { ++loc.x; }
 	void moveUp() { --loc.y; }
 	void moveDown() { ++loc.y; }
 
-	//Функция обхода слева. Второй параметр определяет, будет обход по часовой стрелке или против.
+	//Р¤СѓРЅРєС†РёСЏ РѕР±С…РѕРґР° СЃР»РµРІР°. Р’С‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ РѕРїСЂРµРґРµР»СЏРµС‚, Р±СѓРґРµС‚ РѕР±С…РѕРґ РїРѕ С‡Р°СЃРѕРІРѕР№ СЃС‚СЂРµР»РєРµ РёР»Рё РїСЂРѕС‚РёРІ.
 	template<size_t W, size_t H> const Borders left_inspect(array<array<char, W>, H> &, bool);
 private:
-	//Функция определит, когда пора завершать обход.
+	//Р¤СѓРЅРєС†РёСЏ РѕРїСЂРµРґРµР»РёС‚, РєРѕРіРґР° РїРѕСЂР° Р·Р°РІРµСЂС€Р°С‚СЊ РѕР±С…РѕРґ.
 	int start_stop(bool &, bool &, int &, int &);
 };
 
-//Функция обхода слева. Второй параметр определяет, будет обход по часовой стрелке или против.
+//Р¤СѓРЅРєС†РёСЏ РѕР±С…РѕРґР° СЃР»РµРІР°. Р’С‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ РѕРїСЂРµРґРµР»СЏРµС‚, Р±СѓРґРµС‚ РѕР±С…РѕРґ РїРѕ С‡Р°СЃРѕРІРѕР№ СЃС‚СЂРµР»РєРµ РёР»Рё РїСЂРѕС‚РёРІ.
 template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<char, W>, H> &ws, bool clockwise)
 {
 	cout << "\nStart left-inspecting..." << endl;
-	set<int> xset, yset; //Списки координат, пройденных инспектором.
+	set<int> xset, yset; //РЎРїРёСЃРєРё РєРѕРѕСЂРґРёРЅР°С‚, РїСЂРѕР№РґРµРЅРЅС‹С… РёРЅСЃРїРµРєС‚РѕСЂРѕРј.
 
-	bool is_finished = false; //Переменная, сообщающая о том, завершен ли обход.
-	bool is_started = false; //Переменная, сообщающая о том, начат ли обход.
+	bool is_finished = false; //РџРµСЂРµРјРµРЅРЅР°СЏ, СЃРѕРѕР±С‰Р°СЋС‰Р°СЏ Рѕ С‚РѕРј, Р·Р°РІРµСЂС€РµРЅ Р»Рё РѕР±С…РѕРґ.
+	bool is_started = false; //РџРµСЂРµРјРµРЅРЅР°СЏ, СЃРѕРѕР±С‰Р°СЋС‰Р°СЏ Рѕ С‚РѕРј, РЅР°С‡Р°С‚ Р»Рё РѕР±С…РѕРґ.
 
-	int start_x, start_y; //Переменные для хранения координат начала поиска.
+	int start_x, start_y; //РџРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РєРѕРѕСЂРґРёРЅР°С‚ РЅР°С‡Р°Р»Р° РїРѕРёСЃРєР°.
 
 
-	while (!is_finished)//Пока обход не закончен.
+	while (!is_finished)//РџРѕРєР° РѕР±С…РѕРґ РЅРµ Р·Р°РєРѕРЅС‡РµРЅ.
 	{
 
-		//Если все эл-ты вокруг инспектора принадлежат объекту, то сдвигаем его влево.
+		//Р•СЃР»Рё РІСЃРµ СЌР»-С‚С‹ РІРѕРєСЂСѓРі РёРЅСЃРїРµРєС‚РѕСЂР° РїСЂРёРЅР°РґР»РµР¶Р°С‚ РѕР±СЉРµРєС‚Сѓ, С‚Рѕ СЃРґРІРёРіР°РµРј РµРіРѕ РІР»РµРІРѕ.
 		if (ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj
 			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
 		{
@@ -54,14 +54,14 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 			//continue;
 		}
 		else 
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg //Граница слева
+		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg //Р“СЂР°РЅРёС†Р° СЃР»РµРІР°
 			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
 		{
 
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);//Заносим координаты в списки.
+			xset.insert(loc.x);//Р—Р°РЅРѕСЃРёРј РєРѕРѕСЂРґРёРЅР°С‚С‹ РІ СЃРїРёСЃРєРё.
 			yset.insert(loc.y);
 
 			(clockwise) ? moveUp() : moveDown();
@@ -69,7 +69,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 		}
 		else
 		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)//В верхнем левом углу.
+			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)//Р’ РІРµСЂС…РЅРµРј Р»РµРІРѕРј СѓРіР»Сѓ.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
@@ -81,7 +81,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg //Граница сверху.
+		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg //Р“СЂР°РЅРёС†Р° СЃРІРµСЂС…Сѓ.
 			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
@@ -95,7 +95,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 		}
 		else
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)//В верхнем правом углу.
+			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)//Р’ РІРµСЂС…РЅРµРј РїСЂР°РІРѕРј СѓРіР»Сѓ.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
@@ -107,7 +107,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg //Граница справа
+		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg //Р“СЂР°РЅРёС†Р° СЃРїСЂР°РІР°
 			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
@@ -121,7 +121,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 		}
 		else
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)//В нижнем правом углу.
+			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)//Р’ РЅРёР¶РЅРµРј РїСЂР°РІРѕРј СѓРіР»Сѓ.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
@@ -133,7 +133,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg //Граница снизу.
+		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg //Р“СЂР°РЅРёС†Р° СЃРЅРёР·Сѓ.
 			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
@@ -147,7 +147,7 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 		}
 		else
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)//В нижнем левом углу.
+			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)//Р’ РЅРёР¶РЅРµРј Р»РµРІРѕРј СѓРіР»Сѓ.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
@@ -618,6 +618,6 @@ template<size_t W, size_t H> const Borders Inspector::left_inspect(array<array<c
 		}
 	}
 
-	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; //Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, 
-																			//пройденные инспектором.
+	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; //Р’РѕР·РІСЂР°С‰Р°РµРј СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРЅСѓСЋ РЅР° РјРµСЃС‚Рµ СЃС‚СЂ-СЂСѓ, СЃРѕРґРµСЂР¶Р°С‰СѓСЋ РЅР°РёРјРµРЅСЊС€РёРµ Рё РЅР°РёР±РѕР»СЊС€РёРµ РєРѕРѕСЂРґРёРЅР°С‚С‹, 
+																			//РїСЂРѕР№РґРµРЅРЅС‹Рµ РёРЅСЃРїРµРєС‚РѕСЂРѕРј.
 }

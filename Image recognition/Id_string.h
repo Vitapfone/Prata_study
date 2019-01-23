@@ -1,37 +1,37 @@
-#pragma once
+п»ї#pragma once
 #include "My_names.h"
 using namespace My_names;
 
 class Id_string
 {
 public:
-	//КОНСТРУКТОРЫ
+	//РљРћРќРЎРўР РЈРљРўРћР Р«
 	Id_string() = default;
-	//Конструктор из строки.
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· СЃС‚СЂРѕРєРё.
 	Id_string(const string &s) :data(s) { ++counter; id = counter;/* cout << id<< endl; */}
-	//Конструктор из строки и id.
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· СЃС‚СЂРѕРєРё Рё id.
 	Id_string(const string &s, int id):data(s), id(id)
 	{
 		if (counter < id)
 			counter = id;
 	}
-	//конструктор из бинарного файла.
+	//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· Р±РёРЅР°СЂРЅРѕРіРѕ С„Р°Р№Р»Р°.
 	Id_string(ifstream &);
 	~Id_string() {}
 
-	//МЕТОДЫ
-	string get_data() const { return data; }//Выдать копию хранимой строки.
-	int get_id() const { return id; }//Выдать идентификатор.
+	//РњР•РўРћР”Р«
+	string get_data() const { return data; }//Р’С‹РґР°С‚СЊ РєРѕРїРёСЋ С…СЂР°РЅРёРјРѕР№ СЃС‚СЂРѕРєРё.
+	int get_id() const { return id; }//Р’С‹РґР°С‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ.
 
-	//Записать в бинарный файл.
+	//Р—Р°РїРёСЃР°С‚СЊ РІ Р±РёРЅР°СЂРЅС‹Р№ С„Р°Р№Р».
 	bool bin_write(ofstream & fout)const;
 
-	//Прочитать из бинарного файла.
+	//РџСЂРѕС‡РёС‚Р°С‚СЊ РёР· Р±РёРЅР°СЂРЅРѕРіРѕ С„Р°Р№Р»Р°.
 	bool bin_read(ifstream & fin);
 
-	//ФУНКЦИИ-ДРУЗЬЯ.
+	//Р¤РЈРќРљР¦РР-Р”Р РЈР—Р¬РЇ.
 
-	//Оператор вывода для записи в текстовый файл.
+	//РћРїРµСЂР°С‚РѕСЂ РІС‹РІРѕРґР° РґР»СЏ Р·Р°РїРёСЃРё РІ С‚РµРєСЃС‚РѕРІС‹Р№ С„Р°Р№Р».
 	friend ostream& operator<< (ostream &, const Id_string &);
 
 	friend istream& operator>>(istream&, Id_string &);

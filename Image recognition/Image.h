@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "My_names.h"
 #include "Id_string.h"
 #include "Simple structures.h"
@@ -7,59 +7,59 @@ using namespace My_names;
 
 class Image
 {
-	vector<vector<bool>> data;// Вектор булевых векторов, где будет храниться образ.
+	vector<vector<bool>> data;// Р’РµРєС‚РѕСЂ Р±СѓР»РµРІС‹С… РІРµРєС‚РѕСЂРѕРІ, РіРґРµ Р±СѓРґРµС‚ С…СЂР°РЅРёС‚СЊСЃСЏ РѕР±СЂР°Р·.
 
-	size_t width = 0, height = 0; //Высота и ширина образа.
-	double aspect_rate = 0.0;//Отношение ширины к высоте.
+	size_t width = 0, height = 0; //Р’С‹СЃРѕС‚Р° Рё С€РёСЂРёРЅР° РѕР±СЂР°Р·Р°.
+	double aspect_rate = 0.0;//РћС‚РЅРѕС€РµРЅРёРµ С€РёСЂРёРЅС‹ Рє РІС‹СЃРѕС‚Рµ.
 
-	Id_string *is_ps = nullptr;//Указатель, имитирующий некую информативную связь объекта образа.
-	int id_is_ps = 0;//Идентификатор для этого указателя, позволит потом найти эту строку.
+	Id_string *is_ps = nullptr;//РЈРєР°Р·Р°С‚РµР»СЊ, РёРјРёС‚РёСЂСѓСЋС‰РёР№ РЅРµРєСѓСЋ РёРЅС„РѕСЂРјР°С‚РёРІРЅСѓСЋ СЃРІСЏР·СЊ РѕР±СЉРµРєС‚Р° РѕР±СЂР°Р·Р°.
+	int id_is_ps = 0;//РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґР»СЏ СЌС‚РѕРіРѕ СѓРєР°Р·Р°С‚РµР»СЏ, РїРѕР·РІРѕР»РёС‚ РїРѕС‚РѕРј РЅР°Р№С‚Рё СЌС‚Сѓ СЃС‚СЂРѕРєСѓ.
 	Id_string *non_ps = nullptr;
 	int id_non_ps = 0;
 
 public:
 	Image() = default;
-	//Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РїРѕР»РЅРёС‚ РІРЅСѓС‚СЂРµРЅРЅРёР№ РІРµРєС‚РѕСЂ РЅР° РѕСЃРЅРѕРІРµ РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРЅС‹С… РґРёР°РїР°Р·РѕРЅРѕРІ РєРѕРѕСЂРґРёРЅР°С‚.
 	template<size_t W, size_t H> 
 	Image(const Borders & bs, array<array<char, W>, H> &, char, char);
-	//Конструктор заполнит внутренний вектор из бинарного файла.
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РїРѕР»РЅРёС‚ РІРЅСѓС‚СЂРµРЅРЅРёР№ РІРµРєС‚РѕСЂ РёР· Р±РёРЅР°СЂРЅРѕРіРѕ С„Р°Р№Р»Р°.
 	Image(ifstream &);
 
 	~Image() {}
 
-	//МЕТОДЫ
+	//РњР•РўРћР”Р«
 
-	size_t get_widht() const { return width; }//Выдать ширину.
-	size_t get_height() const { return height; }//Выдать высоту.
-	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
-	Id_string * get_is_ps() const { return is_ps; }//Выдать хранимый указатель.
+	size_t get_widht() const { return width; }//Р’С‹РґР°С‚СЊ С€РёСЂРёРЅСѓ.
+	size_t get_height() const { return height; }//Р’С‹РґР°С‚СЊ РІС‹СЃРѕС‚Сѓ.
+	double get_aspect() const { return aspect_rate; }//Р’С‹РґР°С‚СЊ РѕС‚РЅРѕС€РµРЅРёРµ С€РёСЂРёРЅС‹ Рє РІС‹СЃРѕС‚Рµ.
+	Id_string * get_is_ps() const { return is_ps; }//Р’С‹РґР°С‚СЊ С…СЂР°РЅРёРјС‹Р№ СѓРєР°Р·Р°С‚РµР»СЊ.
 	Id_string * get_non_ps() const { return non_ps; }
 
-	int get_id_is_ps() const { return id_is_ps; }//Выдать идентификатор указателя.
+	int get_id_is_ps() const { return id_is_ps; }//Р’С‹РґР°С‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓРєР°Р·Р°С‚РµР»СЏ.
 	int get_id_non_ps() const { return id_non_ps; }
 	
-	void set_is_ps(Id_string* other) { is_ps = other; id_is_ps = other->get_id(); }//Установить связь указателя с некоей строкой с идентификатором.
+	void set_is_ps(Id_string* other) { is_ps = other; id_is_ps = other->get_id(); }//РЈСЃС‚Р°РЅРѕРІРёС‚СЊ СЃРІСЏР·СЊ СѓРєР°Р·Р°С‚РµР»СЏ СЃ РЅРµРєРѕРµР№ СЃС‚СЂРѕРєРѕР№ СЃ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј.
 	void set_non_ps(Id_string* other) { non_ps = other; id_non_ps = other->get_id(); }
 
-	//Выводит в консоль образ в удобном для восприятия виде.
+	//Р’С‹РІРѕРґРёС‚ РІ РєРѕРЅСЃРѕР»СЊ РѕР±СЂР°Р· РІ СѓРґРѕР±РЅРѕРј РґР»СЏ РІРѕСЃРїСЂРёСЏС‚РёСЏ РІРёРґРµ.
 	void visualize();
 
-	//Прочитать из бинарного файла.
+	//РџСЂРѕС‡РёС‚Р°С‚СЊ РёР· Р±РёРЅР°СЂРЅРѕРіРѕ С„Р°Р№Р»Р°.
 	bool bin_read(ifstream & fin);
 
-	//Записать в бинарный файл.
+	//Р—Р°РїРёСЃР°С‚СЊ РІ Р±РёРЅР°СЂРЅС‹Р№ С„Р°Р№Р».
 	bool bin_write(ofstream & fout)const;
 
-	//Оператор выведет эл-ты внутреннего вектора.
+	//РћРїРµСЂР°С‚РѕСЂ РІС‹РІРµРґРµС‚ СЌР»-С‚С‹ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ РІРµРєС‚РѕСЂР°.
 	friend ostream & operator<<(ostream &, const Image &);
 
-	//Функция выяснит совпадают ли образы. 
+	//Р¤СѓРЅРєС†РёСЏ РІС‹СЏСЃРЅРёС‚ СЃРѕРІРїР°РґР°СЋС‚ Р»Рё РѕР±СЂР°Р·С‹. 
 	friend bool image_equality(const Image & im1, const Image & im2, double min_equality);	
 };
 
 
 
-//Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РїРѕР»РЅРёС‚ РІРЅСѓС‚СЂРµРЅРЅРёР№ РІРµРєС‚РѕСЂ РЅР° РѕСЃРЅРѕРІРµ РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРЅС‹С… РґРёР°РїР°Р·РѕРЅРѕРІ РєРѕРѕСЂРґРёРЅР°С‚.
 template<size_t W, size_t H> Image::Image(const Borders & bs, array<array<char, W>, H> & ws, char bg, char obj) : data(vector<vector<bool>>())
 {
 	//cout << "Constructing... ";
@@ -69,7 +69,7 @@ template<size_t W, size_t H> Image::Image(const Borders & bs, array<array<char, 
 		data.push_back(vector<bool>());
 		for (int j = bs.x_min; j <= bs.x_max; ++j)
 		{
-			if (j >= 0 && j < W && i >= 0 && i < H)//Условие, предостерегающее от выхода за границы массива.
+			if (j >= 0 && j < W && i >= 0 && i < H)//РЈСЃР»РѕРІРёРµ, РїСЂРµРґРѕСЃС‚РµСЂРµРіР°СЋС‰РµРµ РѕС‚ РІС‹С…РѕРґР° Р·Р° РіСЂР°РЅРёС†С‹ РјР°СЃСЃРёРІР°.
 			{
 				if (ws[i][j] == obj)
 				{
@@ -83,7 +83,7 @@ template<size_t W, size_t H> Image::Image(const Borders & bs, array<array<char, 
 		}
 	}
 
-	width = data[0].size();//Ширина равна размеру элемента вн. вектора.
+	width = data[0].size();//РЁРёСЂРёРЅР° СЂР°РІРЅР° СЂР°Р·РјРµСЂСѓ СЌР»РµРјРµРЅС‚Р° РІРЅ. РІРµРєС‚РѕСЂР°.
 	height = data.size();
 
 	aspect_rate = ((double)width / height);

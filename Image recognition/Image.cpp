@@ -1,33 +1,33 @@
-#include "pch.h"
+п»ї#include "pch.h"
 #include "Image.h"
 #include "My_names.h"
 
 using namespace My_names;
 
-//Конструктор заполнит внутренний вектор из бинарного файла.
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РїРѕР»РЅРёС‚ РІРЅСѓС‚СЂРµРЅРЅРёР№ РІРµРєС‚РѕСЂ РёР· Р±РёРЅР°СЂРЅРѕРіРѕ С„Р°Р№Р»Р°.
 Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
 {
-	//Прочитать ширину и высоту образа.
+	//РџСЂРѕС‡РёС‚Р°С‚СЊ С€РёСЂРёРЅСѓ Рё РІС‹СЃРѕС‚Сѓ РѕР±СЂР°Р·Р°.
 	ifs.read((char*)&width, sizeof width);
 	ifs.read((char*)&height, sizeof height);
-	aspect_rate = (double) width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
+	aspect_rate = (double) width / height;//РџСЂРёРІРµРґРµРЅРёРµ С‚РёРїРѕРІ РЅСѓР¶РЅРѕ, С‚.Рє. РїСЂРё С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕРј РґРµР»РµРЅРёРё(РєРѕРіРґР° РѕР±Р° С‡РёСЃР»Р° С†РµР»С‹Рµ) РѕС‚Р±СЂР°СЃС‹РІР°РµС‚СЃСЏ РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ.
 
-	bool* buf = new bool[width];//Выделяем буфер.
+	bool* buf = new bool[width];//Р’С‹РґРµР»СЏРµРј Р±СѓС„РµСЂ.
 	for (size_t i = 0; i < height; i++)
 	{
-		ifs.read((char*)&buf, width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		vector<bool> temp(buf, buf + width);//Создаем временный вектор из буфера.
+		ifs.read((char*)&buf, width);//Р§РёС‚Р°РµРј РІ Р±СѓС„РµСЂ РєРѕР»-РІРѕ Р±Р°Р№С‚, СЂР°РІРЅРѕРµ С€РёСЂРёРЅРµ ( СЂР°Р·РјРµСЂ bool == 1 Р±Р°Р№С‚).
+		vector<bool> temp(buf, buf + width);//РЎРѕР·РґР°РµРј РІСЂРµРјРµРЅРЅС‹Р№ РІРµРєС‚РѕСЂ РёР· Р±СѓС„РµСЂР°.
 		data.push_back(temp);
-		delete[] buf;//Очищаем буфер.
+		delete[] buf;//РћС‡РёС‰Р°РµРј Р±СѓС„РµСЂ.
 	}
 
-	//Читаем айдишники.
+	//Р§РёС‚Р°РµРј Р°Р№РґРёС€РЅРёРєРё.
 	ifs.read((char*)&id_is_ps, sizeof id_is_ps);
 	ifs.read((char*)&id_non_ps, sizeof id_non_ps);
 }
 
 
-//Выводит в консоль образ в удобном для восприятия виде.
+//Р’С‹РІРѕРґРёС‚ РІ РєРѕРЅСЃРѕР»СЊ РѕР±СЂР°Р· РІ СѓРґРѕР±РЅРѕРј РґР»СЏ РІРѕСЃРїСЂРёСЏС‚РёСЏ РІРёРґРµ.
 void Image::visualize()
 {
 	for (int i = 0; i < data.size(); ++i)
@@ -40,36 +40,36 @@ void Image::visualize()
 	}
 }
 
-//Прочитать из бинарного файла.
+//РџСЂРѕС‡РёС‚Р°С‚СЊ РёР· Р±РёРЅР°СЂРЅРѕРіРѕ С„Р°Р№Р»Р°.
 bool Image::bin_read(ifstream & fin)
 {
-	//Прочитать ширину и высоту образа.
+	//РџСЂРѕС‡РёС‚Р°С‚СЊ С€РёСЂРёРЅСѓ Рё РІС‹СЃРѕС‚Сѓ РѕР±СЂР°Р·Р°.
 	
 	if (!fin.read((char*)&width, sizeof width))
 	{
 		return false;
 	}
 	fin.read((char*)&height, sizeof height);
-	aspect_rate = (double)width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
+	aspect_rate = (double)width / height;//РџСЂРёРІРµРґРµРЅРёРµ С‚РёРїРѕРІ РЅСѓР¶РЅРѕ, С‚.Рє. РїСЂРё С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕРј РґРµР»РµРЅРёРё(РєРѕРіРґР° РѕР±Р° С‡РёСЃР»Р° С†РµР»С‹Рµ) РѕС‚Р±СЂР°СЃС‹РІР°РµС‚СЃСЏ РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ.
 
-	if (!data.empty())//Если вн. вектор не пуст, то очистим его. На всякий случай.
+	if (!data.empty())//Р•СЃР»Рё РІРЅ. РІРµРєС‚РѕСЂ РЅРµ РїСѓСЃС‚, С‚Рѕ РѕС‡РёСЃС‚РёРј РµРіРѕ. РќР° РІСЃСЏРєРёР№ СЃР»СѓС‡Р°Р№.
 	{
 		data.clear();
 	}
 
-	shared_ptr<bool> buf;//Умный указатель на будущий буфер.
+	shared_ptr<bool> buf;//РЈРјРЅС‹Р№ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р±СѓРґСѓС‰РёР№ Р±СѓС„РµСЂ.
 	vector<bool> temp(width);
 
 	for (size_t i = 0; i < height; i++)
 	{
-		buf.reset(new bool[width]);//Выделяем буфер.
+		buf.reset(new bool[width]);//Р’С‹РґРµР»СЏРµРј Р±СѓС„РµСЂ.
 		//cout << "Read into buf\n";
-		fin.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		temp.assign(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
+		fin.read((char*)buf.get(), width);//Р§РёС‚Р°РµРј РІ Р±СѓС„РµСЂ РєРѕР»-РІРѕ Р±Р°Р№С‚, СЂР°РІРЅРѕРµ С€РёСЂРёРЅРµ ( СЂР°Р·РјРµСЂ bool == 1 Р±Р°Р№С‚).
+		temp.assign(buf.get(), buf.get() + width);//РЎРѕР·РґР°РµРј РІСЂРµРјРµРЅРЅС‹Р№ РІРµРєС‚РѕСЂ РёР· Р±СѓС„РµСЂР°.
 		data.push_back(temp);
 	}
 
-	//Читаем айдишники.
+	//Р§РёС‚Р°РµРј Р°Р№РґРёС€РЅРёРєРё.
 	fin.read((char*)&id_is_ps, sizeof id_is_ps);
 	fin.read((char*)&id_non_ps, sizeof id_non_ps);
 
@@ -79,14 +79,14 @@ bool Image::bin_read(ifstream & fin)
 		return false;
 }
 
-//Записать в бинарный файл.
+//Р—Р°РїРёСЃР°С‚СЊ РІ Р±РёРЅР°СЂРЅС‹Р№ С„Р°Р№Р».
 bool Image::bin_write(ofstream & fout) const
 {
-	fout.write((char*)&width, sizeof width);//Запись ширины.
-	fout.write((char*)&height, sizeof height);//Запись высоты.
+	fout.write((char*)&width, sizeof width);//Р—Р°РїРёСЃСЊ С€РёСЂРёРЅС‹.
+	fout.write((char*)&height, sizeof height);//Р—Р°РїРёСЃСЊ РІС‹СЃРѕС‚С‹.
 
-	bool elem;//Временное хранилище для эл-та.
-	for (size_t i = 0; i < height; i++)//Поэлементная запись.
+	bool elem;//Р’СЂРµРјРµРЅРЅРѕРµ С…СЂР°РЅРёР»РёС‰Рµ РґР»СЏ СЌР»-С‚Р°.
+	for (size_t i = 0; i < height; i++)//РџРѕСЌР»РµРјРµРЅС‚РЅР°СЏ Р·Р°РїРёСЃСЊ.
 	{
 		for (size_t j = 0; j < width; j++)
 		{
@@ -94,13 +94,13 @@ bool Image::bin_write(ofstream & fout) const
 			fout.write((char*)&elem, sizeof elem);
 		}
 	}
-	//Запись айди связей.
+	//Р—Р°РїРёСЃСЊ Р°Р№РґРё СЃРІСЏР·РµР№.
 	fout.write((char*)&id_is_ps, sizeof id_is_ps);
 	fout.write((char*)&id_non_ps, sizeof id_non_ps);
 
-	if (fout)//Если все успешно,
+	if (fout)//Р•СЃР»Рё РІСЃРµ СѓСЃРїРµС€РЅРѕ,
 	{
-		return true;//то возвращаем true.
+		return true;//С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµРј true.
 	}
 	else
 	{
@@ -109,7 +109,7 @@ bool Image::bin_write(ofstream & fout) const
 }
 
 
-//Оператор выведет эл-ты внутреннего вектора. Вообще используется для записи в файл.
+//РћРїРµСЂР°С‚РѕСЂ РІС‹РІРµРґРµС‚ СЌР»-С‚С‹ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ РІРµРєС‚РѕСЂР°. Р’РѕРѕР±С‰Рµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ Р·Р°РїРёСЃРё РІ С„Р°Р№Р».
 ostream & operator<<(ostream & os, const Image & im)
 {
 	for (int i = 0; i < im.data.size(); ++i)
@@ -127,32 +127,32 @@ ostream & operator<<(ostream & os, const Image & im)
 }
 
 
-//Функция выяснит совпадают ли образы.
+//Р¤СѓРЅРєС†РёСЏ РІС‹СЏСЃРЅРёС‚ СЃРѕРІРїР°РґР°СЋС‚ Р»Рё РѕР±СЂР°Р·С‹.
 bool image_equality(const Image & im1, const Image & im2, double min_equality)
 {
 	
 	//cout << "Start comparison...";
-	if (im1.get_aspect() >= im2.get_aspect()*0.9 && im1.get_aspect() <= im2.get_aspect()*1.1)//Если отношения сторон двух образов различаются в пределах +-10%, то их можно 
-																							// сравнивать подробнее.
+	if (im1.get_aspect() >= im2.get_aspect()*0.9 && im1.get_aspect() <= im2.get_aspect()*1.1)//Р•СЃР»Рё РѕС‚РЅРѕС€РµРЅРёСЏ СЃС‚РѕСЂРѕРЅ РґРІСѓС… РѕР±СЂР°Р·РѕРІ СЂР°Р·Р»РёС‡Р°СЋС‚СЃСЏ РІ РїСЂРµРґРµР»Р°С… +-10%, С‚Рѕ РёС… РјРѕР¶РЅРѕ 
+																							// СЃСЂР°РІРЅРёРІР°С‚СЊ РїРѕРґСЂРѕР±РЅРµРµ.
 	{
-		Image wider = (im1.get_widht() >= im2.get_widht()) ? im1 : im2;//Временный образ для хранения более широкой фигуры.
+		Image wider = (im1.get_widht() >= im2.get_widht()) ? im1 : im2;//Р’СЂРµРјРµРЅРЅС‹Р№ РѕР±СЂР°Р· РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р±РѕР»РµРµ С€РёСЂРѕРєРѕР№ С„РёРіСѓСЂС‹.
 		//cout << "Wider image:" << endl;
 		//wider.visualize();
 
-		Image narrow = (im1.get_widht() < im2.get_widht()) ? im1 : im2;//Временный образ для узкой фигуры.
+		Image narrow = (im1.get_widht() < im2.get_widht()) ? im1 : im2;//Р’СЂРµРјРµРЅРЅС‹Р№ РѕР±СЂР°Р· РґР»СЏ СѓР·РєРѕР№ С„РёРіСѓСЂС‹.
 		//cout << "Narrow image:" << endl;
 		//narrow.visualize();
 
-		Image higher = (im1.get_height() >= im2.get_height()) ? im1 : im2;//Временный образ для хранения более высокой фигуры.
+		Image higher = (im1.get_height() >= im2.get_height()) ? im1 : im2;//Р’СЂРµРјРµРЅРЅС‹Р№ РѕР±СЂР°Р· РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р±РѕР»РµРµ РІС‹СЃРѕРєРѕР№ С„РёРіСѓСЂС‹.
 		//cout << "Higher image:" << endl;
 		//higher.visualize();
 
-		Image low = (im1.get_height() < im2.get_height()) ? im1 : im2;//Временный образ для низкой фигуры.
+		Image low = (im1.get_height() < im2.get_height()) ? im1 : im2;//Р’СЂРµРјРµРЅРЅС‹Р№ РѕР±СЂР°Р· РґР»СЏ РЅРёР·РєРѕР№ С„РёРіСѓСЂС‹.
 		//cout << "Lower image:" << endl;
 		//low.visualize();
 
-		size_t count = 0;//Счетчик совпадений.
-		//Тут происходит очень сложная операция сравнения двух образов разных размеров с использованием относительного положения элементов (пикселей).
+		size_t count = 0;//РЎС‡РµС‚С‡РёРє СЃРѕРІРїР°РґРµРЅРёР№.
+		//РўСѓС‚ РїСЂРѕРёСЃС…РѕРґРёС‚ РѕС‡РµРЅСЊ СЃР»РѕР¶РЅР°СЏ РѕРїРµСЂР°С†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ РґРІСѓС… РѕР±СЂР°Р·РѕРІ СЂР°Р·РЅС‹С… СЂР°Р·РјРµСЂРѕРІ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕРіРѕ РїРѕР»РѕР¶РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ (РїРёРєСЃРµР»РµР№).
 		for (int i = 0; i < higher.get_height(); ++i)
 		{
 			for (int j = 0; j < wider.get_widht(); ++j)
@@ -165,12 +165,12 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 			}
 		}
 
-		size_t max_square = higher.get_height()*wider.get_widht();//Максимально возможное кол-во элементов в образе.
-		double equality = count / static_cast<double>(max_square);//Доля совпадений из всех проверок.
+		size_t max_square = higher.get_height()*wider.get_widht();//РњР°РєСЃРёРјР°Р»СЊРЅРѕ РІРѕР·РјРѕР¶РЅРѕРµ РєРѕР»-РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РѕР±СЂР°Р·Рµ.
+		double equality = count / static_cast<double>(max_square);//Р”РѕР»СЏ СЃРѕРІРїР°РґРµРЅРёР№ РёР· РІСЃРµС… РїСЂРѕРІРµСЂРѕРє.
 
 		cout << count << " " << max_square << " " << equality << endl;
 
-		if (equality >= min_equality)//Константа, определяющая минимальное сходство образов для решения об их идентичности.
+		if (equality >= min_equality)//РљРѕРЅСЃС‚Р°РЅС‚Р°, РѕРїСЂРµРґРµР»СЏСЋС‰Р°СЏ РјРёРЅРёРјР°Р»СЊРЅРѕРµ СЃС…РѕРґСЃС‚РІРѕ РѕР±СЂР°Р·РѕРІ РґР»СЏ СЂРµС€РµРЅРёСЏ РѕР± РёС… РёРґРµРЅС‚РёС‡РЅРѕСЃС‚Рё.
 		{
 			return true;
 		}
@@ -179,10 +179,10 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 			return false;
 		}
 	}
-	else //Если отношения сторон сильно различаются,
+	else //Р•СЃР»Рё РѕС‚РЅРѕС€РµРЅРёСЏ СЃС‚РѕСЂРѕРЅ СЃРёР»СЊРЅРѕ СЂР°Р·Р»РёС‡Р°СЋС‚СЃСЏ,
 	{
 		cout << "Huge aspect rate difference!" << endl;
-		return false;//то понятно, что они не равны.
+		return false;//С‚Рѕ РїРѕРЅСЏС‚РЅРѕ, С‡С‚Рѕ РѕРЅРё РЅРµ СЂР°РІРЅС‹.
 	}
 		
 }
