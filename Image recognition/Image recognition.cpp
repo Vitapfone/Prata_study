@@ -24,6 +24,34 @@ int main()
 {
 	//УЧАСТОК ИНИЦИАЛИЗАЦИИ /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//ЧТЕНИЕ СТРОК ИЗ ФАЙЛА
+
+	map<int, Id_string> string_map;//Карта для хранения прочитанных строк в соответствии с их идентификаторами.
+	ifstream ifs_str("Strings\\strings_data.bin", ifstream::binary);
+
+	Id_string temp;//Временный объект строки.
+	while (temp.bin_read(ifs_str))//Пока не достигнут конец файла.
+	{
+		string_map[temp.get_id()] = temp;
+	}
+
+	//КОНСТРУИРОВАНИЕ ОБРАЗОВ ИЗ ФАЙЛОВ.
+
+	ifstream ifs_Images("Figures\\figures_data.bin", ifstream::binary);
+	vector<Image> im_vec;//Вектор образов
+
+	Image temp1;
+
+	while (temp1.bin_read(ifs_Images))//Чтение из файла во временный объект.
+	{
+		temp1.set_is_ps(&string_map[temp1.get_id_is_ps()]);//Восстановление связей.
+		temp1.set_non_ps(&string_map[temp1.get_id_non_ps()]);
+
+		im_vec.push_back(temp1);
+	}
+
+	//ПОДГОТОВКА РАБОЧЕГО ПРОСТРАНСТВА
+
 	array<array<char, WIDTH>, HEIGHT> ar1; //Пустой двумерный массив.
 
 	//Square fig(15, 2, 56);//Создаем квадрат со стороной не менее 2.
@@ -115,35 +143,6 @@ int main()
 
 
 	//УЧАСТОК РАСПОЗНАВАНИЯ ///////////////////////////////////////////////////////////////////////////////////////////
-
-	//ЧТЕНИЕ СТРОК ИЗ ФАЙЛА
-
-		map<int, Id_string> string_map;//Карта для хранения прочитанных строк в соответствии с их идентификаторами.
-		ifstream ifs_str("Strings\\strings_data.bin", ifstream::binary);
-		
-		Id_string temp;//Временный объект строки.
-		while (temp.bin_read(ifs_str))//Пока не достигнут конец файла.
-		{
-			string_map[temp.get_id()] = temp;
-		}
-																		
-	//КОНСТРУИРОВАНИЕ ОБРАЗОВ ИЗ ФАЙЛОВ.
-
-		ifstream ifs_Images("Figures\\figures_data.bin", ifstream::binary);
-		vector<Image> im_vec;//Вектор образов
-
-		Image temp1;
-
-		while (temp1.bin_read(ifs_Images))
-		{	
-														//cout << "Reading image...\n";
-														//temp1.visualize();
-
-			temp1.set_is_ps(&string_map[temp1.get_id_is_ps()]);//Восстановление связей.
-			temp1.set_non_ps(&string_map[temp1.get_id_non_ps()]);
-
-			im_vec.push_back(temp1);
-		}
 		
 	//РАСПОЗНАВАНИЕ
 
@@ -166,14 +165,20 @@ int main()
 			cout << endl;
 		}
 
+	//УЧАСТОК МЫСЛИТЕЛЬНОЙ РАБОТЫ /////////////////////////////////////////////////////////////////////////////////////
+
+	// ИМИТАЦИЯ СОЗДАНИЯ НОВЫХ СВЯЗЕЙ
+
 		if (match == false)//Образы не совпали ни с одним эталоном.
 		{
+			//Временные строки.
 			string figure_name;
 			string new_figure_link;
 			string new_figure_non_link;
 
 			cout << "Adding new figure  to a database. It's name is:";//Надо ввести имя для новой фигуры.
 			cin >> figure_name;
+
 			new_figure_link = "This is " + figure_name + ".";//Конструируются строки сообщений, которые здесь имитируют связи новой фигуры.
 			Id_string id_new_figure_link(new_figure_link);
 			new_figure_non_link = "Not equal to " + figure_name + ".";
@@ -207,7 +212,7 @@ int main()
 
 
 
-	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ.
+	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ ///////////////////////////////////////////////////////////////////////////////
 
 		warnings.clear();//Очищаем список предупреждений, чтобы заполнить его в следующем цикле.
 
