@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include "Simple structures.h"
 #include "Figures.h"
 
 // CIRCLE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6,13 +7,13 @@
 //Унаследованная функция отрисовки.
 void Circle::print(Ar60_30 & ws)
 {
-	for (int y = y0 - radius; y <= y0 + radius; ++y)
+	for (int y = loc.y - radius; y <= loc.y + radius; ++y)
 	{
-		for (int x = x0 - radius; x <= x0 + radius; ++x)
+		for (int x = loc.x - radius; x <= loc.x + radius; ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)
 			{
-				if ((x - x0)*(x - x0) + (y - y0)*(y - y0) <= radius * radius)
+				if ((x - loc.x)*(x - loc.x) + (y - loc.y)*(y - loc.y) <= radius * radius)
 				{
 					ws[y][x] = '0';
 				}
@@ -27,9 +28,9 @@ void Circle::print(Ar60_30 & ws)
 //Функция отрисовки прямоугольника, унаследованная от предка.
 void My::Rectangle::print(Ar60_30 & ws)
 {
-	for (int y = y0; y != (y0 + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = loc.y; y != (loc.y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = x0; x != (x0 + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
+		for (int x = loc.x; x != (loc.x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -44,13 +45,13 @@ void My::Rectangle::print(Ar60_30 & ws)
 
 void Rhomb::print(Ar60_30 & ws)//Определение унаследованной виртуальной функции.
 {
-	for (size_t y = (y0 - diagonal / 2); y <= y0; ++y)
+	for (size_t y = (loc.y - diagonal / 2); y <= loc.y; ++y)
 	{
-		for (size_t x = (x0 - diagonal / 2); x <= (x0 + diagonal / 2); ++x)
+		for (size_t x = (loc.x - diagonal / 2); x <= (loc.x + diagonal / 2); ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= x0 - (y - (y0 - diagonal / 2)) && x <= x0 + (y - (y0 - diagonal / 2)))
+				if (x >= loc.x - (y - (loc.y - diagonal / 2)) && x <= loc.x + (y - (loc.y - diagonal / 2)))
 				{
 					ws[y][x] = '0';
 				}
@@ -58,13 +59,13 @@ void Rhomb::print(Ar60_30 & ws)//Определение унаследованн
 		}
 	}
 
-	for (size_t y = y0; y <= y0 + diagonal / 2; ++y)
+	for (size_t y = loc.y; y <= loc.y + diagonal / 2; ++y)
 	{
-		for (size_t x = x0 - diagonal / 2; x <= x0 + diagonal / 2; ++x)
+		for (size_t x = loc.x - diagonal / 2; x <= loc.x + diagonal / 2; ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= x0 - (y0 + diagonal / 2 - y) && x <= x0 + (y0 + +diagonal / 2 - y))
+				if (x >= loc.x - (loc.y + diagonal / 2 - y) && x <= loc.x + (loc.y + +diagonal / 2 - y))
 				{
 					ws[y][x] = '0';
 				}
@@ -80,9 +81,9 @@ void Rhomb::print(Ar60_30 & ws)//Определение унаследованн
 void Square::print(Ar60_30 & ws)
 {
 
-	for (int y = y0; y != (y0 + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = loc.y; y != (loc.y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = x0; x != (x0 + a); ++x)//Внутренний цикл печатает символы ряда
+		for (int x = loc.x; x != (loc.x + a); ++x)//Внутренний цикл печатает символы ряда
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -97,13 +98,13 @@ void Square::print(Ar60_30 & ws)
 
 void Triangle::print(Ar60_30 & ws)//Унаследованная функция отрисовки треугольника.
 {
-	for (size_t y = y0; y <= point_A_y; ++y)
+	for (size_t y = loc.y; y <= point_A.y; ++y)
 	{
-		for (size_t x = x0; x <= point_B_x; ++x)
+		for (size_t x = loc.x; x <= point_B.x; ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x - x0 < y - y0)
+				if (x - loc.x < y - loc.y)
 				{
 					ws[y][x] = '0';
 				}

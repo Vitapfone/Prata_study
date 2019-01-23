@@ -7,7 +7,7 @@ struct Location
 
 struct Borders//Структура для хранения информации о границах прямоугольной области. Simple structures.h
 {
-	int x_min;//Левая граница.
-	int x_max;//Правая граница.
-	int y_min, y_max;//Верхняя и нижняя границы.
+	int x_min = 0;//Левая граница.
+	int x_max = 0;//Правая граница.
+	int y_min = 0, y_max = 0;//Верхняя и нижняя границы.
 };

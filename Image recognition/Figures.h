@@ -5,14 +5,19 @@ using namespace My_names;
 using Ar60_30 = array<array<char, 60>, 30>;
 
 
-// Структура для абстрактной фигуры, на основе которой сделаны конкретные.
-struct Figure
+// Класс для абстрактной фигуры, на основе которой сделаны конкретные.
+class Figure
 {
-	size_t x0 = 0, y0 = 0;//Координаты.
+protected:
+
+	Location loc{ 0, 0 };
+
+public:
 
 	//Конструкторы.
 	Figure() = default;
-	Figure(size_t x, size_t y) :x0(x), y0(y) {}
+	Figure(int x, int y) : loc{ x, y } {}
+	explicit Figure(const Location & lc) : loc(lc) {}
 	//Виртуальный деструктор.
 	virtual ~Figure() = default;
 
@@ -20,10 +25,10 @@ struct Figure
 
 	//МЕТОДЫ ДВИЖЕНИЯ
 
-	void moveRight() { ++x0; }//Передвинуть правее.
-	void moveLeft() { --x0; }//Передвинуть левее.
-	void moveUp() { --y0; }//Передвинуть выше.
-	void moveDown() { ++y0; }//Передвинуть ниже.
+	void moveRight() { ++loc.x; }//Передвинуть правее.
+	void moveLeft() { --loc.x; }//Передвинуть левее.
+	void moveUp() { --loc.y; }//Передвинуть выше.
+	void moveDown() { ++loc.y; }//Передвинуть ниже.
 
 };
 
@@ -31,14 +36,16 @@ struct Figure
 
 // CIRCLE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct Circle : public Figure//Наследуется от Figure.
+class Circle : public Figure//Наследуется от Figure.
 {
 	size_t radius = 0;//Радиус круга.
+
+public:
 
 	//Конструкторы.
 	Circle() = default;
 	Circle(int x, int y, size_t r) : Figure(x, y), radius(r) {}
-
+	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
 	void print(Ar60_30 &ws);//Унаследованная функция отрисовки.
@@ -49,13 +56,13 @@ struct Circle : public Figure//Наследуется от Figure.
 //Функция отрисовки круга для любого рабочего пространства.
 template<size_t W, size_t H> void Circle::print(array<array<char, W>, H> & ws)
 {
-	for (int y = y0 - radius; y <= y0 + radius; ++y)
+	for (int y = loc.y - radius; y <= loc.y + radius; ++y)
 	{
-		for (int x = x0 - radius; x <= x0 + radius; ++x)
+		for (int x = loc.x - radius; x <= loc.x + radius; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)
 			{
-				if ((x - x0)*(x - x0) + (y - y0)*(y - y0) <= radius * radius)
+				if ((x - loc.x)*(x - loc.x) + (y - loc.y)*(y - loc.y) <= radius * radius)
 				{
 					ws[y][x] = '0';
 				}
@@ -71,13 +78,16 @@ template<size_t W, size_t H> void Circle::print(array<array<char, W>, H> & ws)
 namespace My//Необходимость в новом пространстве имен возникла из-за наличия одноименной функции в стандарте.
 {
 	//Класс прямоугольника.
-	struct Rectangle : public Figure
+	class Rectangle : public Figure
 	{
 		size_t a = 0;//Длина меньшей стороны.
 
-		//КОНСТРУКТОР
+	public:
+
+		//КОНСТРУКТОРЫ
 
 		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) {}
+		Rectangle(const Location & lc, size_t a1) : Figure(lc), a(a1) {}
 
 		void print(Ar60_30 &ws);//Функция отрисовки прямоугольника, унаследованная от предка.
 
@@ -90,9 +100,9 @@ namespace My//Необходимость в новом пространстве 
 template<size_t W, size_t H>
 void My::Rectangle::print(array<array<char, W>, H>& ws)
 {
-	for (int y = y0; y != (y0 + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = loc.y; y != (loc.y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = x0; x != (x0 + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
+		for (int x = loc.x; x != (loc.x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -105,15 +115,17 @@ void My::Rectangle::print(array<array<char, W>, H>& ws)
 
 // RHOMB ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Структура ромба.
-struct Rhomb : public Figure
+//Класс ромба.
+class Rhomb : public Figure
 {
 	size_t diagonal = 0;
 
+public:
+
 	//КОНСТРУКТОРЫ
 	Rhomb() = default;
-	Rhomb(size_t x, size_t y, size_t diag) : Figure(x, y), diagonal(diag) {}
-
+	Rhomb(int x, int y, size_t diag) : Figure(x, y), diagonal(diag) {}
+	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
 	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
@@ -124,13 +136,13 @@ struct Rhomb : public Figure
 
 template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = (y0 - diagonal / 2); y <= y0; ++y)
+	for (size_t y = (loc.y - diagonal / 2); y <= loc.y; ++y)
 	{
-		for (size_t x = (x0 - diagonal / 2); x <= (x0 + diagonal / 2); ++x)
+		for (size_t x = (loc.x - diagonal / 2); x <= (loc.x + diagonal / 2); ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= x0 - (y - (y0 - diagonal / 2)) && x <= x0 + (y - (y0 - diagonal / 2)))
+				if (x >= loc.x - (y - (loc.y - diagonal / 2)) && x <= loc.x + (y - (loc.y - diagonal / 2)))
 				{
 					ws[y][x] = '0';
 				}
@@ -138,13 +150,13 @@ template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 		}
 	}
 
-	for (size_t y = y0; y <= y0 + diagonal / 2; ++y)
+	for (size_t y = loc.y; y <= loc.y + diagonal / 2; ++y)
 	{
-		for (size_t x = x0 - diagonal / 2; x <= x0 + diagonal / 2; ++x)
+		for (size_t x = loc.x - diagonal / 2; x <= loc.x + diagonal / 2; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= x0 - (y0 + diagonal / 2 - y) && x <= x0 + (y0 + +diagonal / 2 - y))
+				if (x >= loc.x - (loc.y + diagonal / 2 - y) && x <= loc.x + (loc.y + +diagonal / 2 - y))
 				{
 					ws[y][x] = '0';
 				}
@@ -157,15 +169,16 @@ template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 
 // SQUARE ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Структура квадрата.
-struct Square : public Figure
+//Класс квадрата.
+class Square : public Figure
 {
+	size_t a = 0;//Длина стороны.
 
-	unsigned a = 0;//Длина стороны.
+public:
 
 	//КОНСТРУКТОР
-	Square(int x = 0, int y = 0, unsigned a1 = 0) : Figure(x, y), a(a1) {}
-
+	Square(int x = 0, int y = 0, size_t a1 = 0) : Figure(x, y), a(a1) {}
+	Square(const Location & lc, size_t a1 = 0) : Figure(lc), a(a1) {}
 
 	void print(Ar60_30 &ws);//Функция отрисовки квадрата.
 
@@ -177,9 +190,9 @@ struct Square : public Figure
 template<size_t W, size_t H> void Square::print(array<array<char, W>, H> & ws)
 {
 
-	for (int y = y0; y != (y0 + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = loc.y; y != (loc.y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = x0; x != (x0 + a); ++x)//Внутренний цикл печатает символы ряда
+		for (int x = loc.x; x != (loc.x + a); ++x)//Внутренний цикл печатает символы ряда
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -194,19 +207,23 @@ template<size_t W, size_t H> void Square::print(array<array<char, W>, H> & ws)
 // TRIANGLE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-struct Triangle : Figure //Структура, представляющая равнобедренный прямоугольный треугольник.
+class Triangle : public Figure //Класс, представляющий равнобедренный прямоугольный треугольник.
 {
 	size_t cathetus = 0;// Длина катета.
-	size_t point_A_x = 0, point_A_y = 0;//Координаты вершины с прямым углом.
-	size_t point_B_x = 0, point_B_y = 0; //Координаты второй вершины с острым углом. Координаты первой наследуются от Figure. 
+	Location point_A{ 0, 0 };//Координаты вершины с прямым углом.
+	//int point_A_x = 0, point_A.y = 0;
+	Location point_B{ 0, 0 };//Координаты второй вершины с острым углом. Координаты первой наследуются от Figure. 
+	//int point_B.x = 0, point_B_y = 0; 
+
+public:
 
 	//КОНСТРУКТОРЫ
 	Triangle() = default;
-	Triangle(size_t x, size_t y, size_t cat) : Figure(x, y), cathetus(cat), point_A_x(x), point_A_y(y + cathetus), point_B_x(x + cathetus), point_B_y(y + cathetus)
+	Triangle(int x, int y, size_t cat) : Figure(x, y), cathetus(cat), point_A{ x, y + int(cathetus) }, point_B{ x + int(cathetus), y + int(cathetus) }
 	{
-		//cout << point_A_x << " " << point_A_y << " " << point_B_x << " " << point_B_y << endl;
+		//cout << point_A_x << " " << point_A.y << " " << point_B.x << " " << point_B_y << endl;
 	}
-
+	Triangle(const Location & lc, size_t cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + int(cathetus) }, point_B{ lc.x + int(cathetus), lc.y + int(cathetus) }{}
 	~Triangle() {}
 
 	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
@@ -218,13 +235,13 @@ struct Triangle : Figure //Структура, представляющая ра
 //Отрисовка треугольника для рабочего пространства любого размера.
 template<size_t W, size_t H> void Triangle::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = y0; y <= point_A_y; ++y)
+	for (size_t y = loc.y; y <= point_A.y; ++y)
 	{
-		for (size_t x = x0; x <= point_B_x; ++x)
+		for (size_t x = loc.x; x <= point_B.x; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x - x0 < y - y0)
+				if (x - loc.x < y - loc.y)
 				{
 					ws[y][x] = '0';
 				}

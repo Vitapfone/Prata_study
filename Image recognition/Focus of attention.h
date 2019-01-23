@@ -63,9 +63,9 @@ public:
 	template<size_t W, size_t H>  
 	void to_Weight_Center(array<array<char, W>, H> & ws);
 
-	//Задает координаты 9-ти элементарных кластеров вокруг фокуса.
+	//Задает координаты 9-ти элементарных кластеров вокруг фокуса и возвращает местоположение наиболее заполненного.
 	template<size_t W, size_t H> 
-	Cluster clusterize(array<array<char, W>, H> & ws);
+	Location clusterize(array<array<char, W>, H> & ws);
 
 	//Пытается передвинуть фокус внутрь объекта.
 	template<size_t W, size_t H> 
@@ -181,7 +181,7 @@ void Focus_of_attention::to_Weight_Center(array<array<char, W>, H> & ws)
 
 //Задает координаты 9-ти элементарных кластеров вокруг фокуса.
 template<size_t W, size_t H> 
-Cluster Focus_of_attention::clusterize(array<array<char, W>, H> & ws)
+Location Focus_of_attention::clusterize(array<array<char, W>, H> & ws)
 {
 	Cluster cl5(loc.x - 2, loc.y - 2);
 	Cluster cl4(loc.x - 7, loc.y - 2);
@@ -200,18 +200,18 @@ Cluster Focus_of_attention::clusterize(array<array<char, W>, H> & ws)
 		e.counter(ws, background);
 	}
 	//Ищем наиболее заполненный.
-	sort(vcl.begin(), vcl.end(), [](Cluster & c1, Cluster & c2) {return c1.count > c2.count; });
+	sort(vcl.begin(), vcl.end(), [](Cluster & c1, Cluster & c2) {return c1.Count() > c2.Count(); });
 
 	//Возвращаем его.
-	return vcl[0];
+	return vcl[0].where();
 }
 
 //Пытается передвинуть фокус внутрь объекта.
 template<size_t W, size_t H>
 bool Focus_of_attention::go_inside(array<array<char, W>, H>& ws)
 {
-	Cluster fcl = clusterize(ws);//Получаем наиболее заполненный элементарный кластер.
-	Location center = { fcl.xC + 3, fcl.yC + 3 }; //Середина этого кластера.
+	Location fcl = clusterize(ws);//Получаем наиболее заполненный элементарный кластер.
+	Location center = { fcl.x + 3, fcl.y + 3 }; //Середина этого кластера.
 	relocate(center); //Передвигаем фокус. 
 
 	if (ws[loc.y][loc.x] == background)

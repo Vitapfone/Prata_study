@@ -7,7 +7,7 @@ using namespace My_names;
 class Warning //Класс сообщения от функций первичного управления вниманием.
 {
 	string message; //Сообщение о типе обнаруженного.
-	Location loc;//Координаты обнаруженного.
+	Location loc{ 0, 0 };//Координаты обнаруженного.
 	int importance = 10;//Степень важности сообщения.
 
 public:

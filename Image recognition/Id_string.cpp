@@ -13,7 +13,7 @@ Id_string::Id_string(ifstream & fin)
 	shared_ptr<char> buf(new char[len]);
 	fin.read(buf.get(), len);
 	data.assign(buf.get());
-	//delete[] buf;
+	
 
 	fin.read((char*)&id, sizeof id);
 
