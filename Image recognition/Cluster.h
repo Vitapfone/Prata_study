@@ -13,11 +13,11 @@ struct Cluster
 	//КОНСТРУКТОРЫ
 
 	//Задает члены. Count задается неявно по умолчанию нулем.
-	Cluster(int x=0, int y=0, int s1=5) :xC(x), yC(y), s(s1) {}
+	Cluster(int x = 0, int y = 0, int s1 = 5) :xC(x), yC(y), s(s1) {}
 
 
 	//Возвращает размер кластера.
-	int size() { return s * s; } 
+	int size() { return s * s; }
 
 	//Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
 	template<size_t W, size_t H>  void counter(array<array<char, W>, H> &ws, char background);
@@ -30,7 +30,7 @@ struct Cluster
 };
 
 //Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
-template<size_t W, size_t H> 
+template<size_t W, size_t H>
 void Cluster::counter(array<array<char, W>, H> &ws, char background)
 {
 	//cout << "Counting... " << endl;
