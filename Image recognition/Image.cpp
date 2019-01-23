@@ -12,13 +12,13 @@ Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
 	ifs.read((char*)&height, sizeof height);
 	aspect_rate = (double) width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
-	bool* buf = new bool[width];//Выделяем буфер.
+	shared_ptr<bool> buf(new bool[width]);//Выделяем буфер.
 	for (size_t i = 0; i < height; i++)
 	{
-		ifs.read((char*)&buf, width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		vector<bool> temp(buf, buf + width);//Создаем временный вектор из буфера.
+		ifs.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
+		vector<bool> temp(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
 		data.push_back(temp);
-		delete[] buf;//Очищаем буфер.
+		//delete[] buf;//Очищаем буфер.
 	}
 
 	//Читаем айдишники.

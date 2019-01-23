@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Id_string.h"
 
-int Id_string::counter = 0;//Инициализация статического члена должна быть в его определении в области видимости файла.
+int Id_string::counter = 0;//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
 
 //Конструктор из бинарного файла.
 Id_string::Id_string(ifstream & fin)
@@ -10,10 +10,10 @@ Id_string::Id_string(ifstream & fin)
 	size_t len;
 	fin.read((char*)&len, sizeof len);
 
-	char* buf = new char[len];
-	fin.read(buf, len);
-	data.assign(buf);
-	delete[] buf;
+	shared_ptr<char> buf(new char[len]);
+	fin.read(buf.get(), len);
+	data.assign(buf.get());
+	//delete[] buf;
 
 	fin.read((char*)&id, sizeof id);
 

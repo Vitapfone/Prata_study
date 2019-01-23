@@ -40,7 +40,7 @@ private:
 	
 	string data;
 	int id = 0;
-	static int counter;
+	static int counter;//Не константный статический член нельзя инициализировать в классе.
 
 };
 
