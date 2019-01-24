@@ -13,11 +13,16 @@ class Inspector
 
 public:
 
-	//Конструктор.
+//Конструктор.
 	Inspector(int x, int y, char b, char o) : loc{ x, y }, bg(b), obj(o) {}
 
+//ЗАПРЕЩЕНО
+	//Запрещено копирование.
+	Inspector(const Inspector &) = delete;
+	//Запрещено присвоение.
+	Inspector & operator=(Inspector const &) = delete;
 
-	//Методы движения.
+//Методы движения.
 	void moveLeft() { --loc.x; }
 	void moveRight() { ++loc.x; }
 	void moveUp() { --loc.y; }

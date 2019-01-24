@@ -17,11 +17,16 @@ class Focus_of_attention
 	Borders borders;//Структура для хранения информации о границах области внимания.
 
 public:
-	//КОНСТРУКТОР
+//КОНСТРУКТОР
 	template<size_t W, size_t H> Focus_of_attention(int x, int y, array<array<char, W>, H> & ws) : loc{ x, y }, background(ws[y][x]), borders{ 0, W - 1, 0, H - 1 } {}
 
+//ЗАПРЕЩЕНО
+	//Запрещено копирование
+	Focus_of_attention(const Focus_of_attention &) = delete;
+	//Запрещено присвоение.
+	Focus_of_attention & operator=(const Focus_of_attention &) = delete;
 
-	//ГЕТТЕРЫ
+//ГЕТТЕРЫ
 
 	//Выдать фон
 	char get_background() const { return background; }
@@ -41,7 +46,7 @@ public:
 	//Выдать границы области внимания.
 	Borders get_borders()const { return borders; }
 
-	//СЕТТЕРЫ
+//СЕТТЕРЫ
 
 	//Установить режим частично сосредоточенного внимания.
 	void mode_par_con() { mode = Partially_concentrated; }
@@ -243,6 +248,6 @@ void Focus_of_attention::part_concentrate_to_object(array<array<char, W>, H>& ws
 	Location center = { (borders.x_max + borders.x_min) / 2, (borders.y_max + borders.y_min) / 2 };
 	relocate(center); //Перенесем фокус внимания в центр области, занимаемой объектом
 
-	//режим внимания меняется на частично сконцентрированный.
+	//Режим внимания меняется на частично сконцентрированный.
 	mode = Partially_concentrated;
 }

@@ -19,7 +19,7 @@ public:
 	Figure(int x, int y) : loc{ x, y } {}
 	explicit Figure(const Location & lc) : loc(lc) {}
 	//Виртуальный деструктор.
-	virtual ~Figure() = default;
+	virtual ~Figure() {}
 
 	virtual void print(Ar60_30 &ws) = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
 
