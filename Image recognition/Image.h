@@ -1,21 +1,25 @@
 ﻿#pragma once
-#include "My_names.h"
-#include "Id_string.h"
-#include "Simple structures.h"
+//#include "My_names.h"
+//#include "Id_string.h"
+//#include "Simple structures.h"
 
 using namespace My_names;
 
 class Image
 {
+	struct Link_ptr //Структура для представления нумерованной связи объекта.
+	{
+		Id_string* ps = nullptr; //Указатель, имитирующий некую информативную связь объекта образа.
+		int id = 0; //Идентификатор для этого указателя, позволит потом найти эту строку.
+	};
+
 	vector<vector<bool>> data;// Вектор булевых векторов, где будет храниться образ.
 
 	size_t width = 0, height = 0; //Высота и ширина образа.
 	double aspect_rate = 0.0;//Отношение ширины к высоте.
 
-	Id_string *is_ps = nullptr;//Указатель, имитирующий некую информативную связь объекта образа.
-	int id_is_ps = 0;//Идентификатор для этого указателя, позволит потом найти эту строку.
-	Id_string *non_ps = nullptr;
-	int id_non_ps = 0;
+	Link_ptr is_link;//Связь для подтверждающей строки.
+	Link_ptr non_link;//Связь для опровергающей строки.
 
 public:
 	Image() = default;
@@ -27,19 +31,17 @@ public:
 
 	~Image() {}
 
-	//МЕТОДЫ
+//МЕТОДЫ
 
 	size_t get_widht() const { return width; }//Выдать ширину.
 	size_t get_height() const { return height; }//Выдать высоту.
 	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
-	Id_string * get_is_ps() const { return is_ps; }//Выдать хранимый указатель.
-	Id_string * get_non_ps() const { return non_ps; }
 
-	int get_id_is_ps() const { return id_is_ps; }//Выдать идентификатор указателя.
-	int get_id_non_ps() const { return id_non_ps; }
+	Link_ptr get_is_link()const { return is_link; }//Выдать подтверждающую связь.
+	Link_ptr get_non_link()const { return non_link; }//Выдать опровергающую связь.
 	
-	void set_is_ps(Id_string* other) { is_ps = other; id_is_ps = other->get_id(); }//Установить связь указателя с некоей строкой с идентификатором.
-	void set_non_ps(Id_string* other) { non_ps = other; id_non_ps = other->get_id(); }
+	void set_is_link(Id_string* is) { is_link.ps = is; /*is_link.id = is->get_id();*/ }//Установить связь с некоей строкой с идентификатором.
+	void set_non_link(Id_string* is) { non_link.ps = is; /*non_link.id = is->get_id();*/ }
 
 	//Выводит в консоль образ в удобном для восприятия виде.
 	void visualize();
@@ -47,6 +49,11 @@ public:
 	//Прочитать из бинарного файла.
 	bool bin_read(ifstream & fin);
 
+private:
+	//Заполнить вн.вектор и айдишники из бин. файла
+	void init(ifstream & fin);
+
+public:
 	//Записать в бинарный файл.
 	bool bin_write(ofstream & fout)const;
 

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "My_names.h"
+//#include "My_names.h"
 using namespace My_names;
 
 class Id_string
@@ -26,10 +26,15 @@ public:
 	//Записать в бинарный файл.
 	bool bin_write(ofstream & fout)const;
 
+private:
+	//Заполнить строку и айдишник из бин. файла.
+	void init(ifstream & fin, size_t l);
+
+public:
 	//Прочитать из бинарного файла.
 	bool bin_read(ifstream & fin);
 
-	//ФУНКЦИИ-ДРУЗЬЯ.
+//ФУНКЦИИ-ДРУЗЬЯ.
 
 	//Оператор вывода для записи в текстовый файл.
 	friend ostream& operator<< (ostream &, const Id_string &);

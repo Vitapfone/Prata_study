@@ -1,8 +1,31 @@
 ﻿#include "pch.h"
-#include "Image.h"
 #include "My_names.h"
+#include "Simple structures.h"
+#include "Id_string.h"
+#include "Image.h"
+
 
 using namespace My_names;
+
+//Заполнить вн.вектор и айдишники из бин. файла
+void Image::init(ifstream & fin)
+{
+	shared_ptr<bool> buf;//Умный указатель на будущий буфер.
+	vector<bool> temp(width);
+
+	for (size_t i = 0; i < height; i++)
+	{
+		buf.reset(new bool[width]);//Выделяем буфер.
+		//cout << "Read into buf\n";
+		fin.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
+		temp.assign(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
+		data.push_back(temp);
+	}
+
+	//Читаем айдишники.
+	fin.read((char*)&is_link.id, sizeof is_link.id);
+	fin.read((char*)&non_link.id, sizeof non_link.id);
+}
 
 //Конструктор заполнит внутренний вектор из бинарного файла.
 Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
@@ -12,18 +35,7 @@ Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
 	ifs.read((char*)&height, sizeof height);
 	aspect_rate = (double) width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
-	shared_ptr<bool> buf(new bool[width]);//Выделяем буфер.
-	for (size_t i = 0; i < height; i++)
-	{
-		ifs.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		vector<bool> temp(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
-		data.push_back(temp);
-		//delete[] buf;//Очищаем буфер.
-	}
-
-	//Читаем айдишники.
-	ifs.read((char*)&id_is_ps, sizeof id_is_ps);
-	ifs.read((char*)&id_non_ps, sizeof id_non_ps);
+	init(ifs);//Читаем все остальное.
 }
 
 
@@ -43,6 +55,11 @@ void Image::visualize()
 //Прочитать из бинарного файла.
 bool Image::bin_read(ifstream & fin)
 {
+	if (!data.empty())//Если вн. вектор не пуст, то очистим его. На всякий случай.
+	{
+		data.clear();
+	}
+
 	//Прочитать ширину и высоту образа.
 	
 	if (!fin.read((char*)&width, sizeof width))
@@ -52,32 +69,15 @@ bool Image::bin_read(ifstream & fin)
 	fin.read((char*)&height, sizeof height);
 	aspect_rate = (double)width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
-	if (!data.empty())//Если вн. вектор не пуст, то очистим его. На всякий случай.
-	{
-		data.clear();
-	}
-
-	shared_ptr<bool> buf;//Умный указатель на будущий буфер.
-	vector<bool> temp(width);
-
-	for (size_t i = 0; i < height; i++)
-	{
-		buf.reset(new bool[width]);//Выделяем буфер.
-		//cout << "Read into buf\n";
-		fin.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		temp.assign(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
-		data.push_back(temp);
-	}
-
-	//Читаем айдишники.
-	fin.read((char*)&id_is_ps, sizeof id_is_ps);
-	fin.read((char*)&id_non_ps, sizeof id_non_ps);
+	init(fin);//Читаем все остальное.
 
 	if (fin)
 		return true;
 	else
 		return false;
 }
+
+
 
 //Записать в бинарный файл.
 bool Image::bin_write(ofstream & fout) const
@@ -95,8 +95,8 @@ bool Image::bin_write(ofstream & fout) const
 		}
 	}
 	//Запись айди связей.
-	fout.write((char*)&id_is_ps, sizeof id_is_ps);
-	fout.write((char*)&id_non_ps, sizeof id_non_ps);
+	fout.write((char*)&is_link.id, sizeof is_link.id);
+	fout.write((char*)&non_link.id, sizeof non_link.id);
 
 	if (fout)//Если все успешно,
 	{
@@ -109,7 +109,7 @@ bool Image::bin_write(ofstream & fout) const
 }
 
 
-//Оператор выведет эл-ты внутреннего вектора. Вообще используется для записи в файл.
+//Оператор выведет эл-ты внутреннего вектора. Вообще используется для записи в текстовый файл.
 ostream & operator<<(ostream & os, const Image & im)
 {
 	for (int i = 0; i < im.data.size(); ++i)
@@ -121,7 +121,7 @@ ostream & operator<<(ostream & os, const Image & im)
 		os << endl;
 	}
 	os << '\n';
-	os << im.id_is_ps << ' ' << im.id_non_ps << endl;
+	os << im.is_link.id << ' ' << im.non_link.id << endl;
 
 	return os;
 }

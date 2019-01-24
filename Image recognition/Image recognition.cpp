@@ -44,8 +44,8 @@ int main()
 
 	while (temp1.bin_read(ifs_Images))//Чтение из файла во временный объект.
 	{
-		temp1.set_is_ps(&string_map[temp1.get_id_is_ps()]);//Восстановление связей.
-		temp1.set_non_ps(&string_map[temp1.get_id_non_ps()]);
+		temp1.set_is_link(&string_map[temp1.get_is_link().id]);//Восстановление связей.
+		temp1.set_non_link(&string_map[temp1.get_non_link().id]);
 
 		im_vec.push_back(temp1);
 	}
@@ -55,10 +55,10 @@ int main()
 	array<array<char, WIDTH>, HEIGHT> ar1; //Пустой двумерный массив.
 
 	//Square fig(15, 2, 56);//Создаем квадрат со стороной не менее 2.
-	//Circle fig(70, 30, 25);//Круг создавать радиусом не менее 5. Иначе не различает от ромба.
+	Circle fig(70, 30, 25);//Круг создавать радиусом не менее 5. Иначе не различает от ромба.
 	//Rhomb fig(60, 30, 25);//Ромб определять с диагональю не менее 4.
 	//My::Rectangle fig(15, 2, 55);
-	Triangle fig(35, 5, 50);//Треугольник создавать со стороной не менее 4. Иначе не распознает сам себя.  При стороне 2 -- зависает.
+	//Triangle fig(35, 5, 50);//Треугольник создавать со стороной не менее 4. Иначе не распознает сам себя.  При стороне 2 -- зависает.
 
 																							//system("mode con lines=60 cols=100");//Задаем размер окна консоли, где сначала кол-во строк, потом столбцов.
 	system("pause");//Пауза в начале, чтобы можно было позиционировать окно как надо.
@@ -154,13 +154,13 @@ int main()
 			if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 			{
 				match = true;
-				figure.set_is_ps(im.get_is_ps());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
-				cout << "Images are equal!!\n\t" << (figure.get_is_ps()->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
+				figure.set_is_link(im.get_is_link().ps);//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+				cout << "Images are equal!!\n\t" << (figure.get_is_link().ps->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
 				break;//Как только совпадение найдено, завершаем проверку.
 			}
 			else//Образы не совпадают.
 			{
-				cout << "No match!\n" << (im.get_non_ps()->get_data()) << endl;//Выводим сообщение об этом и специфическое для эталонного образа сообщение.
+				cout << "No match!\n" << (im.get_non_link().ps->get_data()) << endl;//Выводим сообщение об этом и специфическое для эталонного образа сообщение.
 			}
 			cout << endl;
 		}
@@ -187,8 +187,8 @@ int main()
 			string_map[id_new_figure_link.get_id()] = id_new_figure_link;//Вставляем новые строки в карту.
 			string_map[id_new_figure_non_link.get_id()] = id_new_figure_non_link;
 
-			figure.set_is_ps(&string_map[id_new_figure_link.get_id()]);//Фигура получает свои связи.
-			figure.set_non_ps(&string_map[id_new_figure_non_link.get_id()]);
+			figure.set_is_link(&string_map[id_new_figure_link.get_id()]);//Фигура получает свои связи.
+			figure.set_non_link(&string_map[id_new_figure_non_link.get_id()]);
 
 			im_vec.push_back(figure);//Образ неизвестной ранее фигуры добавляется в вектор эталонов.
 
@@ -198,13 +198,13 @@ int main()
 				if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 				{
 					match = true;
-					figure.set_is_ps(im.get_is_ps());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
-					cout << "Images are equal!!\n\t" << (figure.get_is_ps()->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
+					figure.set_is_link(im.get_is_link().ps);//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+					cout << "Images are equal!!\n\t" << (figure.get_is_link().ps->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
 					break;
 				}
 				else//Образы не совпадают.
 				{
-					cout << "No match!\n" << (im.get_non_ps()->get_data()) << endl;//Выводим сообщение об этом и специфическое для эталонного образа сообщение.
+					cout << "No match!\n" << (im.get_non_link().ps->get_data()) << endl;//Выводим сообщение об этом и специфическое для эталонного образа сообщение.
 				}
 				cout << endl;
 			}

@@ -1,7 +1,24 @@
 ﻿#include "pch.h"
+#include "My_names.h"
 #include "Id_string.h"
 
 int Id_string::counter = 0;//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
+
+//Заполнить строку и айдишник из бин. файла.
+void Id_string::init(ifstream & fin, size_t len)
+{
+	//Выделяем под нее память.
+	shared_ptr<char> buf(new char[len]);
+
+	fin.read(buf.get(), len);//Читаем в эту память.
+	data.assign(buf.get());//Присваиваем содержимое буфера строке.
+
+	//Читаем id.
+	fin.read((char*)&id, sizeof id);
+
+	if (counter < id)
+		counter = id;
+}
 
 //Конструктор из бинарного файла.
 Id_string::Id_string(ifstream & fin)
@@ -10,15 +27,8 @@ Id_string::Id_string(ifstream & fin)
 	size_t len;
 	fin.read((char*)&len, sizeof len);
 
-	shared_ptr<char> buf(new char[len]);
-	fin.read(buf.get(), len);
-	data.assign(buf.get());
-	
+	init(fin, len);//Заполнить все остальное.
 
-	fin.read((char*)&id, sizeof id);
-
-	if (counter < id)
-		counter = id;
 }
 
 //Записать в бинарный файл.
@@ -39,6 +49,8 @@ bool Id_string::bin_write(ofstream & fout) const
 	}
 }
 
+
+
 //Прочитать из бинарного файла.
 bool Id_string::bin_read(ifstream & fin)
 {
@@ -49,19 +61,7 @@ bool Id_string::bin_read(ifstream & fin)
 		return false;//то возвращаем false.
 	}
 
-	//cout <<"LEN "<< len << endl;
-
-	//Выделяем под нее память.
-	shared_ptr<char> buf(new char[len]);
-	
-	fin.read(buf.get(), len);//Читаем в эту память.
-	data.assign(buf.get());//Присваиваем содержимое буфера строке.
-	
-	//Читаем id.
-	fin.read((char*)&id, sizeof id);
-
-	if (counter < id)
-		counter = id;
+	init(fin, len);//Заполнить все остальное.
 
 	if (fin)//Если все прочитано успешно, то возвращаем true.
 	{
