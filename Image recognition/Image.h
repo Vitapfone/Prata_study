@@ -25,7 +25,7 @@ public:
 	Image() = default;
 	//Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
 	template<size_t W, size_t H> 
-	Image(const Borders & bs, array<array<char, W>, H> &, char, char);
+	Image(const Borders & bs, const array<array<char, W>, H> &, char, char);
 	//Конструктор заполнит внутренний вектор из бинарного файла.
 	Image(ifstream &);
 
@@ -69,7 +69,7 @@ public:
 
 
 //Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
-template<size_t W, size_t H> Image::Image(const Borders & bs, array<array<char, W>, H> & ws, char bg, char obj) : data(vector<vector<bool>>())
+template<size_t W, size_t H> Image::Image(const Borders & bs, const array<array<char, W>, H> & ws, char bg, char obj) : data(vector<vector<bool>>())
 {
 	//cout << "Constructing... ";
 	for (int i = bs.y_min, i2 = 0; i <= bs.y_max; ++i, ++i2)

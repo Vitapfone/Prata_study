@@ -74,7 +74,7 @@ bool Id_string::bin_read(ifstream & fin)
 }
 
 //Оператор вывода для записи в текстовый файл.
-ostream & operator<<(ostream &os, const Id_string &ids)
+ostream & operator<<(ostream & os, const Id_string & ids)
 {
 	os << ids.data << "\n" << ids.id << endl;
 	return os;

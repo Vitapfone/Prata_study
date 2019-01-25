@@ -18,7 +18,7 @@ class Focus_of_attention
 
 public:
 //КОНСТРУКТОР
-	template<size_t W, size_t H> Focus_of_attention(int x, int y, array<array<char, W>, H> & ws) : loc{ x, y }, background(ws[y][x]), borders{ 0, W - 1, 0, H - 1 } {}
+	template<size_t W, size_t H> Focus_of_attention(int x, int y, const array<array<char, W>, H> & ws) : loc{ x, y }, background(ws[y][x]), borders{ 0, W - 1, 0, H - 1 } {}
 
 //ЗАПРЕЩЕНО
 	//Запрещено копирование
@@ -53,7 +53,7 @@ public:
 
 	//Установить объект.
 	template<size_t W, size_t H> 
-	void assign_object(array<array<char, W>, H> &ws) { object = ws[loc.y][loc.x]; }
+	void assign_object(const array<array<char, W>, H> &ws) { object = ws[loc.y][loc.x]; }
 
 
 
@@ -66,26 +66,26 @@ public:
 
 	//Переместить в центр тяжести объекта.
 	template<size_t W, size_t H>  
-	void to_Weight_Center(array<array<char, W>, H> & ws);
+	void to_Weight_Center(const array<array<char, W>, H> & ws);
 
 	//Задает координаты 9-ти элементарных кластеров вокруг фокуса и возвращает местоположение наиболее заполненного.
 	template<size_t W, size_t H> 
-	Location clusterize(array<array<char, W>, H> & ws);
+	Location clusterize(const array<array<char, W>, H> & ws);
 
 	//Пытается передвинуть фокус внутрь объекта.
 	template<size_t W, size_t H> 
-	bool go_inside(array<array<char, W>, H> & ws);
+	bool go_inside(const array<array<char, W>, H> & ws);
 
 	//Определить границы области, в которой полностью находится объект. Соответственно им установить границы области концентрации внимания.
 	//Установить режим частичной концентрации.
 	template<size_t W, size_t H>
-	void part_concentrate_to_object(array<array<char, W>, H> & ws);
+	void part_concentrate_to_object(const array<array<char, W>, H> & ws);
 
 };
 
 //Функция переместит фокус внимания в примерный центр тяжести объекта.
 template<size_t W, size_t H>  
-void Focus_of_attention::to_Weight_Center(array<array<char, W>, H> & ws)
+void Focus_of_attention::to_Weight_Center(const array<array<char, W>, H> & ws)
 {
 	bool foc_move_up = false;//Переменная, показывающая, что фокус уже передвигался вверх.
 	bool foc_move_down = false;//Переменная, показывающая, что фокус уже передвигался вниз.
@@ -186,7 +186,7 @@ void Focus_of_attention::to_Weight_Center(array<array<char, W>, H> & ws)
 
 //Задает координаты 9-ти элементарных кластеров вокруг фокуса.
 template<size_t W, size_t H> 
-Location Focus_of_attention::clusterize(array<array<char, W>, H> & ws)
+Location Focus_of_attention::clusterize(const array<array<char, W>, H> & ws)
 {
 	Cluster cl5(loc.x - 2, loc.y - 2);
 	Cluster cl4(loc.x - 7, loc.y - 2);
@@ -213,7 +213,7 @@ Location Focus_of_attention::clusterize(array<array<char, W>, H> & ws)
 
 //Пытается передвинуть фокус внутрь объекта.
 template<size_t W, size_t H>
-bool Focus_of_attention::go_inside(array<array<char, W>, H>& ws)
+bool Focus_of_attention::go_inside(const array<array<char, W>, H>& ws)
 {
 	Location fcl = clusterize(ws);//Получаем наиболее заполненный элементарный кластер.
 	Location center = { fcl.x + 3, fcl.y + 3 }; //Середина этого кластера.
@@ -233,7 +233,7 @@ bool Focus_of_attention::go_inside(array<array<char, W>, H>& ws)
 //Определить границы области, в которой полностью находится объект. Соответственно им установить границы области концентрации внимания.
 //Установить режим частичной концентрации.
 template<size_t W, size_t H>
-void Focus_of_attention::part_concentrate_to_object(array<array<char, W>, H>& ws)
+void Focus_of_attention::part_concentrate_to_object(const array<array<char, W>, H>& ws)
 {
 	Inspector ins(loc.x, loc.y, background, object);//Создаем инспектора для обхода по контуру.
 

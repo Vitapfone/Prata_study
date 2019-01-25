@@ -48,7 +48,7 @@ public:
 
 
 	//Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
-	template<size_t W, size_t H>  void counter(array<array<char, W>, H> &ws, char background);
+	template<size_t W, size_t H>  void counter(const array<array<char, W>, H> & ws, char background);
 
 	//Функция выводит значения членов.
 	void print() const { cout << loc.x << ", " << loc.y << ", " << count << endl; }
@@ -59,13 +59,13 @@ public:
 
 	//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
 	template<size_t W, size_t H>
-	friend Warning most_filled_cluster(array<array<char, W>, H> &ws, char background);
+	friend Warning most_filled_cluster(const array<array<char, W>, H> &ws, char background);
 
 };
 
 //Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
 template<size_t W, size_t H>
-void Cluster::counter(array<array<char, W>, H> &ws, char background)
+void Cluster::counter(const array<array<char, W>, H> &ws, char background)
 {
 	//cout << "Counting... " << endl;
 	for (int y = loc.y; y != (loc.y + s); ++y)//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
@@ -86,7 +86,7 @@ void Cluster::counter(array<array<char, W>, H> &ws, char background)
 
 //Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
 template<size_t W, size_t H>
-Warning most_filled_cluster(array<array<char, W>, H> &ws, char background)
+Warning most_filled_cluster(const array<array<char, W>, H> &ws, char background)
 {
 	//Создаем кластеры для поиска
 	vector<Cluster> vc;

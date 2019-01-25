@@ -8,9 +8,9 @@ public:
 //КОНСТРУКТОРЫ
 	Id_string() = default;
 	//Конструктор из строки.
-	Id_string(const string &s) :data(s) { ++counter; id = counter;/* cout << id<< endl; */}
+	Id_string(const string & s) :data(s) { ++counter; id = counter;/* cout << id<< endl; */}
 	//Конструктор из строки и id.
-	Id_string(const string &s, int id):data(s), id(id)
+	Id_string(const string & s, int id):data(s), id(id)
 	{
 		if (counter < id)
 			counter = id;
@@ -37,9 +37,9 @@ public:
 //ФУНКЦИИ-ДРУЗЬЯ.
 
 	//Оператор вывода для записи в текстовый файл.
-	friend ostream& operator<< (ostream &, const Id_string &);
+	friend ostream & operator<< (ostream &, const Id_string &);
 
-	friend istream& operator>>(istream&, Id_string &);
+	friend istream & operator>>(istream&, Id_string &);
 
 private:
 	
