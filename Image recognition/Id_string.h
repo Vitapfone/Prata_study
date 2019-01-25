@@ -6,6 +6,7 @@ class Id_string
 {
 public:
 //КОНСТРУКТОРЫ
+
 	Id_string() = default;
 	//Конструктор из строки.
 	Id_string(const string & s) :data(s) { ++counter; id = counter;/* cout << id<< endl; */}
@@ -20,7 +21,8 @@ public:
 	~Id_string() {}
 
 //МЕТОДЫ
-	string get_data() const { return data; }//Выдать копию хранимой строки.
+
+	const string & get_data() const { return data; }//Выдать копию хранимой строки.
 	int get_id() const { return id; }//Выдать идентификатор.
 
 	//Записать в бинарный файл.

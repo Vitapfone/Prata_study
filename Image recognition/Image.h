@@ -25,7 +25,7 @@ public:
 	Image() = default;
 	//Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
 	template<size_t W, size_t H> 
-	Image(const Borders & bs, const array<array<char, W>, H> &, char, char);
+	Image(const Borders & bs, const array<array<char, W>, H> & ws, char, char);
 	//Конструктор заполнит внутренний вектор из бинарного файла.
 	Image(ifstream &);
 
@@ -37,8 +37,8 @@ public:
 	size_t get_height() const { return height; }//Выдать высоту.
 	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
 
-	Link_ptr get_is_link()const { return is_link; }//Выдать подтверждающую связь.
-	Link_ptr get_non_link()const { return non_link; }//Выдать опровергающую связь.
+	const Link_ptr & get_is_link()const { return is_link; }//Выдать подтверждающую связь.
+	const Link_ptr & get_non_link()const { return non_link; }//Выдать опровергающую связь.
 	
 	void set_is_link(Id_string* is) { is_link.ps = is; /*is_link.id = is->get_id();*/ }//Установить связь с некоей строкой с идентификатором.
 	void set_is_link(Link_ptr const & other) { is_link = other; }
@@ -69,7 +69,8 @@ public:
 
 
 //Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
-template<size_t W, size_t H> Image::Image(const Borders & bs, const array<array<char, W>, H> & ws, char bg, char obj) : data(vector<vector<bool>>())
+template<size_t W, size_t H> 
+Image::Image(const Borders & bs, const array<array<char, W>, H> & ws, char bg, char obj) : data(vector<vector<bool>>())
 {
 	//cout << "Constructing... ";
 	for (int i = bs.y_min, i2 = 0; i <= bs.y_max; ++i, ++i2)

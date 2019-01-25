@@ -30,7 +30,7 @@ public:
 
 	//Функция обхода слева. Второй параметр определяет, будет обход по часовой стрелке или против.
 	template<size_t W, size_t H> 
-	const Borders left_inspect(const array<array<char, W>, H> &, bool);
+	const Borders & left_inspect(const array<array<char, W>, H> &, bool);
 
 private:
 	//Функция определит, когда пора завершать обход.
@@ -38,7 +38,7 @@ private:
 };
 
 //Функция обхода слева. Второй параметр определяет, будет обход по часовой стрелке или против.
-template<size_t W, size_t H> const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool clockwise)
+template<size_t W, size_t H> const Borders & Inspector::left_inspect(const array<array<char, W>, H> &ws, bool clockwise)
 {
 	cout << "\nStart left-inspecting..." << endl;
 	set<int> xset, yset; //Списки координат, пройденных инспектором.
