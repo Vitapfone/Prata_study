@@ -10,7 +10,7 @@ using namespace My_names;
 //Заполнить вн.вектор и айдишники из бин. файла
 void Image::init(ifstream & fin)
 {
-	shared_ptr<bool[]> buf;//Умный указатель на будущий буфер.
+	shared_ptr<bool[]> buf;//Умный указатель на будущий буфер. Для работы с массивом это должно быть отражено в параметре шаблона.
 	vector<bool> temp(width);
 
 	for (size_t i = 0; i < height; i++)

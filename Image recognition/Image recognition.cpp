@@ -154,7 +154,7 @@ int main()
 			if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 			{
 				match = true;
-				figure.set_is_link(im.get_is_link().ps);//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+				figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
 				cout << "Images are equal!!\n\t" << (figure.get_is_link().ps->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
 				break;//Как только совпадение найдено, завершаем проверку.
 			}
@@ -198,7 +198,7 @@ int main()
 				if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 				{
 					match = true;
-					figure.set_is_link(im.get_is_link().ps);//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+					figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
 					cout << "Images are equal!!\n\t" << (figure.get_is_link().ps->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
 					break;
 				}

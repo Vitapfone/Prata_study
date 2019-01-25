@@ -41,7 +41,9 @@ public:
 	Link_ptr get_non_link()const { return non_link; }//Выдать опровергающую связь.
 	
 	void set_is_link(Id_string* is) { is_link.ps = is; /*is_link.id = is->get_id();*/ }//Установить связь с некоей строкой с идентификатором.
+	void set_is_link(Link_ptr const & other) { is_link = other; }
 	void set_non_link(Id_string* is) { non_link.ps = is; /*non_link.id = is->get_id();*/ }
+	void set_non_link(Link_ptr const & other) { non_link = other; }
 
 	//Выводит в консоль образ в удобном для восприятия виде.
 	void visualize();
