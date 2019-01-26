@@ -42,9 +42,9 @@ Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
 //Выводит в консоль образ в удобном для восприятия виде.
 void Image::visualize()
 {
-	for (int i = 0; i < data.size(); ++i)
+	for (size_t i = 0; i < data.size(); ++i)
 	{
-		for (int j = 0; j < data[0].size(); ++j)
+		for (size_t j = 0; j < data[0].size(); ++j)
 		{
 			cout << ((data[i][j] == 1)?'0':' ');
 		}
@@ -55,21 +55,30 @@ void Image::visualize()
 //Прочитать из бинарного файла.
 bool Image::bin_read(ifstream & fin)
 {
-	if (!data.empty())//Если вн. вектор не пуст, то очистим его. На всякий случай.
-	{
-		data.clear();
-	}
+	using std::swap;//Используется прием "copy and swap" для безопасности при исключении.
+
+	Image temp;//Создается временный объект, с которым и происходят все изменения.
 
 	//Прочитать ширину и высоту образа.
 	
-	if (!fin.read((char*)&width, sizeof width))
+	if (!fin.read((char*)&temp.width, sizeof width))
 	{
 		return false;
 	}
-	fin.read((char*)&height, sizeof height);
-	aspect_rate = static_cast<double>(width) / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
+	fin.read((char*)&temp.height, sizeof height);
+	temp.aspect_rate = static_cast<double>(temp.width) / temp.height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
-	init(fin);//Читаем все остальное.
+	try
+	{
+		temp.init(fin);//Читаем все остальное.
+	}
+	catch (std::bad_alloc & ex)
+	{
+		cout << ex.what() << endl;
+		return false;
+	}
+
+	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
 
 	if (fin)
 		return true;
@@ -112,9 +121,9 @@ bool Image::bin_write(ofstream & fout) const
 //Оператор выведет эл-ты внутреннего вектора. Вообще используется для записи в текстовый файл.
 ostream & operator<<(ostream & os, const Image & im)
 {
-	for (int i = 0; i < im.get_data().size(); ++i)
+	for (size_t i = 0; i < im.get_data().size(); ++i)
 	{
-		for (int j = 0; j < im.get_data()[0].size(); ++j)
+		for (size_t j = 0; j < im.get_data()[0].size(); ++j)
 		{
 			os << im.get_data()[i][j];
 		}
@@ -151,11 +160,11 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 		//cout << "Lower image:" << endl;
 		//low.visualize();
 
-		size_t count = 0;//Счетчик совпадений.
+		unsigned count = 0;//Счетчик совпадений.
 		//Тут происходит очень сложная операция сравнения двух образов разных размеров с использованием относительного положения элементов (пикселей).
-		for (int i = 0; i < higher.get_height(); ++i)
+		for (size_t i = 0; i < higher.get_height(); ++i)
 		{
-			for (int j = 0; j < wider.get_widht(); ++j)
+			for (size_t j = 0; j < wider.get_widht(); ++j)
 			{
 				if (im1.get_data()[round(i*im1.get_height() / higher.get_height())][round(j*im1.get_widht() / wider.get_widht())] ==
 																			im2.get_data()[round(i*im2.get_height() / higher.get_height())][round(j*im2.get_widht() / wider.get_widht())])

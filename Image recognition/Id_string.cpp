@@ -52,6 +52,10 @@ bool Id_string::bin_write(ofstream & fout) const
 //Прочитать из бинарного файла.
 bool Id_string::bin_read(ifstream & fin)
 {
+	using std::swap;//Используется прием "copy and swap" для безопасности при исключении.
+
+	Id_string temp;//Создается временный объект, с которым и происходят все изменения.
+
 	//Читаем длину строки.
 	size_t len;
 	if (!fin.read((char*)&len, sizeof len))//Если чтение неудачное (конец файла),
@@ -59,7 +63,19 @@ bool Id_string::bin_read(ifstream & fin)
 		return false;//то возвращаем false.
 	}
 
-	init(fin, len);//Заполнить все остальное.
+	try
+	{
+		temp.init(fin, len);//Заполнить все остальное.
+	}
+	catch (std::bad_alloc & ex)//Если будет исключение, то чтение файла откатится назад к началу записи об этой строке.
+	{
+		cout << ex.what() << endl;
+		int l = sizeof len;
+		fin.seekg(-l, ifstream::cur);
+		return false;
+	}
+
+	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
 
 	if (fin)//Если все прочитано успешно, то возвращаем true.
 	{
