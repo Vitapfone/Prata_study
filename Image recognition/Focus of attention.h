@@ -45,7 +45,7 @@ public:
 	int get_mode() const { return mode; }
 
 	//Выдать границы области внимания.
-	const Borders & get_borders()const { return borders; }
+	const Borders get_borders()const { return borders; }
 
 //СЕТТЕРЫ
 
@@ -55,6 +55,8 @@ public:
 	//Установить объект.
 	template<size_t W, size_t H> 
 	void assign_object(const array<array<char, W>, H> &ws) { object = ws[loc.y][loc.x]; }
+
+
 
 	//Обозначить  положение.
 	template<size_t W, size_t H> 

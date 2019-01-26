@@ -19,7 +19,7 @@ public:
 	void what() const;
 
 	//Возвратить местоположение обнаруженного.
-	const Location & where() const { return loc; }
+	const Location where() const { return loc; }
 
 	//Возвратить важность.
 	int get_importance()const { return importance; }

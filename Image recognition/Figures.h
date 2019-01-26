@@ -23,7 +23,7 @@ public:
 
 //ГЕТТЕРЫ
 
-	const Location & where() const { return loc; }
+	const Location where() const { return loc; }
 
 
 //МЕТОДЫ ДВИЖЕНИЯ

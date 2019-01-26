@@ -42,8 +42,8 @@ public:
 	size_t get_height() const { return height; }//Выдать высоту.
 	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
 
-	const Link_ptr & get_is_link()const { return is_link; }//Выдать подтверждающую связь.
-	const Link_ptr & get_non_link()const { return non_link; }//Выдать опровергающую связь.
+	const Link_ptr get_is_link() const { return is_link; }//Выдать подтверждающую связь.
+	const Link_ptr get_non_link() const { return non_link; }//Выдать опровергающую связь.
 	
 	const vector<vector<bool>> & get_data() const { return data; }//Выдать вектор образа.
 

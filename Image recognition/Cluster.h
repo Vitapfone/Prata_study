@@ -38,7 +38,7 @@ public:
 	int size() const { return s * s; }
 
 	//Возвращает положение
-	const Location & where() const { return loc; }
+	const Location where() const { return loc; }
 
 	//Возвращает счетчик точек
 	int get_count() const { return count; }
