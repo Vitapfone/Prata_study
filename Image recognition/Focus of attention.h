@@ -18,7 +18,8 @@ class Focus_of_attention
 
 public:
 //КОНСТРУКТОР
-	template<size_t W, size_t H> Focus_of_attention(int x, int y, const array<array<char, W>, H> & ws) : loc{ x, y }, background(ws[y][x]), borders{ 0, W - 1, 0, H - 1 } {}
+	template<size_t W, size_t H> 
+	Focus_of_attention(int x, int y, const array<array<char, W>, H> & ws) : loc{ x, y }, background(ws[y][x]), borders{ 0, W - 1, 0, H - 1 } {}
 
 //ЗАПРЕЩЕНО
 	//Запрещено копирование
@@ -54,8 +55,6 @@ public:
 	//Установить объект.
 	template<size_t W, size_t H> 
 	void assign_object(const array<array<char, W>, H> &ws) { object = ws[loc.y][loc.x]; }
-
-
 
 	//Обозначить  положение.
 	template<size_t W, size_t H> 

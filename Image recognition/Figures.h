@@ -1,5 +1,5 @@
 #pragma once
-#include "My_names.h"
+//#include "My_names.h"
 using namespace My_names;
 
 using Ar60_30 = array<array<char, 60>, 30>;
@@ -41,7 +41,7 @@ public:
 
 class Circle : public Figure//Наследуется от Figure.
 {
-	size_t radius = 0;//Радиус круга.
+	int radius = 0;//Радиус круга.
 
 public:
 
@@ -53,11 +53,13 @@ public:
 
 	void print(Ar60_30 &ws);//Унаследованная функция отрисовки.
 
-	template<size_t W, size_t H> void print(array<array<char, W>, H> &ws);//Функция отрисовки круга для любого рабочего пространства.
+	template<size_t W, size_t H> 
+	void print(array<array<char, W>, H> &ws);//Функция отрисовки круга для любого рабочего пространства.
 };
 
 //Функция отрисовки круга для любого рабочего пространства.
-template<size_t W, size_t H> void Circle::print(array<array<char, W>, H> & ws)
+template<size_t W, size_t H> 
+void Circle::print(array<array<char, W>, H> & ws)
 {
 	for (int y = where().y - radius; y <= where().y + radius; ++y)
 	{
@@ -83,7 +85,7 @@ namespace My//Необходимость в новом пространстве 
 	//Класс прямоугольника.
 	class Rectangle : public Figure
 	{
-		size_t a = 0;//Длина меньшей стороны.
+		int a = 0;//Длина меньшей стороны.
 
 	public:
 
@@ -94,7 +96,8 @@ namespace My//Необходимость в новом пространстве 
 
 		void print(Ar60_30 &ws);//Функция отрисовки прямоугольника, унаследованная от предка.
 
-		template<size_t W, size_t H> void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
+		template<size_t W, size_t H> 
+		void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 
 	};
 }
@@ -116,12 +119,13 @@ void My::Rectangle::print(array<array<char, W>, H>& ws)
 }
 
 
+
 // RHOMB ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Класс ромба.
 class Rhomb : public Figure
 {
-	size_t diagonal = 0;
+	int diagonal = 0;
 
 public:
 
@@ -133,15 +137,17 @@ public:
 
 	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
 
-	template<size_t W, size_t H> void print(array<array<char, W>, H> & ws);//Шаблон функции для отрисовки в рабочем пространстве любого размера.
+	template<size_t W, size_t H> 
+	void print(array<array<char, W>, H> & ws);//Шаблон функции для отрисовки в рабочем пространстве любого размера.
 
 };
 
-template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
+template<size_t W, size_t H> 
+void Rhomb::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = (where().y - diagonal / 2); y <= where().y; ++y)
+	for (int y = (where().y - diagonal / 2); y <= where().y; ++y)
 	{
-		for (size_t x = (where().x - diagonal / 2); x <= (where().x + diagonal / 2); ++x)
+		for (int x = (where().x - diagonal / 2); x <= (where().x + diagonal / 2); ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
@@ -153,9 +159,9 @@ template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 		}
 	}
 
-	for (size_t y = where().y; y <= where().y + diagonal / 2; ++y)
+	for (int y = where().y; y <= where().y + diagonal / 2; ++y)
 	{
-		for (size_t x = where().x - diagonal / 2; x <= where().x + diagonal / 2; ++x)
+		for (int x = where().x - diagonal / 2; x <= where().x + diagonal / 2; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
@@ -175,22 +181,24 @@ template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 //Класс квадрата.
 class Square : public Figure
 {
-	size_t a = 0;//Длина стороны.
+	int a = 0;//Длина стороны.
 
 public:
 
 	//КОНСТРУКТОР
-	Square(int x = 0, int y = 0, size_t a1 = 0) : Figure(x, y), a(a1) {}
-	Square(const Location & lc, size_t a1 = 0) : Figure(lc), a(a1) {}
+	Square(int x = 0, int y = 0, int a1 = 0) : Figure(x, y), a(a1) {}
+	Square(const Location & lc, int a1 = 0) : Figure(lc), a(a1) {}
 
 	void print(Ar60_30 &ws);//Функция отрисовки квадрата.
 
-	template<size_t W, size_t H> void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
+	template<size_t W, size_t H> 
+	void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 
 };
 
 //Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
-template<size_t W, size_t H> void Square::print(array<array<char, W>, H> & ws)
+template<size_t W, size_t H> 
+void Square::print(array<array<char, W>, H> & ws)
 {
 
 	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
@@ -212,7 +220,7 @@ template<size_t W, size_t H> void Square::print(array<array<char, W>, H> & ws)
 
 class Triangle : public Figure //Класс, представляющий равнобедренный прямоугольный треугольник.
 {
-	size_t cathetus = 0;// Длина катета.
+	int cathetus = 0;// Длина катета.
 	Location point_A{ 0, 0 };//Координаты вершины с прямым углом.
 	//int point_A_x = 0, point_A.y = 0;
 	Location point_B{ 0, 0 };//Координаты второй вершины с острым углом. Координаты первой наследуются от Figure. 
@@ -222,25 +230,26 @@ public:
 
 	//КОНСТРУКТОРЫ
 	Triangle() = default;
-	Triangle(int x, int y, size_t cat) : Figure(x, y), cathetus(cat), point_A{ x, y + int(cathetus) }, point_B{ x + int(cathetus), y + int(cathetus) }
+	Triangle(int x, int y, int cat) : Figure(x, y), cathetus(cat), point_A{ x, y + cathetus }, point_B{ x + cathetus, y + cathetus }
 	{
 		//cout << point_A_x << " " << point_A.y << " " << point_B.x << " " << point_B_y << endl;
 	}
-	Triangle(const Location & lc, size_t cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + int(cathetus) }, point_B{ lc.x + int(cathetus), lc.y + int(cathetus) }{}
+	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
 	~Triangle() {}
 
 	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
 
-	template<size_t W, size_t H> void print(array<array<char, W>, H> & ws);//Отрисовка треугольника для рабочего пространства любого размера.
+	template<size_t W, size_t H> 
+	void print(array<array<char, W>, H> & ws);//Отрисовка треугольника для рабочего пространства любого размера.
 
 };
 
 //Отрисовка треугольника для рабочего пространства любого размера.
 template<size_t W, size_t H> void Triangle::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = where().y; y <= point_A.y; ++y)
+	for (int y = where().y; y <= point_A.y; ++y)
 	{
-		for (size_t x = where().x; x <= point_B.x; ++x)
+		for (int x = where().x; x <= point_B.x; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{

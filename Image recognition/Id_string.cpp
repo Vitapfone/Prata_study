@@ -23,12 +23,10 @@ void Id_string::init(ifstream & fin, size_t len)
 //Конструктор из бинарного файла.
 Id_string::Id_string(ifstream & fin)
 {
-	
 	size_t len;
 	fin.read((char*)&len, sizeof len);
 
 	init(fin, len);//Заполнить все остальное.
-
 }
 
 //Записать в бинарный файл.
@@ -81,7 +79,7 @@ ostream & operator<<(ostream & os, const Id_string & ids)
 }
 
 //Оператор для чтения из текстового файла.
-istream & operator>>(istream &is, Id_string & ids)
+istream & operator>>(istream & is, Id_string & ids)
 {
 	std::getline(is, ids.get_data());
 	is>>ids.get_id();

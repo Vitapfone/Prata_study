@@ -33,7 +33,7 @@ Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
 	//Прочитать ширину и высоту образа.
 	ifs.read((char*)&width, sizeof width);
 	ifs.read((char*)&height, sizeof height);
-	aspect_rate = (double) width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
+	aspect_rate = static_cast<double> (width) / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
 	init(ifs);//Читаем все остальное.
 }
@@ -67,7 +67,7 @@ bool Image::bin_read(ifstream & fin)
 		return false;
 	}
 	fin.read((char*)&height, sizeof height);
-	aspect_rate = (double)width / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
+	aspect_rate = static_cast<double>(width) / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
 	init(fin);//Читаем все остальное.
 

@@ -17,6 +17,7 @@ public:
 	Inspector(int x, int y, char b, char o) : loc{ x, y }, bg(b), obj(o) {}
 
 //ЗАПРЕЩЕНО
+
 	//Запрещено копирование.
 	Inspector(const Inspector &) = delete;
 	//Запрещено присвоение.

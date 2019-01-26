@@ -84,13 +84,16 @@ int main()
 
 		Focus_of_attention foc(10, 10, ar1);//Задаем начальное положение фокуса внимания.
 
-		//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Файл Cluster.h
-		Warning w1 = most_filled_cluster(ar1, foc.get_background());
-
 		//Вектор для хранения предупреждений от функций управления вниманием внешнего потока.
 		vector<Warning> warnings;
+
+		//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Файл Cluster.h
+		Warning w1 = most_filled_cluster(ar1, foc.get_background());
+		
+		//Заносим предупреждение в вектор.
 		warnings.push_back(w1);
-		//Сортируем так, чтобы первым эл-том был тот, у кого наибольшая важность.
+
+		//После занесения всех предупреждений сортируем так, чтобы первым эл-том был тот, у кого наибольшая важность.
 		sort(warnings.begin(), warnings.end(), [](const Warning & w1, const Warning & w2) {return w1.get_importance() > w2.get_importance(); });
 		Warning most_important = warnings[0];
 
@@ -173,15 +176,13 @@ int main()
 		{
 			//Временные строки.
 			string figure_name;
-			string new_figure_link;
-			string new_figure_non_link;
-
+		
 			cout << "Adding new figure  to a database. It's name is:";//Надо ввести имя для новой фигуры.
 			cin >> figure_name;
 
-			new_figure_link = "This is " + figure_name + ".";//Конструируются строки сообщений, которые здесь имитируют связи новой фигуры.
+			string new_figure_link{ "This is " + figure_name + "." };//Конструируются строки сообщений, которые здесь имитируют связи новой фигуры.
 			Id_string id_new_figure_link(new_figure_link);
-			new_figure_non_link = "Not equal to " + figure_name + ".";
+			string new_figure_non_link = "Not equal to " + figure_name + ".";
 			Id_string id_new_figure_non_link(new_figure_non_link);
 
 			string_map[id_new_figure_link.get_id()] = id_new_figure_link;//Вставляем новые строки в карту.
@@ -232,6 +233,8 @@ int main()
 			e.bin_write(ofsImages);
 		}
 		ofsImages.close();
+
+	
 
 	return 0;
 }

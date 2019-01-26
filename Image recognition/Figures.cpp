@@ -1,19 +1,23 @@
 ﻿#include "pch.h"
+#include "My_names.h"
 #include "Simple structures.h"
 #include "Figures.h"
+
+
+using namespace My_names;
 
 // CIRCLE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Унаследованная функция отрисовки.
 void Circle::print(Ar60_30 & ws)
 {
-	for (int y = get_loc().y - radius; y <= get_loc().y + radius; ++y)
+	for (int y = where().y - radius; y <= where().y + radius; ++y)
 	{
-		for (int x = get_loc().x - radius; x <= get_loc().x + radius; ++x)
+		for (int x = where().x - radius; x <= where().x + radius; ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)
 			{
-				if ((x - get_loc().x)*(x - get_loc().x) + (y - get_loc().y)*(y - get_loc().y) <= radius * radius)
+				if ((x - where().x)*(x - where().x) + (y - where().y)*(y - where().y) <= radius * radius)
 				{
 					ws[y][x] = '0';
 				}
@@ -28,9 +32,9 @@ void Circle::print(Ar60_30 & ws)
 //Функция отрисовки прямоугольника, унаследованная от предка.
 void My::Rectangle::print(Ar60_30 & ws)
 {
-	for (int y = get_loc().y; y != (get_loc().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = get_loc().x; x != (get_loc().x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
+		for (int x = where().x; x != (where().x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -45,13 +49,13 @@ void My::Rectangle::print(Ar60_30 & ws)
 
 void Rhomb::print(Ar60_30 & ws)//Определение унаследованной виртуальной функции.
 {
-	for (size_t y = (get_loc().y - diagonal / 2); y <= get_loc().y; ++y)
+	for (int y = (where().y - diagonal / 2); y <= where().y; ++y)
 	{
-		for (size_t x = (get_loc().x - diagonal / 2); x <= (get_loc().x + diagonal / 2); ++x)
+		for (int x = (where().x - diagonal / 2); x <= (where().x + diagonal / 2); ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= get_loc().x - (y - (get_loc().y - diagonal / 2)) && x <= get_loc().x + (y - (get_loc().y - diagonal / 2)))
+				if (x >= where().x - (y - (where().y - diagonal / 2)) && x <= where().x + (y - (where().y - diagonal / 2)))
 				{
 					ws[y][x] = '0';
 				}
@@ -59,13 +63,13 @@ void Rhomb::print(Ar60_30 & ws)//Определение унаследованн
 		}
 	}
 
-	for (size_t y = get_loc().y; y <= get_loc().y + diagonal / 2; ++y)
+	for (int y = where().y; y <= where().y + diagonal / 2; ++y)
 	{
-		for (size_t x = get_loc().x - diagonal / 2; x <= get_loc().x + diagonal / 2; ++x)
+		for (int x = where().x - diagonal / 2; x <= where().x + diagonal / 2; ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= get_loc().x - (get_loc().y + diagonal / 2 - y) && x <= get_loc().x + (get_loc().y + +diagonal / 2 - y))
+				if (x >= where().x - (where().y + diagonal / 2 - y) && x <= where().x + (where().y + +diagonal / 2 - y))
 				{
 					ws[y][x] = '0';
 				}
@@ -81,9 +85,9 @@ void Rhomb::print(Ar60_30 & ws)//Определение унаследованн
 void Square::print(Ar60_30 & ws)
 {
 
-	for (int y = get_loc().y; y != (get_loc().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = get_loc().x; x != (get_loc().x + a); ++x)//Внутренний цикл печатает символы ряда
+		for (int x = where().x; x != (where().x + a); ++x)//Внутренний цикл печатает символы ряда
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -98,13 +102,13 @@ void Square::print(Ar60_30 & ws)
 
 void Triangle::print(Ar60_30 & ws)//Унаследованная функция отрисовки треугольника.
 {
-	for (size_t y = get_loc().y; y <= point_A.y; ++y)
+	for (int y = where().y; y <= point_A.y; ++y)
 	{
-		for (size_t x = get_loc().x; x <= point_B.x; ++x)
+		for (int x = where().x; x <= point_B.x; ++x)
 		{
 			if (x >= 0 && x < 60 && y >= 0 && y < 30)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x - get_loc().x < y - get_loc().y)
+				if (x - where().x < y - where().y)
 				{
 					ws[y][x] = '0';
 				}
