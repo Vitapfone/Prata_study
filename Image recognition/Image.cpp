@@ -112,16 +112,16 @@ bool Image::bin_write(ofstream & fout) const
 //Оператор выведет эл-ты внутреннего вектора. Вообще используется для записи в текстовый файл.
 ostream & operator<<(ostream & os, const Image & im)
 {
-	for (int i = 0; i < im.data.size(); ++i)
+	for (int i = 0; i < im.get_data().size(); ++i)
 	{
-		for (int j = 0; j < im.data[0].size(); ++j)
+		for (int j = 0; j < im.get_data()[0].size(); ++j)
 		{
-			os << im.data[i][j];
+			os << im.get_data()[i][j];
 		}
 		os << endl;
 	}
 	os << '\n';
-	os << im.is_link.id << ' ' << im.non_link.id << endl;
+	os << im.get_is_link().id << ' ' << im.get_non_link().id << endl;
 
 	return os;
 }
@@ -157,8 +157,8 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 		{
 			for (int j = 0; j < wider.get_widht(); ++j)
 			{
-				if (im1.data[round(i*im1.get_height() / higher.get_height())][round(j*im1.get_widht() / wider.get_widht())] ==
-																			im2.data[round(i*im2.get_height() / higher.get_height())][round(j*im2.get_widht() / wider.get_widht())])
+				if (im1.get_data()[round(i*im1.get_height() / higher.get_height())][round(j*im1.get_widht() / wider.get_widht())] ==
+																			im2.get_data()[round(i*im2.get_height() / higher.get_height())][round(j*im2.get_widht() / wider.get_widht())])
 				{
 					++count;
 				}

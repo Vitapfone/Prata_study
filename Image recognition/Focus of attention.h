@@ -205,7 +205,7 @@ const Location Focus_of_attention::clusterize(const array<array<char, W>, H> & w
 		e.counter(ws, background);
 	}
 	//Ищем наиболее заполненный.
-	sort(vcl.begin(), vcl.end(), [](Cluster & c1, Cluster & c2) {return c1.Count() > c2.Count(); });
+	sort(vcl.begin(), vcl.end(), [](Cluster & c1, Cluster & c2) {return c1.get_count() > c2.get_count(); });
 
 	//Возвращаем его.
 	return vcl[0].where();

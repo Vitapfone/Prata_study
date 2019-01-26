@@ -22,8 +22,17 @@ public:
 
 //МЕТОДЫ
 
+//ГЕТТЕРЫ
+
 	const string & get_data() const { return data; }//Выдать копию хранимой строки.
+	string & get_data() { return data; }
+
 	int get_id() const { return id; }//Выдать идентификатор.
+	int & get_id() { return id; }
+
+	int get_counter() const { return counter; }//Выдать счетчик
+	int & get_counter() { return counter; }
+
 
 	//Записать в бинарный файл.
 	bool bin_write(ofstream & fout)const;
@@ -36,13 +45,6 @@ public:
 	//Прочитать из бинарного файла.
 	bool bin_read(ifstream & fin);
 
-//ФУНКЦИИ-ДРУЗЬЯ.
-
-	//Оператор вывода для записи в текстовый файл.
-	friend ostream & operator<< (ostream &, const Id_string &);
-
-	friend istream & operator>>(istream&, Id_string &);
-
 private:
 	
 	string data;
@@ -51,3 +53,7 @@ private:
 
 };
 
+//Оператор вывода для записи в текстовый файл.
+ostream & operator<< (ostream &, const Id_string &);
+
+istream & operator>>(istream&, Id_string &);

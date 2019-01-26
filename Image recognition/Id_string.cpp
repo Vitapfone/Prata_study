@@ -76,17 +76,17 @@ bool Id_string::bin_read(ifstream & fin)
 //Оператор вывода для записи в текстовый файл.
 ostream & operator<<(ostream & os, const Id_string & ids)
 {
-	os << ids.data << "\n" << ids.id << endl;
+	os << ids.get_data() << "\n" << ids.get_id() << endl;
 	return os;
 }
 
 //Оператор для чтения из текстового файла.
 istream & operator>>(istream &is, Id_string & ids)
 {
-	std::getline(is, ids.data);
-	is>>ids.id;
+	std::getline(is, ids.get_data());
+	is>>ids.get_id();
 	is.ignore(1, '\n');
-	if (Id_string::counter < ids.id)
-		Id_string::counter = ids.id;
+	if (ids.get_counter() < ids.get_id())
+		ids.get_counter() = ids.get_id();
 	return is;
 }

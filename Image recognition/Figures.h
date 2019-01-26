@@ -23,7 +23,7 @@ public:
 
 //ГЕТТЕРЫ
 
-	const Location & get_loc() const { return loc; }
+	const Location & where() const { return loc; }
 
 
 //МЕТОДЫ ДВИЖЕНИЯ
@@ -59,13 +59,13 @@ public:
 //Функция отрисовки круга для любого рабочего пространства.
 template<size_t W, size_t H> void Circle::print(array<array<char, W>, H> & ws)
 {
-	for (int y = get_loc().y - radius; y <= get_loc().y + radius; ++y)
+	for (int y = where().y - radius; y <= where().y + radius; ++y)
 	{
-		for (int x = get_loc().x - radius; x <= get_loc().x + radius; ++x)
+		for (int x = where().x - radius; x <= where().x + radius; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)
 			{
-				if ((x - get_loc().x)*(x - get_loc().x) + (y - get_loc().y)*(y - get_loc().y) <= radius * radius)
+				if ((x - where().x)*(x - where().x) + (y - where().y)*(y - where().y) <= radius * radius)
 				{
 					ws[y][x] = '0';
 				}
@@ -103,9 +103,9 @@ namespace My//Необходимость в новом пространстве 
 template<size_t W, size_t H>
 void My::Rectangle::print(array<array<char, W>, H>& ws)
 {
-	for (int y = get_loc().y; y != (get_loc().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = get_loc().x; x != (get_loc().x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
+		for (int x = where().x; x != (where().x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -139,13 +139,13 @@ public:
 
 template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = (get_loc().y - diagonal / 2); y <= get_loc().y; ++y)
+	for (size_t y = (where().y - diagonal / 2); y <= where().y; ++y)
 	{
-		for (size_t x = (get_loc().x - diagonal / 2); x <= (get_loc().x + diagonal / 2); ++x)
+		for (size_t x = (where().x - diagonal / 2); x <= (where().x + diagonal / 2); ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= get_loc().x - (y - (get_loc().y - diagonal / 2)) && x <= get_loc().x + (y - (get_loc().y - diagonal / 2)))
+				if (x >= where().x - (y - (where().y - diagonal / 2)) && x <= where().x + (y - (where().y - diagonal / 2)))
 				{
 					ws[y][x] = '0';
 				}
@@ -153,13 +153,13 @@ template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 		}
 	}
 
-	for (size_t y = get_loc().y; y <= get_loc().y + diagonal / 2; ++y)
+	for (size_t y = where().y; y <= where().y + diagonal / 2; ++y)
 	{
-		for (size_t x = get_loc().x - diagonal / 2; x <= get_loc().x + diagonal / 2; ++x)
+		for (size_t x = where().x - diagonal / 2; x <= where().x + diagonal / 2; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= get_loc().x - (get_loc().y + diagonal / 2 - y) && x <= get_loc().x + (get_loc().y + +diagonal / 2 - y))
+				if (x >= where().x - (where().y + diagonal / 2 - y) && x <= where().x + (where().y + +diagonal / 2 - y))
 				{
 					ws[y][x] = '0';
 				}
@@ -193,9 +193,9 @@ public:
 template<size_t W, size_t H> void Square::print(array<array<char, W>, H> & ws)
 {
 
-	for (int y = get_loc().y; y != (get_loc().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = get_loc().x; x != (get_loc().x + a); ++x)//Внутренний цикл печатает символы ряда
+		for (int x = where().x; x != (where().x + a); ++x)//Внутренний цикл печатает символы ряда
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -238,13 +238,13 @@ public:
 //Отрисовка треугольника для рабочего пространства любого размера.
 template<size_t W, size_t H> void Triangle::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = get_loc().y; y <= point_A.y; ++y)
+	for (size_t y = where().y; y <= point_A.y; ++y)
 	{
-		for (size_t x = get_loc().x; x <= point_B.x; ++x)
+		for (size_t x = where().x; x <= point_B.x; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x - get_loc().x < y - get_loc().y)
+				if (x - where().x < y - where().y)
 				{
 					ws[y][x] = '0';
 				}

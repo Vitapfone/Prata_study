@@ -8,7 +8,7 @@ class Cluster
 {
 	
 	Location loc{ 0, 0 };//Координаты левого верхнего края кластера.
-	int s = 5; //Длина стороны квадратного кластера.
+	size_t s = 5; //Длина стороны квадратного кластера.
 	int count = 0; //Количество точек, признанных отличными от фона.
 
 public:
@@ -16,8 +16,8 @@ public:
 //КОНСТРУКТОРЫ
 
 	//Задает члены. Count задается неявно по умолчанию нулем.
-	Cluster(int x = 0, int y = 0, int s1 = 5) : loc{ x, y }, s(s1) {}
-	Cluster(Location lc, int s1 = 5) : loc(lc), s(s1) {}
+	Cluster(int x = 0, int y = 0, size_t s1 = 5) : loc{ x, y }, s(s1) {}
+	Cluster(Location lc, size_t s1 = 5) : loc(lc), s(s1) {}
 
 //ЗАПРЕЩЕНО
 
@@ -31,6 +31,9 @@ public:
 
 //ГЕТТЕРЫ
 
+	//Возвратить длину стороны.
+	size_t get_s()const { return s; }
+
 	//Возвращает размер кластера.
 	int size() const { return s * s; }
 
@@ -38,7 +41,7 @@ public:
 	const Location & where() const { return loc; }
 
 	//Возвращает счетчик точек
-	int Count() const { return count; }
+	int get_count() const { return count; }
 
 
 //СЕТТЕРЫ
@@ -53,14 +56,6 @@ public:
 
 	//Функция выводит значения членов.
 	void print() const { cout << loc.x << ", " << loc.y << ", " << count << endl; }
-
-	
-
-//ДРУЗЬЯ
-
-	//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
-	template<size_t W, size_t H>
-	friend const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char background);
 
 };
 
@@ -107,11 +102,11 @@ const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char back
 	cout << "After cluster counting" << endl;
 
 	//Найти наиболее заполненный кластер.
-	sort(vc.begin(), vc.end(), [](Cluster & c1, Cluster & c2) {return c1.count > c2.count; });
+	sort(vc.begin(), vc.end(), [](Cluster & c1, Cluster & c2) {return c1.get_count() > c2.get_count(); });
 
 	//Вычисляем координаты середины кластера.
-	int x = vc[0].loc.x + vc[0].s / 2;
-	int y = vc[0].loc.y + vc[0].s / 2;
+	int x = vc[0].where().x + vc[0].get_s() / 2;
+	int y = vc[0].where().y + vc[0].get_s() / 2;
 
 	return Warning("Unidentified contrast object!", { x, y }, 10);
 }
