@@ -60,7 +60,7 @@ public:
 
 	//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
 	template<size_t W, size_t H>
-	friend const Warning & most_filled_cluster(const array<array<char, W>, H> & ws, char background);
+	friend const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char background);
 
 };
 
@@ -87,7 +87,7 @@ void Cluster::counter(const array<array<char, W>, H> & ws, char background)
 
 //Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
 template<size_t W, size_t H>
-const Warning & most_filled_cluster(const array<array<char, W>, H> &ws, char background)
+const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char background)
 {
 	//Создаем кластеры для поиска
 	vector<Cluster> vc;

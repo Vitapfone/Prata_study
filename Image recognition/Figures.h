@@ -8,13 +8,11 @@ using Ar60_30 = array<array<char, 60>, 30>;
 // Класс для абстрактной фигуры, на основе которой сделаны конкретные.
 class Figure
 {
-protected:
-
 	Location loc{ 0, 0 };
 
 public:
 
-	//Конструкторы.
+//Конструкторы.
 	Figure() = default;
 	Figure(int x, int y) : loc{ x, y } {}
 	explicit Figure(const Location & lc) : loc(lc) {}
@@ -23,7 +21,12 @@ public:
 
 	virtual void print(Ar60_30 &ws) = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
 
-	//МЕТОДЫ ДВИЖЕНИЯ
+//ГЕТТЕРЫ
+
+	const Location & get_loc() const { return loc; }
+
+
+//МЕТОДЫ ДВИЖЕНИЯ
 
 	void moveRight() { ++loc.x; }//Передвинуть правее.
 	void moveLeft() { --loc.x; }//Передвинуть левее.
@@ -56,13 +59,13 @@ public:
 //Функция отрисовки круга для любого рабочего пространства.
 template<size_t W, size_t H> void Circle::print(array<array<char, W>, H> & ws)
 {
-	for (int y = loc.y - radius; y <= loc.y + radius; ++y)
+	for (int y = get_loc().y - radius; y <= get_loc().y + radius; ++y)
 	{
-		for (int x = loc.x - radius; x <= loc.x + radius; ++x)
+		for (int x = get_loc().x - radius; x <= get_loc().x + radius; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)
 			{
-				if ((x - loc.x)*(x - loc.x) + (y - loc.y)*(y - loc.y) <= radius * radius)
+				if ((x - get_loc().x)*(x - get_loc().x) + (y - get_loc().y)*(y - get_loc().y) <= radius * radius)
 				{
 					ws[y][x] = '0';
 				}
@@ -100,9 +103,9 @@ namespace My//Необходимость в новом пространстве 
 template<size_t W, size_t H>
 void My::Rectangle::print(array<array<char, W>, H>& ws)
 {
-	for (int y = loc.y; y != (loc.y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = get_loc().y; y != (get_loc().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = loc.x; x != (loc.x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
+		for (int x = get_loc().x; x != (get_loc().x + 1.6*a); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -136,13 +139,13 @@ public:
 
 template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = (loc.y - diagonal / 2); y <= loc.y; ++y)
+	for (size_t y = (get_loc().y - diagonal / 2); y <= get_loc().y; ++y)
 	{
-		for (size_t x = (loc.x - diagonal / 2); x <= (loc.x + diagonal / 2); ++x)
+		for (size_t x = (get_loc().x - diagonal / 2); x <= (get_loc().x + diagonal / 2); ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= loc.x - (y - (loc.y - diagonal / 2)) && x <= loc.x + (y - (loc.y - diagonal / 2)))
+				if (x >= get_loc().x - (y - (get_loc().y - diagonal / 2)) && x <= get_loc().x + (y - (get_loc().y - diagonal / 2)))
 				{
 					ws[y][x] = '0';
 				}
@@ -150,13 +153,13 @@ template<size_t W, size_t H> void Rhomb::print(array<array<char, W>, H> & ws)
 		}
 	}
 
-	for (size_t y = loc.y; y <= loc.y + diagonal / 2; ++y)
+	for (size_t y = get_loc().y; y <= get_loc().y + diagonal / 2; ++y)
 	{
-		for (size_t x = loc.x - diagonal / 2; x <= loc.x + diagonal / 2; ++x)
+		for (size_t x = get_loc().x - diagonal / 2; x <= get_loc().x + diagonal / 2; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= loc.x - (loc.y + diagonal / 2 - y) && x <= loc.x + (loc.y + +diagonal / 2 - y))
+				if (x >= get_loc().x - (get_loc().y + diagonal / 2 - y) && x <= get_loc().x + (get_loc().y + +diagonal / 2 - y))
 				{
 					ws[y][x] = '0';
 				}
@@ -190,9 +193,9 @@ public:
 template<size_t W, size_t H> void Square::print(array<array<char, W>, H> & ws)
 {
 
-	for (int y = loc.y; y != (loc.y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = get_loc().y; y != (get_loc().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = loc.x; x != (loc.x + a); ++x)//Внутренний цикл печатает символы ряда
+		for (int x = get_loc().x; x != (get_loc().x + a); ++x)//Внутренний цикл печатает символы ряда
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
 			{
@@ -235,13 +238,13 @@ public:
 //Отрисовка треугольника для рабочего пространства любого размера.
 template<size_t W, size_t H> void Triangle::print(array<array<char, W>, H> & ws)
 {
-	for (size_t y = loc.y; y <= point_A.y; ++y)
+	for (size_t y = get_loc().y; y <= point_A.y; ++y)
 	{
-		for (size_t x = loc.x; x <= point_B.x; ++x)
+		for (size_t x = get_loc().x; x <= point_B.x; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x - loc.x < y - loc.y)
+				if (x - get_loc().x < y - get_loc().y)
 				{
 					ws[y][x] = '0';
 				}

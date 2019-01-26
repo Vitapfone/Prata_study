@@ -70,7 +70,7 @@ public:
 
 	//Задает координаты 9-ти элементарных кластеров вокруг фокуса и возвращает местоположение наиболее заполненного.
 	template<size_t W, size_t H> 
-	const Location & clusterize(const array<array<char, W>, H> & ws);
+	const Location clusterize(const array<array<char, W>, H> & ws);
 
 	//Пытается передвинуть фокус внутрь объекта.
 	template<size_t W, size_t H> 
@@ -186,7 +186,7 @@ void Focus_of_attention::to_Weight_Center(const array<array<char, W>, H> & ws)
 
 //Задает координаты 9-ти элементарных кластеров вокруг фокуса.
 template<size_t W, size_t H> 
-const Location & Focus_of_attention::clusterize(const array<array<char, W>, H> & ws)
+const Location Focus_of_attention::clusterize(const array<array<char, W>, H> & ws)
 {
 	Cluster cl5(loc.x - 2, loc.y - 2);
 	Cluster cl4(loc.x - 7, loc.y - 2);
