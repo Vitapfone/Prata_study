@@ -1,5 +1,6 @@
 #include "pch.h"
-
+#include "My_names.h"
+#include "Simple structures.h"
 #include "Inspector.h"
 
 

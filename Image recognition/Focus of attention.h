@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Inspector.h"
+//#include "Inspector.h"
 
 using namespace My_names;
 

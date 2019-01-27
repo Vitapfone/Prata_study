@@ -1,11 +1,12 @@
 ﻿#pragma once
-#include "My_names.h"
+//#include "My_names.h"
 using namespace My_names;
 
 //Здесь шаблоны функций, которые должны отрисовать рабочее пространство любых размеров.
 //Делает границы рабочего пространства видимыми.
 
-template<size_t W, size_t H> void make_border(array<array<char, W>, H> & ar)
+template<size_t W, size_t H> 
+void make_border(array<array<char, W>, H> & ar)
 {
 	for (int i = 0; i < W; ++i)
 	{
@@ -20,7 +21,8 @@ template<size_t W, size_t H> void make_border(array<array<char, W>, H> & ar)
 }
 
 //Отрисовывает все рабочее пространство
-template<size_t W, size_t H> void print_workspase(array<array<char, W>, H> & ar)
+template<size_t W, size_t H> 
+void print_workspase(array<array<char, W>, H> & ar)
 {
 	make_border(ar);
 	for (auto &e : ar)// Выводим в консоль.

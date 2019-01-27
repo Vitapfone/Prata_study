@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Warning.h"
+//#include "Warning.h"
 
 
 using namespace My_names;
