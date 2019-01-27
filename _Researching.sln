@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Image recognition", "Image 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "List reverse", "List reverse\List reverse.vcxproj", "{57CA6A09-28D1-45A8-ADD5-28FB922844F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Streams of memory", "Streams of memory\Streams of memory.vcxproj", "{95D9547C-0387-4A1C-9A42-BEFD8308790E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{57CA6A09-28D1-45A8-ADD5-28FB922844F4}.Release|x64.Build.0 = Release|x64
 		{57CA6A09-28D1-45A8-ADD5-28FB922844F4}.Release|x86.ActiveCfg = Release|Win32
 		{57CA6A09-28D1-45A8-ADD5-28FB922844F4}.Release|x86.Build.0 = Release|Win32
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Debug|x64.ActiveCfg = Debug|x64
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Debug|x64.Build.0 = Debug|x64
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Debug|x86.ActiveCfg = Debug|Win32
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Debug|x86.Build.0 = Debug|Win32
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x64.ActiveCfg = Release|x64
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x64.Build.0 = Release|x64
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x86.ActiveCfg = Release|Win32
+		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -74,7 +74,7 @@ bool Image::bin_read(ifstream & fin)
 	}
 	catch (std::bad_alloc & ex)
 	{
-		cout << ex.what() << endl;
+		cerr << ex.what() << endl;
 		return false;
 	}
 

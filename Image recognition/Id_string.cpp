@@ -69,7 +69,7 @@ bool Id_string::bin_read(ifstream & fin)
 	}
 	catch (std::bad_alloc & ex)//Если будет исключение, то чтение файла откатится назад к началу записи об этой строке.
 	{
-		cout << ex.what() << endl;
+		cerr << ex.what() << endl;
 		int l = sizeof len;
 		fin.seekg(-l, ifstream::cur);
 		return false;

@@ -20,7 +20,7 @@ public:
 	//Виртуальный деструктор.
 	virtual ~Figure() {}
 
-	virtual void print(Ar60_30 &ws) = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
+	virtual void print(Ar60_30 & ws) = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
 
 //ГЕТТЕРЫ
 
@@ -52,7 +52,7 @@ public:
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
-	void print(Ar60_30 &ws);//Унаследованная функция отрисовки.
+	void print(Ar60_30 & ws);//Унаследованная функция отрисовки.
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> &ws);//Функция отрисовки круга для любого рабочего пространства.
@@ -105,7 +105,7 @@ namespace My//Необходимость в новом пространстве 
 
 //Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 template<size_t W, size_t H>
-void My::Rectangle::print(array<array<char, W>, H>& ws)
+void My::Rectangle::print(array<array<char, W>, H> & ws)
 {
 	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
@@ -136,7 +136,7 @@ public:
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
-	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 & ws); //Переопределение виртуальной функции из базового класса.
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> & ws);//Шаблон функции для отрисовки в рабочем пространстве любого размера.
@@ -246,7 +246,8 @@ public:
 };
 
 //Отрисовка треугольника для рабочего пространства любого размера.
-template<size_t W, size_t H> void Triangle::print(array<array<char, W>, H> & ws)
+template<size_t W, size_t H> 
+void Triangle::print(array<array<char, W>, H> & ws)
 {
 	for (int y = where().y; y <= point_A.y; ++y)
 	{
