@@ -3,10 +3,12 @@
 
 #include "pch.h"
 #include "My_names.h"
-#include "Function templates.h"
 #include "Outer_stream.h"
 
 using namespace My_names;
+
+constexpr size_t WIDTH = 120;//Константа, задающая ширину рабочего пространства.
+constexpr size_t HEIGHT = 60;//Константа, задающая высоту рабочего пространства.
 
 int main()
 {
