@@ -3,16 +3,36 @@
 
 #include "pch.h"
 #include "My_names.h"
+#include "Simple structures.h"
 #include "Outer_stream.h"
+#include "Figures.h"
 
 using namespace My_names;
 
 constexpr size_t WIDTH = 120;//Константа, задающая ширину рабочего пространства.
 constexpr size_t HEIGHT = 60;//Константа, задающая высоту рабочего пространства.
+constexpr size_t FRAMES = 120;//Количество переданных в поток кадров.
 
 int main()
 {
-   
+	system("pause");
+	cout << "Start...\n";
+
+	Square fig(10, 10, 10);//Фигура для демонстрации записи в поток.
+
+	Outer_stream<WIDTH, HEIGHT> test(100);//Поток заданной длины.
+
+	for (size_t i = 0; i < FRAMES; i++)//Цикл записи.
+	{
+		fig.print(test.Input_frame());//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
+		test.process();//Кадр ввода отправляется в поток.
+	}
+
+	test.play(10);//Вывод содержимого потока в консоль.
+
+	cout << "End...\n";
+
+	return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

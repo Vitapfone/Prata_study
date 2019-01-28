@@ -33,7 +33,7 @@ public:
 //ГЕТТЕРЫ
 
 	//Получить максимальный размер потока.
-	size_t get_max_size() const { return max_size; }
+	const size_t get_max_size() const { return max_size; }
 
 	//Получить для заполнения кадр ввода. Не просто геттер, а связь потока внешним миром.
 	Frame & Input_frame() { return input_frame; }
@@ -48,10 +48,18 @@ public:
 	//Отладочный вывод содержимого потока.
 	void play(unsigned dur) const;
 
+	//Внести новые данные в поток. Удалить старые.
+	void process();
+
+private:
+
+	//Подготовить кадр ввода.
+	void prepare_for_input();
 };
 
+//Подготовить кадр ввода.
 template<size_t W, size_t H>
-Outer_stream<W, H>::Outer_stream(size_t ms)
+inline void Outer_stream<W, H>::prepare_for_input()
 {
 	//Подготавливаем кадр ввода к приему данных, заполняя его пробелами.
 	for (auto &e : input_frame)
@@ -61,6 +69,15 @@ Outer_stream<W, H>::Outer_stream(size_t ms)
 			e2 = ' ';
 		}
 	}
+}
+
+//Конструктор.
+template<size_t W, size_t H>
+Outer_stream<W, H>::Outer_stream(size_t ms) : max_size(ms)
+{
+	//Подготавливаем кадр ввода.
+	prepare_for_input();
+
 	//Дека создается пустой.
 }
 
@@ -68,12 +85,17 @@ Outer_stream<W, H>::Outer_stream(size_t ms)
 template<size_t W, size_t H>
 void Outer_stream<W, H>::play(unsigned dur) const
 {
+	int i = 0;//Счетчик выведенных кадров.
+	
 	for (auto & e : data)//Перебираются все кадры.
 	{
+		//cout << "Frames...\n";
 		for (size_t i = 0; i < H; ++i)//В каждой строке
 		{
+			
 			for (size_t j = 0; j < W; ++j)//перебираются все символы.
 			{
+				
 				//Далее код для рисования границы кадров.
 				if (i == 0 || i == H - 1)
 				{
@@ -90,9 +112,28 @@ void Outer_stream<W, H>::play(unsigned dur) const
 			}
 			cout << endl;
 		}
-		cout << endl;
+		cout << ++i << endl;
 
-		_sleep(dur);//Задержка.
+		Sleep(dur);//Задержка. Windows.h
 		system("cls");//Очищаем экран консоли.
 	}
 }
+
+//Внести новые данные в поток. Удалить старые.
+template<size_t W, size_t H>
+inline void Outer_stream<W, H>::process()
+{
+	//cout << "Processing...\n";
+	data.push_back(input_frame);//Вставляем заполненный кадр ввода в деку.
+	//cout << data.size() << ' ';
+	if (data.size() > max_size)//Если размер деки превышает максимум, то убираем один кадр из начала, где находятся самые старые данные. 
+	{
+		//cout << max_size << endl;
+		//cout << "???\n";
+		data.pop_front();
+	}
+
+	prepare_for_input();//Подготовить кадр ввода для повторного заполнения.
+}
+
+

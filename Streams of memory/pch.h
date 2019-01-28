@@ -12,4 +12,6 @@
 #include <iostream>
 #include <array>
 #include <deque>
+#include <Windows.h>
+
 #endif //PCH_H

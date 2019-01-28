@@ -151,11 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Figures.h" />
     <ClInclude Include="My_names.h" />
     <ClInclude Include="Outer_stream.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Simple structures.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Figures.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
