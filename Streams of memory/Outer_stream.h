@@ -7,7 +7,8 @@ template<size_t W, size_t H>
 class Outer_stream
 {
 
-	using Frame = array<array<char, W>, H>;
+	//using Frame = array<array<char, W>, H>;
+	using Frame = vector<vector<char>>;
 
 	Frame input_frame;//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
 	deque<Frame> data;//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
@@ -73,7 +74,7 @@ inline void Outer_stream<W, H>::prepare_for_input()
 
 //Конструктор.
 template<size_t W, size_t H>
-Outer_stream<W, H>::Outer_stream(size_t ms) : max_size(ms)
+Outer_stream<W, H>::Outer_stream(size_t ms) : max_size(ms), input_frame(H, vector<char>(W))
 {
 	//Подготавливаем кадр ввода.
 	prepare_for_input();

@@ -13,5 +13,5 @@
 #include <array>
 #include <deque>
 #include <Windows.h>
-
+#include <vector>
 #endif //PCH_H
