@@ -3,7 +3,7 @@
 namespace My_names
 {
 	using std::deque;
-	using std::vector;
+	//using std::vector;
 	using std::array;
 	//using std::set;
 	//using std::map;
