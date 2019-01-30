@@ -11,7 +11,7 @@ using namespace My_names;
 
 constexpr size_t WIDTH = 120;//Константа, задающая ширину рабочего пространства.
 constexpr size_t HEIGHT = 60;//Константа, задающая высоту рабочего пространства.
-constexpr size_t FRAMES = 120;//Количество переданных в поток кадров.
+constexpr size_t FRAMES = 101;//Количество переданных в поток кадров.
 
 int main()
 {
@@ -26,6 +26,24 @@ int main()
 	{
 		fig.print(test.Input_frame());//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
 		test.process();//Кадр ввода отправляется в поток.
+
+		//Далее код для простейшего движения фигуры. Фигура пройдет по кругу за время цикла записи.
+		if (i <= FRAMES / 4)
+		{
+			fig.moveRight();
+		}
+		else if (i <= FRAMES / 2)
+		{
+			fig.moveDown();
+		}
+		else if (i <= 0.75*FRAMES)
+		{
+			fig.moveLeft();
+		}
+		else
+		{
+			fig.moveUp();
+		}
 	}
 
 	test.play(10);//Вывод содержимого потока в консоль.
