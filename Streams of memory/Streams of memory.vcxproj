@@ -151,11 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cluster.h" />
     <ClInclude Include="Figures.h" />
     <ClInclude Include="My_names.h" />
     <ClInclude Include="Outer_stream.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Simple structures.h" />
+    <ClInclude Include="Warning.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Figures.cpp" />
@@ -166,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Streams of memory.cpp" />
+    <ClCompile Include="Warning.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

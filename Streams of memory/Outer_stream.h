@@ -35,8 +35,14 @@ public:
 	//Получить максимальный размер потока.
 	const size_t get_max_size() const { return max_size; }
 
+	//Получить текущий размер потока.
+	const size_t get_size() const { return data.size(); }
+
 	//Получить для заполнения кадр ввода. Не просто геттер, а связь потока внешним миром.
 	Frame & Input_frame() { return input_frame; }
+
+	//Получить для чтения произвольный кадр потока.
+	const Frame  & get_frame(size_t num) const;
 
 //СЕТТЕРЫ
 
@@ -45,13 +51,20 @@ public:
 
 //ДРУГОЕ
 
+	//Отладочный вывод кадра ввода.
+	void print_input() const;
+
 	//Отладочный вывод содержимого потока.
 	void play(unsigned dur) const;
 
 	//Внести новые данные в поток. Удалить старые.
 	void process();
 
+	
 private:
+
+	//Отрисовать отдельный кадр.
+	void print_frame(Frame fr) const;
 
 	//Подготовить кадр ввода.
 	void prepare_for_input();
@@ -81,6 +94,59 @@ Outer_stream<W, H>::Outer_stream(size_t ms) : max_size(ms)
 	//Дека создается пустой.
 }
 
+
+//Отрисовать отдельный кадр.
+template<size_t W, size_t H>
+inline void Outer_stream<W, H>::print_frame(Frame fr) const
+{
+	for (size_t i = 0; i < H; ++i)//В каждой строке
+	{
+
+		for (size_t j = 0; j < W; ++j)//перебираются все символы.
+		{
+
+			//Далее код для рисования границы кадров.
+			if (i == 0 || i == H - 1)
+			{
+				cout << '=';
+			}
+			else if (j == 0 || j == W - 1)
+			{
+				cout << '!';
+			}
+			else
+			{
+				cout << fr[i][j];
+			}
+		}
+		cout << endl;
+	}
+}
+
+
+//Получить для чтения произвольный кадр потока.
+template<size_t W, size_t H>
+inline const typename Outer_stream<W, H>::Frame & Outer_stream<W, H>::get_frame(size_t num) const
+{
+	if (data.empty())
+		{
+			throw std::logic_error("Empty stream!\n");
+		}
+	if (num < 0 || num >= data.size())
+	{
+		throw std::out_of_range("Out of range!\n");
+	}
+	return data[num];
+}
+
+//Отладочный вывод кадра ввода.
+template<size_t W, size_t H>
+inline void Outer_stream<W, H>::print_input() const
+{
+	print_frame(input_frame);
+}
+
+
 //Отладочный вывод содержимого потока. Параметр -- задержка кадра на экране.
 template<size_t W, size_t H>
 void Outer_stream<W, H>::play(unsigned dur) const
@@ -89,29 +155,8 @@ void Outer_stream<W, H>::play(unsigned dur) const
 	
 	for (auto & e : data)//Перебираются все кадры.
 	{
-		//cout << "Frames...\n";
-		for (size_t i = 0; i < H; ++i)//В каждой строке
-		{
-			
-			for (size_t j = 0; j < W; ++j)//перебираются все символы.
-			{
-				
-				//Далее код для рисования границы кадров.
-				if (i == 0 || i == H - 1)
-				{
-					cout << '=';
-				}
-				else if (j == 0 || j == W - 1)
-				{
-					cout << '!';
-				}
-				else
-				{
-					cout << e[i][j];
-				}
-			}
-			cout << endl;
-		}
+		print_frame(e);
+
 		cout << ++i << endl;
 
 		Sleep(dur);//Задержка. Windows.h
