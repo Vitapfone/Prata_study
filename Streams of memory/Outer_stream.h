@@ -126,17 +126,21 @@ inline void Outer_stream<W, H>::print_frame(Frame fr) const
 
 //Получить для чтения произвольный кадр потока.
 template<size_t W, size_t H>
-inline const typename Outer_stream<W, H>::Frame & Outer_stream<W, H>::get_frame(size_t num) const
+const typename Outer_stream<W, H>::Frame & Outer_stream<W, H>::get_frame(size_t num) const
 {
+	//Особенность в том, что num должен считаться с конца деки, т.к. надо, чтобы кадр с большим номером был отснят ранее.
+
+	size_t len = data.size();
+
 	if (data.empty())
 		{
 			throw std::logic_error("Empty stream!\n");
 		}
-	if (num < 0 || num >= data.size())
+	if (num < 0 || num >= len)
 	{
 		throw std::out_of_range("Out of range!\n");
 	}
-	return data[num];
+	return data[len - 1 - num];
 }
 
 //Отладочный вывод кадра ввода.
@@ -166,7 +170,7 @@ void Outer_stream<W, H>::play(unsigned dur) const
 
 //Внести новые данные в поток. Удалить старые.
 template<size_t W, size_t H>
-inline void Outer_stream<W, H>::process()
+void Outer_stream<W, H>::process()
 {
 	//cout << "Processing...\n";
 	data.push_back(input_frame);//Вставляем заполненный кадр ввода в деку.
