@@ -51,10 +51,23 @@ int main()
 		//Заносим предупреждение в вектор.
 		warnings.push_back(w1);
 
+		if (i > 0)//Проверка нужна, т.к. в самом начале записи еще нет второго кадра потока.
+		{
+			//Простейшая ф-я управления вниманием. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
+			Warning w2 = most_difference_in_cluster(test.get_frame(0), test.get_frame(1));
+			//Заносим предупреждение в вектор.
+			warnings.push_back(w2);
+		}
+		
 		//После занесения всех предупреждений сортируем так, чтобы первым эл-том был тот, у кого наибольшая важность.
 		sort(warnings.begin(), warnings.end(), [](const Warning & w1, const Warning & w2) {return w1.get_importance() > w2.get_importance(); });
 		Warning most_important = warnings[0];
 
+		/*if (i > 0)
+		{
+			warnings[1].what();
+		}*/
+		
 		most_important.what();//Отладочный вывод.
 
 		system("cls");
