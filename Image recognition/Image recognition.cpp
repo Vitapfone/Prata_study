@@ -38,7 +38,7 @@ int main()
 	//КОНСТРУИРОВАНИЕ ОБРАЗОВ ИЗ ФАЙЛОВ.
 
 	ifstream ifs_Images("Figures\\figures_data.bin", ifstream::binary);
-	vector<Image> im_vec;//Вектор образов
+	list<Image> im_list;//Вектор образов
 
 	Image temp1;
 
@@ -47,7 +47,7 @@ int main()
 		temp1.set_is_link(&string_map[temp1.get_is_link().id]);//Восстановление связей.
 		temp1.set_non_link(&string_map[temp1.get_non_link().id]);
 
-		im_vec.push_back(temp1);
+		im_list.push_back(temp1);
 	}
 
 	//ПОДГОТОВКА РАБОЧЕГО ПРОСТРАНСТВА
@@ -152,7 +152,7 @@ int main()
 		bool match = false;//Логическая переменная, истинность которой означает, что образ распознан.
 
 		//Тут проверяется соответствие образов актуальной фигуры и образа, ранее записанного в файл. Выводятся сообщения о соответствии.
-		for (const Image &im : im_vec)
+		for (const Image &im : im_list)
 		{
 			if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 			{
@@ -191,10 +191,10 @@ int main()
 			figure.set_is_link(&string_map[id_new_figure_link.get_id()]);//Фигура получает свои связи.
 			figure.set_non_link(&string_map[id_new_figure_non_link.get_id()]);
 
-			im_vec.push_back(figure);//Образ неизвестной ранее фигуры добавляется в вектор эталонов.
+			im_list.push_back(figure);//Образ неизвестной ранее фигуры добавляется в вектор эталонов.
 
 			//Вектор, дополненный новой фигурой, перебирается еще раз, чтобы проверить распознавание этой добавленной фигуры.
-			for (const Image &im : im_vec)
+			for (const Image &im : im_list)
 			{
 				if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 				{
@@ -221,14 +221,14 @@ int main()
 	//УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////
 
 		ofstream ofstrings("Strings\\strings_data.bin", ofstream::binary);//Создаем файл для записи связанных с образами строк. Папка должна быть создана заранее.
-		for (auto &e : string_map)//Записываем все строки из карты.
+		for (const auto &e : string_map)//Записываем все строки из карты.
 		{
 			e.second.bin_write(ofstrings);
 		}
 		ofstrings.close();//Закрываем поток.
 
 		ofstream ofsImages("Figures\\figures_data.bin", ofstream::binary);//Создаем файл для записи образов.
-		for (auto & e : im_vec)
+		for (const auto & e : im_list)
 		{
 			e.bin_write(ofsImages);
 		}

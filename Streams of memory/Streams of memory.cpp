@@ -15,7 +15,7 @@ constexpr size_t WIDTH = 120;//Константа, задающая ширину
 constexpr size_t HEIGHT = 50;//Константа, задающая высоту рабочего пространства.
 constexpr size_t FRAMES = 130;//Количество переданных в поток кадров.
 
-void figure_moving(Square &, size_t);
+void figure_moving(Square &, size_t);//Движение фигуры в зависимости от стадии цикла записи.
 
 int main()
 {
@@ -24,7 +24,7 @@ int main()
 
 	Square fig(10, 10, 10);//Фигура для демонстрации записи в поток.
 
-	Outer_stream<WIDTH, HEIGHT> test(100);//Поток заданной длины.
+	Outer_stream<WIDTH, HEIGHT> test(3);//Поток заданной длины.
 
 	for (size_t i = 0; i < FRAMES; i++)//Цикл записи.
 	{
