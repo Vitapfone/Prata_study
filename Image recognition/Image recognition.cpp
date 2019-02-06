@@ -16,9 +16,9 @@
 
 using namespace My_names;
 
-constexpr size_t WIDTH = 120;//Константа, задающая ширину рабочего пространства.
-constexpr size_t HEIGHT = 60;//Константа, задающая высоту рабочего пространства.
-constexpr double EQUALITY_MIN = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
+constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
+constexpr size_t Height = 60;//Константа, задающая высоту рабочего пространства.
+constexpr double Equality_min = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
 int main()
 {
@@ -52,7 +52,7 @@ int main()
 
 	//ПОДГОТОВКА РАБОЧЕГО ПРОСТРАНСТВА
 
-	array<array<char, WIDTH>, HEIGHT> ar1; //Пустой двумерный массив.
+	array<array<char, Width>, Height> ar1; //Пустой двумерный массив.
 
 	//Square fig(15, 2, 56);//Создаем квадрат со стороной не менее 2.
 	//Circle fig(35, 30, 25);//Круг создавать радиусом не менее 5. Иначе не различает от ромба.
@@ -131,7 +131,7 @@ int main()
 
 		//Создаем образ.
 		Image figure(object_area, ar1, foc.get_background(), foc.get_object());
-																							//cout <<figure.get_widht()<<" "<<figure.get_height()<<" "<< figure.get_aspect() << endl;
+																							//cout <<figure.get_widht()<<" "<<figure.get_Height()<<" "<< figure.get_aspect() << endl;
 		//Попробуем найти "центр тяжести" объекта.
 		cout <<"Searching center of gravity..."<< endl;
 		foc.to_Weight_Center(ar1);
@@ -154,7 +154,7 @@ int main()
 		//Тут проверяется соответствие образов актуальной фигуры и образа, ранее записанного в файл. Выводятся сообщения о соответствии.
 		for (const Image &im : im_list)
 		{
-			if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
+			if (image_equality(figure, im, Equality_min))//Если образы совпадают.
 			{
 				match = true;
 				figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
@@ -196,7 +196,7 @@ int main()
 			//Вектор, дополненный новой фигурой, перебирается еще раз, чтобы проверить распознавание этой добавленной фигуры.
 			for (const Image &im : im_list)
 			{
-				if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
+				if (image_equality(figure, im, Equality_min))//Если образы совпадают.
 				{
 					match = true;
 					figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.

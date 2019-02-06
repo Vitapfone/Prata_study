@@ -11,9 +11,9 @@
 
 using namespace My_names;
 
-constexpr size_t WIDTH = 120;//Константа, задающая ширину рабочего пространства.
-constexpr size_t HEIGHT = 50;//Константа, задающая высоту рабочего пространства.
-constexpr size_t FRAMES = 130;//Количество переданных в поток кадров.
+constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
+constexpr size_t Height = 50;//Константа, задающая высоту рабочего пространства.
+constexpr size_t Frames = 130;//Количество переданных в поток кадров.
 
 void figure_moving(Square &, size_t);//Движение фигуры в зависимости от стадии цикла записи.
 
@@ -24,9 +24,9 @@ int main()
 
 	Square fig(10, 10, 10);//Фигура для демонстрации записи в поток.
 
-	Outer_stream<WIDTH, HEIGHT> test(3);//Поток заданной длины.
+	Outer_stream<Width, Height> test(3);//Поток заданной длины.
 
-	for (size_t i = 0; i < FRAMES; i++)//Цикл записи.
+	for (size_t i = 0; i < Frames; i++)//Цикл записи.
 	{
 		//УЧАСТОК ВВОДА ДАННЫХ/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -94,15 +94,15 @@ int main()
 void figure_moving(Square & fig, size_t i)
 {
 	//Далее код для простейшего движения фигуры. Фигура пройдет по кругу за время цикла записи.
-	if (i <= FRAMES / 4)
+	if (i <= Frames / 4)
 	{
 		fig.moveRight();
 	}
-	else if (i <= FRAMES / 2)
+	else if (i <= Frames / 2)
 	{
 		fig.moveDown();
 	}
-	else if (i <= 0.75*FRAMES)
+	else if (i <= 0.75*Frames)
 	{
 		fig.moveLeft();
 	}
@@ -111,3 +111,4 @@ void figure_moving(Square & fig, size_t i)
 		fig.moveUp();
 	}
 }
+
