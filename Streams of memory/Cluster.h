@@ -137,13 +137,15 @@ const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char back
 
 	//cout << vc[0].get_count() << " Bacground '" << background << "'\n";
 
-	return Warning("Unidentified contrast object!", { x, y }, 10);
+	return Warning("Unidentified contrast object!", { x, y }, vc[0].get_count());
 }
 
 //Простейшая ф-я управления вниманием. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
 template<size_t W, size_t H>
 const Warning most_difference_in_cluster(const array<array<char, W>, H> & frame_1, const array<array<char, W>, H> & frame_2)
 {
+	static constexpr double difference_coefficient = 1.2;//Коэффициент важности для предупреждения о разности в кластере.
+
 	//Создаем кластеры для поиска
 	vector<Cluster> vc;
 
@@ -167,5 +169,5 @@ const Warning most_difference_in_cluster(const array<array<char, W>, H> & frame_
 	int x = vc[0].where().x + vc[0].get_s() / 2;
 	int y = vc[0].where().y + vc[0].get_s() / 2;
 
-	return Warning("Difference in frames! May be motion.", { x, y }, 12);
+	return Warning("Difference in frames! May be motion.", { x, y }, vc[0].get_count()*difference_coefficient);
 }
