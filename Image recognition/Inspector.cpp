@@ -20,7 +20,7 @@ int Inspector::start_stop(bool & is_started, bool & is_finished, int & start_x, 
 		start_y = loc.y;
 		
 	}
-	cout << "( " << loc.x << ", " << loc.y << " ) ";
+	//cout << "( " << loc.x << ", " << loc.y << " ) ";
 	return 0;
 }
 

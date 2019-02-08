@@ -3,7 +3,7 @@
 
 using namespace My_names;
 
-enum Attention_mode{Distributed, Partially_concentrated};
+enum class Attention_mode{Distributed, Partially_concentrated};
 
 class Focus_of_attention
 {
@@ -12,7 +12,7 @@ class Focus_of_attention
 
 	char background =' ';//Фон. По умолчанию пробел, как наиболее вероятный фон.
 	char object = '0';
-	Attention_mode mode = Distributed;//Режим внимания. По умолчанию распределенное.
+	Attention_mode mode = Attention_mode::Distributed;//Режим внимания. По умолчанию распределенное.
 
 	Borders borders;//Структура для хранения информации о границах области внимания.
 
@@ -42,7 +42,7 @@ public:
 	int get_y() const { return loc.y; }
 
 	//Выдать режим
-	int get_mode() const { return mode; }
+	Attention_mode get_mode() const { return mode; }
 
 	//Выдать границы области внимания.
 	const Borders get_borders()const { return borders; }
@@ -50,7 +50,7 @@ public:
 //СЕТТЕРЫ
 
 	//Установить режим частично сосредоточенного внимания.
-	void mode_par_con() { mode = Partially_concentrated; }
+	void mode_par_con() { mode = Attention_mode::Partially_concentrated; }
 
 	//Установить объект.
 	template<size_t W, size_t H> 
