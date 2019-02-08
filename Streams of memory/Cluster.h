@@ -56,11 +56,11 @@ public:
 
 	//Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
 	template<size_t W, size_t H> 
-	void counter(const array<array<char, W>, H> & ws, char background) ;
+	void counter(const Frame<W, H> & ws, char background) ;
 
 	//Функция подсчитывает точки, состояние которых в двух переданных кадрах отличается.
 	template<size_t W, size_t H>
-	void diff_counter(const array<array<char, W>, H> & frame_1, const array<array<char, W>, H> & frame_2);
+	void diff_counter(const Frame<W,H> & frame_1, const Frame<W,H> & frame_2);
 
 	//Функция выводит значения членов.
 	void print() const { cout << loc.x << ", " << loc.y << ", " << count << endl; }
@@ -69,7 +69,7 @@ public:
 
 //Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
 template<size_t W, size_t H>
-void Cluster::counter(const array<array<char, W>, H> & ws, char background)
+void Cluster::counter(const Frame<W,H> & ws, char background)
 {
 	//cout << "Counting... " << endl;
 	for (int y = loc.y; y != (loc.y + s); ++y)//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
@@ -89,7 +89,7 @@ void Cluster::counter(const array<array<char, W>, H> & ws, char background)
 
 //Функция подсчитывает точки, состояние которых в двух переданных кадрах отличается.
 template<size_t W, size_t H>
-void Cluster::diff_counter(const array<array<char, W>, H> & frame_1, const array<array<char, W>, H> & frame_2)
+void Cluster::diff_counter(const Frame<W,H> & frame_1, const Frame<W,H> & frame_2)
 {
 	for (int y = loc.y; y != (loc.y + s); ++y)//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
 	{
@@ -109,7 +109,7 @@ void Cluster::diff_counter(const array<array<char, W>, H> & frame_1, const array
 
 //Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
 template<size_t W, size_t H>
-const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char background)
+const Warning most_filled_cluster(const Frame<W,H> & ws, char background)
 {
 	//Создаем кластеры для поиска
 	vector<Cluster> vc;
@@ -142,7 +142,7 @@ const Warning most_filled_cluster(const array<array<char, W>, H> & ws, char back
 
 //Простейшая ф-я управления вниманием. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
 template<size_t W, size_t H>
-const Warning most_difference_in_cluster(const array<array<char, W>, H> & frame_1, const array<array<char, W>, H> & frame_2)
+const Warning most_difference_in_cluster(const Frame<W,H> & frame_1, const Frame<W,H> & frame_2)
 {
 	static constexpr double difference_coefficient = 1.2;//Коэффициент важности для предупреждения о разности в кластере.
 
