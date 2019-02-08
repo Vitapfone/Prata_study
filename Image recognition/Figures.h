@@ -52,7 +52,7 @@ public:
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
-	void print(Ar60_30 & ws);//Унаследованная функция отрисовки.
+	void print(Ar60_30 & ws) override;//Унаследованная функция отрисовки.
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> &ws);//Функция отрисовки круга для любого рабочего пространства.
@@ -95,7 +95,7 @@ namespace My//Необходимость в новом пространстве 
 		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) {}
 		Rectangle(const Location & lc, size_t a1) : Figure(lc), a(a1) {}
 
-		void print(Ar60_30 &ws);//Функция отрисовки прямоугольника, унаследованная от предка.
+		void print(Ar60_30 &ws) override;//Функция отрисовки прямоугольника, унаследованная от предка.
 
 		template<size_t W, size_t H> 
 		void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
@@ -136,7 +136,7 @@ public:
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
-	void print(Ar60_30 & ws); //Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 & ws) override; //Переопределение виртуальной функции из базового класса.
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> & ws);//Шаблон функции для отрисовки в рабочем пространстве любого размера.
@@ -190,7 +190,7 @@ public:
 	Square(int x = 0, int y = 0, int a1 = 0) : Figure(x, y), a(a1) {}
 	Square(const Location & lc, int a1 = 0) : Figure(lc), a(a1) {}
 
-	void print(Ar60_30 &ws);//Функция отрисовки квадрата.
+	void print(Ar60_30 &ws) override;//Функция отрисовки квадрата.
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
@@ -238,7 +238,7 @@ public:
 	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
 	~Triangle() {}
 
-	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 &ws) override; //Переопределение виртуальной функции из базового класса.
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> & ws);//Отрисовка треугольника для рабочего пространства любого размера.
