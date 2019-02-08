@@ -22,11 +22,11 @@ public:
 	//Виртуальный деструктор.
 	virtual ~Figure() {}
 
-	virtual void print(Ar60_30 & ws) = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
+	virtual void print(Ar60_30 & ws) const = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
 
 //ГЕТТЕРЫ
 
-	const Location where() const { return loc; }
+	constexpr const Location where() const { return loc; }
 
 
 //МЕТОДЫ ДВИЖЕНИЯ
@@ -54,15 +54,15 @@ public:
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
-	void print(Ar60_30 & ws);//Унаследованная функция отрисовки.
+	void print(Ar60_30 & ws) const;//Унаследованная функция отрисовки.
 
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws);//Функция отрисовки круга для любого рабочего пространства.
+	void print(array<array<char, W>, H> & ws) const;//Функция отрисовки круга для любого рабочего пространства.
 };
 
 //Функция отрисовки круга для любого рабочего пространства.
 template<size_t W, size_t H> 
-void Circle::print(array<array<char, W>, H> & ws)
+void Circle::print(array<array<char, W>, H> & ws) const
 {
 	for (int y = where().y - radius; y <= where().y + radius; ++y)
 	{
@@ -97,17 +97,17 @@ namespace My//Необходимость в новом пространстве 
 		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) {}
 		Rectangle(const Location & lc, size_t a1) : Figure(lc), a(a1) {}
 
-		void print(Ar60_30 &ws);//Функция отрисовки прямоугольника, унаследованная от предка.
+		void print(Ar60_30 &ws) const;//Функция отрисовки прямоугольника, унаследованная от предка.
 
 		template<size_t W, size_t H> 
-		void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
+		void print(array<array<char, W>, H> & ws) const;//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 
 	};
 }
 
 //Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 template<size_t W, size_t H>
-void My::Rectangle::print(array<array<char, W>, H> & ws)
+void My::Rectangle::print(array<array<char, W>, H> & ws) const
 {
 	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
@@ -138,15 +138,15 @@ public:
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
-	void print(Ar60_30 & ws); //Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 & ws) const; //Переопределение виртуальной функции из базового класса.
 
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws);//Шаблон функции для отрисовки в рабочем пространстве любого размера.
+	void print(array<array<char, W>, H> & ws) const;//Шаблон функции для отрисовки в рабочем пространстве любого размера.
 
 };
 
 template<size_t W, size_t H> 
-void Rhomb::print(array<array<char, W>, H> & ws)
+void Rhomb::print(array<array<char, W>, H> & ws) const
 {
 	for (int y = (where().y - diagonal / 2); y <= where().y; ++y)
 	{
@@ -191,17 +191,18 @@ public:
 	//КОНСТРУКТОР
 	Square(int x = 0, int y = 0, int a1 = 0) : Figure(x, y), a(a1) {}
 	Square(const Location & lc, int a1 = 0) : Figure(lc), a(a1) {}
-
-	void print(Ar60_30 &ws);//Функция отрисовки квадрата.
+	~Square() {}
+	
+	void print(Ar60_30 &ws) const;//Функция отрисовки квадрата.
 
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws);//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
+	void print(array<array<char, W>, H> & ws) const;//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 
 };
 
 //Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 template<size_t W, size_t H> 
-void Square::print(array<array<char, W>, H> & ws)
+void Square::print(array<array<char, W>, H> & ws) const
 {
 
 	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
@@ -240,16 +241,16 @@ public:
 	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
 	~Triangle() {}
 
-	void print(Ar60_30 &ws); //Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 &ws) const; //Переопределение виртуальной функции из базового класса.
 
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws);//Отрисовка треугольника для рабочего пространства любого размера.
+	void print(array<array<char, W>, H> & ws) const;//Отрисовка треугольника для рабочего пространства любого размера.
 
 };
 
 //Отрисовка треугольника для рабочего пространства любого размера.
 template<size_t W, size_t H> 
-void Triangle::print(array<array<char, W>, H> & ws)
+void Triangle::print(array<array<char, W>, H> & ws) const
 {
 	for (int y = where().y; y <= point_A.y; ++y)
 	{
