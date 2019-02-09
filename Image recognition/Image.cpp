@@ -10,7 +10,7 @@ using namespace My_names;
 //Заполнить вн.вектор и айдишники из бин. файла
 void Image::init(ifstream & fin)
 {
-	unique_ptr<bool[]> buf;//Умный указатель на будущий буфер. Для работы с массивом это должно быть отражено в параметре шаблона.
+	auto buf = make_unique<bool[]>(0);//Умный указатель на будущий буфер. Для работы с массивом это должно быть отражено в параметре шаблона.
 	vector<bool> temp(width);
 
 	for (size_t i = 0; i < height; i++)
@@ -75,7 +75,7 @@ bool Image::bin_read(ifstream & fin)
 	catch (std::bad_alloc & ex)
 	{
 		cerr << ex.what() << endl;
-		return false;
+		return false;//При исключении чтение завершится.
 	}
 
 	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
