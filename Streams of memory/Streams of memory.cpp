@@ -5,6 +5,7 @@
 #include "My_names.h"
 #include "Simple structures.h"
 #include "Outer_stream.h"
+#include "Inner_stream.h"
 #include "Figures.h"
 #include "Warning.h"
 #include "Cluster.h"
@@ -12,7 +13,7 @@
 using namespace My_names;
 
 constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
-constexpr size_t Height = 50;//Константа, задающая высоту рабочего пространства.
+constexpr size_t Height = 58;//Константа, задающая высоту рабочего пространства.
 constexpr size_t Frames = 130;//Количество переданных в поток кадров.
 
 void figure_moving(Square &, size_t);//Движение фигуры в зависимости от стадии цикла записи.
@@ -24,17 +25,18 @@ int main()
 
 	Square fig(10, 10, 10);//Фигура для демонстрации записи в поток.
 
-	Outer_stream<Width, Height> test(3);//Поток заданной длины.
+	Outer_stream<Width, Height> ots(3);//Внешний поток заданной длины.
+	Inner_stream ins(Width, Height, Frames - 2);//Внутренний поток.
 
 	for (size_t i = 0; i < Frames; i++)//Цикл записи.
 	{
 		//УЧАСТОК ВВОДА ДАННЫХ ВО ВНЕШНИЙ ПОТОК /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		fig.print(test.Input_frame());//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
+		fig.print(ots.Input_frame());//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
 
-		test.print_input();//Отрисовка кадра ввода.
+		//ots.print_input();//Отрисовка кадра ввода.
 
-		test.process();//Кадр ввода отправляется в поток.
+		ots.process();//Кадр ввода отправляется в поток.
 
 
 
@@ -46,7 +48,7 @@ int main()
 		vector<Warning> warnings;
 
 		//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Файл Cluster.h
-		Warning w1 = most_filled_cluster(test.get_frame(0), ' ');
+		Warning w1 = most_filled_cluster(ots.get_frame(0), ' ');
 
 		//Заносим предупреждение в вектор.
 		warnings.push_back(w1);
@@ -54,7 +56,7 @@ int main()
 		if (i > 0)//Проверка нужна, т.к. в самом начале записи еще нет второго кадра потока.
 		{
 			//Простейшая ф-я управления вниманием. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
-			Warning w2 = most_difference_in_cluster(test.get_frame(0), test.get_frame(1));
+			Warning w2 = most_difference_in_cluster(ots.get_frame(0), ots.get_frame(1));
 			//Заносим предупреждение в вектор.
 			warnings.push_back(w2);
 		}
@@ -65,25 +67,36 @@ int main()
 
 		//НАЧАЛО РАБОТЫ ФИЛЬТРА ВОСПРИЯТИЯ. НА БУДУЩЕЕ. ПОКА НИЧЕГО НЕТ!
 
+		//На будущее. Фильтр восприятия обрабатывает все предупреждения, корректируя их важность. 
+
 		//После занесения всех предупреждений сортируем так, чтобы первым эл-том был тот, у кого наибольшая важность.
 		sort(warnings.begin(), warnings.end(), [](const Warning & w1, const Warning & w2) {return w1.get_importance() > w2.get_importance(); });
 		Warning most_important = warnings[0];
 
-		/*if (i > 0)
+		//Передача данных от внешнего потока внутреннему. Пока без каких-либо ограничений и модификаций.
+
+		//Внешний поток выдает свой нулевой кадр. 
+		Outer_frame< Width, Height > outer_data = ots.get_frame(0);
+
+		//Буфер для конвертации данных в формат кадра внутреннего потока.
+		Inner_frame buffer;
+		for (auto e : outer_data)//Конвертация.
 		{
-			warnings[1].what();
-		}*/
-		
+			buffer.emplace_back(e.cbegin(), e.cend());
+		}
+
 		//КОНЕЦ РАБОТЫ ФИЛЬТРА ВОСПРИЯТИЯ.
 
+		//Ввод данных во внутренний поток.
+		ins.Input_frame() = move(buffer);//Используется семантика перемещения.
+		ins.process();
 
 
 
 
+		//most_important.what();//Отладочный вывод.
 
-		most_important.what();//Отладочный вывод.
-
-		system("cls");
+		//system("cls");
 
 		//Движение фигуры в зависимости от стадии цикла записи.
 		figure_moving(fig, i);
@@ -96,7 +109,7 @@ int main()
 		
 	}
 
-	//test.play(10);//Вывод содержимого потока в консоль.
+	ins.play(10);//Вывод содержимого потока в консоль.
 
 	cout << "End...\n";
 

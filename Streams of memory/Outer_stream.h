@@ -4,13 +4,13 @@ using namespace My_names;
 
 //Псевдоним шаблона кадра потока.
 template<size_t W, size_t H>
-using Frame = array<array<char, W>, H>;
+using Outer_frame = array<array<char, W>, H>;
 
 template<size_t W, size_t H>
 class Outer_stream
 {
-	Frame<W, H> input_frame;//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
-	deque<Frame<W, H>> data;//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
+	Outer_frame<W, H> input_frame;//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
+	deque<Outer_frame<W, H>> data;//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
 	size_t max_size;//Максимальный размер деки и длина потока.
 
 public:
@@ -39,10 +39,10 @@ public:
 	const size_t get_size() const { return data.size(); }
 
 	//Получить для заполнения кадр ввода. Не просто геттер, а связь потока внешним миром.
-	Frame<W, H> & Input_frame() { return input_frame; }
+	Outer_frame<W, H> & Input_frame() { return input_frame; }
 
 	//Получить для чтения произвольный кадр потока.
-	const Frame<W, H>  & get_frame(size_t num) const;
+	const Outer_frame<W, H>  & get_frame(size_t num) const;
 
 //СЕТТЕРЫ
 
@@ -64,7 +64,7 @@ public:
 private:
 
 	//Отрисовать отдельный кадр.
-	void print_frame(const Frame<W, H> & fr) const;
+	void print_frame(const Outer_frame<W, H> & fr) const;
 
 	//Подготовить кадр ввода.
 	void prepare_for_input();
@@ -97,7 +97,7 @@ Outer_stream<W, H>::Outer_stream(size_t ms) : max_size(ms)
 
 //Отрисовать отдельный кадр.
 template<size_t W, size_t H>
-inline void Outer_stream<W, H>::print_frame(const Frame<W, H> & fr) const
+inline void Outer_stream<W, H>::print_frame(const Outer_frame<W, H> & fr) const
 {
 	for (size_t i = 0; i < H; ++i)//В каждой строке
 	{
@@ -126,7 +126,7 @@ inline void Outer_stream<W, H>::print_frame(const Frame<W, H> & fr) const
 
 //Получить для чтения произвольный кадр потока.
 template<size_t W, size_t H>
-const Frame<W, H> & Outer_stream<W, H>::get_frame(size_t num) const
+const Outer_frame<W, H> & Outer_stream<W, H>::get_frame(size_t num) const
 {
 	//Особенность в том, что num должен считаться с конца деки, т.к. надо, чтобы кадр с большим номером был отснят ранее.
 
