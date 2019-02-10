@@ -20,6 +20,14 @@ const Inner_frame & Inner_stream::get_frame(size_t num) const
 	return data[len - 1 - num];
 }
 
+//Перегрузка для изменяющих действий.
+Inner_frame & Inner_stream::get_frame(size_t num)
+{
+	//Особенность в том, что num должен считаться с конца деки, т.к. надо, чтобы кадр с большим номером был отснят ранее.
+
+	return const_cast<Inner_frame &> (const_cast<const Inner_stream* >(this)->get_frame(num));
+}
+
 
 
 //Подготовить кадр ввода для повторного заполнения.
@@ -51,8 +59,11 @@ void Inner_stream::process()
 }
 
 //Вспомогательная ф-я для отрисовки кадра в консоли. Дает кадру видимые границы. 
-void Inner_stream::make_borders(Inner_frame & fr)
+void make_borders(Inner_frame & fr)
 {
+	size_t width = fr[0].size();
+	size_t height = fr.size();
+
 	for (int i = 0; i < width; ++i)
 	{
 		fr[0][i] = '=';
@@ -65,20 +76,11 @@ void Inner_stream::make_borders(Inner_frame & fr)
 	}
 }
 
-//Функция отрисовки одного кадра.
-void Inner_stream::print_frame(Inner_frame & fr)
-{
-	make_borders(fr);
-	for (const auto &e : fr)// Выводим в консоль.
-	{
-		for (const auto &e2 : e)
-		{
-			cout << e2;
-		}
-		cout << endl;
-	}
-	cout << endl;
-}
+////Функция отрисовки одного кадра.
+//void Inner_stream::print_frame(Inner_frame & fr)
+//{
+//	::print_frame(fr);
+//}
 
 //Отладочный вывод содержимого потока.
 void Inner_stream::play(unsigned dur)
@@ -94,4 +96,18 @@ void Inner_stream::play(unsigned dur)
 	}
 }
 
+//Свободная функция для отрисовки кадра.
+void print_frame(Inner_frame & fr)
+{
+	make_borders(fr);
 
+	for (const auto &e : fr)// Выводим в консоль.
+	{
+		for (const auto &e2 : e)
+		{
+			cout << e2;
+		}
+		cout << endl;
+	}
+	cout << endl;
+}

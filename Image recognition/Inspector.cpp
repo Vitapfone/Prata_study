@@ -1,7 +1,10 @@
+//#include "..\Streams of memory\Inspector.h"
 #include "pch.h"
 #include "My_names.h"
 #include "Simple structures.h"
 #include "Inspector.h"
+
+
 
 
 //Функция определит, когда пора завершать обход.

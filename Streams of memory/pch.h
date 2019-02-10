@@ -10,8 +10,12 @@
 #define PCH_H
 
 #include <iostream>
+#include <fstream>
 #include <array>
 #include <deque>
+#include <map>
+#include <set>
+#include <list>
 #include <Windows.h>
 #include <vector>
 #include <string>

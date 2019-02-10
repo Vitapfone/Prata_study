@@ -3,6 +3,10 @@
 
 
 using namespace My_names;
+using Inner_frame = vector<vector<char>>;
+
+template<size_t W, size_t H>
+using Outer_frame = array<array<char, W>, H>;
 
 class Cluster
 {
@@ -57,6 +61,9 @@ public:
 	//Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
 	template<size_t W, size_t H> 
 	void counter(const Outer_frame<W, H> & ws, char background) ;
+
+	//Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение. Версия для внутреннего потока.
+	void counter(const Inner_frame & ws, char background);
 
 	//Функция подсчитывает точки, состояние которых в двух переданных кадрах отличается.
 	template<size_t W, size_t H>

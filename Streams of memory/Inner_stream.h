@@ -43,7 +43,8 @@ public:
 
 	//Получить для чтения произвольный кадр потока.
 	const Inner_frame & get_frame(size_t num) const;
-
+	//Перегрузка для изменяющих действий.
+	Inner_frame & get_frame(size_t num);
 
 	//СЕТТЕРЫ
 
@@ -61,12 +62,17 @@ public:
 
 private:
 
-	//Вспомогательная ф-я для отрисовки кадра в консоли. Дает кадру видимые границы. 
-	void make_borders(Inner_frame &);
+	
 
-	//Функция отрисовки одного кадра.
-	void print_frame(Inner_frame &);
+	////Функция отрисовки одного кадра.
+	//void print_frame(Inner_frame &);
 
 	//Подготовить кадр ввода для повторного заполнения.
 	void prepare_for_input();
 };
+
+//Свободная функция для отрисовки кадра.
+void print_frame(Inner_frame & fr);
+
+//Вспомогательная ф-я для отрисовки кадра в консоли. Дает кадру видимые границы. 
+void make_borders(Inner_frame &);
