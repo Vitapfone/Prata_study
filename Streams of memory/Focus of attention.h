@@ -2,8 +2,10 @@
 //#include "Inspector.h"
 
 using namespace My_names;
+
 using Inner_frame = vector<vector<char>>;
 
+//Перечисление для режимов внимания.
 enum class Attention_mode{Distributed, Partially_concentrated};
 
 class Focus_of_attention
@@ -58,6 +60,7 @@ public:
 	void assign_object(const Inner_frame & ws) { object = ws[loc.y][loc.x]; }
 
 
+//ДРУГИЕ
 
 	//Обозначить  положение.
 	 
@@ -67,26 +70,20 @@ public:
 	void relocate(const Location & new_loc) { loc = new_loc; }
 
 	//Переместить в центр тяжести объекта.
-	
 	void to_Weight_Center(const Inner_frame & ws);
 
 	//Задает координаты 9-ти элементарных кластеров вокруг фокуса и возвращает местоположение наиболее заполненного.
-	
 	const Location clusterize(const Inner_frame & ws);
 
 	//Пытается передвинуть фокус внутрь объекта.
-	
 	bool go_inside(const Inner_frame & ws);
 
 	//Определить границы области, в которой полностью находится объект. Соответственно им установить границы области концентрации внимания.
 	//Установить режим частичной концентрации.
-	
 	void part_concentrate_to_object(const Inner_frame & ws);
-
 };
 
 //Функция переместит фокус внимания в примерный центр тяжести объекта.
-
 void Focus_of_attention::to_Weight_Center(const Inner_frame & ws)
 {
 	bool foc_move_up = false;//Переменная, показывающая, что фокус уже передвигался вверх.
@@ -187,7 +184,6 @@ void Focus_of_attention::to_Weight_Center(const Inner_frame & ws)
 }
 
 //Задает координаты 9-ти элементарных кластеров вокруг фокуса.
-
 const Location Focus_of_attention::clusterize(const Inner_frame & ws)
 {
 	Cluster cl5(loc.x - 2, loc.y - 2);
@@ -214,7 +210,6 @@ const Location Focus_of_attention::clusterize(const Inner_frame & ws)
 }
 
 //Пытается передвинуть фокус внутрь объекта.
-
 bool Focus_of_attention::go_inside(const Inner_frame& ws)
 {
 	Location fcl = clusterize(ws);//Получаем наиболее заполненный элементарный кластер.
@@ -234,7 +229,6 @@ bool Focus_of_attention::go_inside(const Inner_frame& ws)
 
 //Определить границы области, в которой полностью находится объект. Соответственно им установить границы области концентрации внимания.
 //Установить режим частичной концентрации.
-
 void Focus_of_attention::part_concentrate_to_object(const Inner_frame & ws)
 {
 	Inspector ins(loc.x, loc.y, background, object);//Создаем инспектора для обхода по контуру.

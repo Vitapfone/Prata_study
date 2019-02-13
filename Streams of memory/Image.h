@@ -27,8 +27,8 @@ public:
 //КОНСТРУКТОРЫ
 
 	Image() = default;
+
 	//Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
-	
 	Image(const Borders & bs, const Inner_frame & ws, char, char);
 	//Конструктор заполнит внутренний вектор из бинарного файла.
 	Image(ifstream &);
@@ -54,6 +54,8 @@ public:
 	void set_is_link(Link_ptr const & other) { is_link = other; }
 	void set_non_link(Id_string* is) { non_link.ps = is; /*non_link.id = is->get_id();*/ }
 	void set_non_link(Link_ptr const & other) { non_link = other; }
+
+//ДРУГИЕ
 
 	//Выводит в консоль образ в удобном для восприятия виде.
 	void visualize();

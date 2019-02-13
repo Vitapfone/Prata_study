@@ -31,10 +31,10 @@ public:
 
 //МЕТОДЫ ДВИЖЕНИЯ
 
-	void moveRight() { ++loc.x; }//Передвинуть правее.
-	void moveLeft() { --loc.x; }//Передвинуть левее.
-	void moveUp() { --loc.y; }//Передвинуть выше.
-	void moveDown() { ++loc.y; }//Передвинуть ниже.
+	virtual void moveRight() { ++loc.x; }//Передвинуть правее.
+	virtual void moveLeft() { --loc.x; }//Передвинуть левее.
+	virtual void moveUp() { --loc.y; }//Передвинуть выше.
+	virtual void moveDown() { ++loc.y; }//Передвинуть ниже.
 
 };
 
@@ -245,6 +245,15 @@ public:
 
 	template<size_t W, size_t H> 
 	void print(array<array<char, W>, H> & ws) const;//Отрисовка треугольника для рабочего пространства любого размера.
+
+
+	//МЕТОДЫ ДВИЖЕНИЯ
+
+	virtual void moveRight() { Figure::moveRight(); point_A.x++; point_B.x++; }//Передвинуть правее.
+	virtual void moveLeft() { Figure::moveLeft(); point_A.x--; point_B.x--; }//Передвинуть левее.
+	virtual void moveUp() { Figure::moveUp(); point_A.y--; point_B.y--; }//Передвинуть выше.
+	virtual void moveDown() { Figure::moveDown(); point_A.y++; point_B.y++; }//Передвинуть ниже.
+
 
 };
 

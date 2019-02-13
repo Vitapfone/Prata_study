@@ -55,4 +55,5 @@ private:
 //Оператор вывода для записи в текстовый файл.
 ostream & operator<< (ostream &, const Id_string &);
 
-istream & operator>>(istream&, Id_string &);
+//Оператор ввода из текстового файла.
+istream & operator>>(istream &, Id_string &);

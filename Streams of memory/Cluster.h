@@ -1,8 +1,8 @@
 ﻿#pragma once
 //#include "Warning.h"
 
-
 using namespace My_names;
+
 using Inner_frame = vector<vector<char>>;
 
 template<size_t W, size_t H>
@@ -22,16 +22,6 @@ public:
 	//Задает члены. Count задается неявно по умолчанию нулем.
 	Cluster(int x = 0, int y = 0, size_t s1 = 5) : loc{ x, y }, s(s1) {}
 	Cluster(Location lc, size_t s1 = 5) : loc(lc), s(s1) {}
-
-//ЗАПРЕЩЕНО
-
-	//Копирование запрещено.
-	//Cluster(const Cluster & other) = delete;//При заперещении копирования оказывается, что объект нельлзя поместить в контейнер.
-	//Такое представляется целесообразным только для уникальных объектов типа фокуса внимания.
-
-	//Присваивание запрещено.
-	//Cluster & operator=(const Cluster &) = delete;//При запрещении присваивания становятся невозможными алгоритмы, изменяющие содержимое контейнеров с такими объектами.
-	//Пойдет для уникальных объектов.
 
 //ГЕТТЕРЫ
 
@@ -55,8 +45,6 @@ public:
 
 
 //ДРУГОЕ
-
-	
 
 	//Функция подсчитывает количество точек в кластере, содержащих отличное от фона значение.
 	template<size_t W, size_t H> 
@@ -164,7 +152,7 @@ const Warning most_difference_in_cluster(const Outer_frame<W,H> & frame_1, const
 		}
 	}
 
-	for (auto & e : vc)//Каждый кластер подсчитывает кол-во знаков, отличных от фона.
+	for (auto & e : vc)//Каждый кластер подсчитывает кол-во знаков, состояние которых изменилось с прошлого кадра.
 	{
 		e.diff_counter(frame_1, frame_2);
 	}

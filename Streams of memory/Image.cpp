@@ -220,7 +220,7 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 	}
 	else //Если отношения сторон сильно различаются,
 	{
-		cout << "Huge aspect rate difference!" << endl;
+		//cout << "Huge aspect rate difference!" << endl;
 		return false;//то понятно, что они не равны.
 	}
 		

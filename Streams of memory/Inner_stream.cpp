@@ -28,8 +28,6 @@ Inner_frame & Inner_stream::get_frame(size_t num)
 	return const_cast<Inner_frame &> (const_cast<const Inner_stream* >(this)->get_frame(num));
 }
 
-
-
 //Подготовить кадр ввода для повторного заполнения.
 void Inner_stream::prepare_for_input()
 {

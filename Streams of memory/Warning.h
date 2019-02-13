@@ -11,17 +11,26 @@ class Warning //Класс сообщения от функций первичн
 	int importance = 10;//Степень важности сообщения.
 
 public:
+
+//КОНСТРУКТОРЫ
+
 	Warning() = default;
 	Warning(const string & mes, const Location & l, int imp) : message(mes), loc(l), importance(imp) {}
 	~Warning() {}
 
-	//Вывести отладочное сообщение.
-	void what() const;
+//МЕТОДЫ
+
+//ГЕТТЕРЫ
 
 	//Возвратить местоположение обнаруженного.
 	const Location where() const { return loc; }
 
 	//Возвратить важность.
 	int get_importance()const { return importance; }
+
+//ДРУГИЕ
+
+	//Вывести отладочное сообщение.
+	void what() const;
 };
 

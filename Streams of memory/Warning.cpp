@@ -3,6 +3,7 @@
 #include "Simple structures.h"
 #include "Warning.h"
 
+//Консольный вывод всей информации.
 void Warning::what() const
 {
 	std::cout <<'\n'<< message

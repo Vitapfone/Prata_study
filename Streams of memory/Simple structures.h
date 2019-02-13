@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 //Служебная структура, служащая для возвращения координат. Simple structures.h.
 struct Location
 {

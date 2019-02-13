@@ -172,13 +172,10 @@ void Outer_stream<W, H>::play(unsigned dur) const
 template<size_t W, size_t H>
 void Outer_stream<W, H>::process()
 {
-	//cout << "Processing...\n";
 	data.push_back(input_frame);//¬ставл€ем заполненный кадр ввода в деку.
-	//cout << data.size() << ' ';
+	
 	if (data.size() > max_size)//≈сли размер деки превышает максимум, то убираем один кадр из начала, где наход€тс€ самые старые данные. 
 	{
-		//cout << max_size << endl;
-		//cout << "???\n";
 		data.pop_front();
 	}
 

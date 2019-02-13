@@ -24,7 +24,7 @@ public:
 	//Запрещено присвоение.
 	Inspector & operator=(Inspector const &) = delete;
 
-//Методы движения.
+	//Методы движения.
 	void moveLeft() { --loc.x; }
 	void moveRight() { ++loc.x; }
 	void moveUp() { --loc.y; }

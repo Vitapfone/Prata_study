@@ -2,9 +2,9 @@
 #include "My_names.h"
 #include "Simple structures.h"
 #include "Warning.h"
-
 #include "Cluster.h"
 
+//Подсчет отличных от фона пикселей.
 void Cluster::counter(const Inner_frame & ws, char background)
 {
 	for (int y = loc.y; y != (loc.y + s); ++y)//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
