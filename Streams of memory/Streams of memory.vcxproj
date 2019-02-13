@@ -169,6 +169,7 @@
     <ClCompile Include="Figures.cpp" />
     <ClCompile Include="Id_string.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Database functions.cpp" />
     <ClCompile Include="Inner_stream.cpp" />
     <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="pch.cpp">
