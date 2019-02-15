@@ -1,7 +1,8 @@
 ﻿#pragma once
-//#include "My_names.h"
-//#include "Id_string.h"
-//#include "Simple structures.h"
+#include "pch.h"
+#include "My_names.h"
+#include "Id_string.h"
+#include "Simple structures.h"
 
 using namespace My_names;
 using Inner_frame = vector<vector<char>>;

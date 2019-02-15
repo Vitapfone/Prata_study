@@ -1,7 +1,8 @@
 #pragma once
 
-//#include "Simple_structures.h"
-//#include "My_names.h"
+#include "pch.h"
+#include "My_names.h"
+#include "Simple structures.h"
 
 using namespace My_names;
 

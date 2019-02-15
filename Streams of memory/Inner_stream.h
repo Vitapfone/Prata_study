@@ -1,4 +1,6 @@
 #pragma once
+#include "pch.h"
+#include "My_names.h"
 
 using namespace My_names;
 

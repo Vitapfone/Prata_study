@@ -1,5 +1,7 @@
 ﻿#pragma once
-//#include "My_names.h"
+#include "pch.h"
+#include "My_names.h"
+
 using namespace My_names;
 
 class Id_string

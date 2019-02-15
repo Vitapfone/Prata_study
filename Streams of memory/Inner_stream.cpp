@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "My_names.h"
 #include "Inner_stream.h"
 
 //ѕолучить дл€ чтени€ произвольный кадр потока.

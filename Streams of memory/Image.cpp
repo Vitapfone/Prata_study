@@ -1,11 +1,5 @@
 ﻿#include "pch.h"
-#include "My_names.h"
-#include "Simple structures.h"
-#include "Id_string.h"
 #include "Image.h"
-
-
-using namespace My_names;
 
 //Заполнить вн.вектор и айдишники из бин. файла
 void Image::init(ifstream & fin)

@@ -2,20 +2,20 @@
 //
 
 #include "pch.h"
-#include "My_names.h"
-#include "Simple structures.h"
+//#include "My_names.h"
+//#include "Simple structures.h"
 #include "Outer_stream.h"
 #include "Inner_stream.h"
 #include "Figures.h"
 #include "Warning.h"
 #include "Cluster.h"
-#include "Inspector.h"
+//#include "Inspector.h"
 #include "Focus of attention.h"
-#include "Id_string.h"
+//#include "Id_string.h"
 #include "Image.h"
 
 
-using namespace My_names;
+//using namespace My_names;
 
 constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
 constexpr size_t Height = 56;//Константа, задающая высоту рабочего пространства.

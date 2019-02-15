@@ -1,7 +1,4 @@
 #include "pch.h"
-#include "My_names.h"
-#include "Simple structures.h"
-#include "Warning.h"
 #include "Cluster.h"
 
 //Подсчет отличных от фона пикселей.

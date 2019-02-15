@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="Cluster.cpp" />
     <ClCompile Include="Figures.cpp" />
+    <ClCompile Include="Focus_of_attention.cpp" />
     <ClCompile Include="Id_string.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Database functions.cpp" />

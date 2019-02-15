@@ -1,10 +1,5 @@
 #include "pch.h"
-#include "My_names.h"
-#include "Simple structures.h"
-#include "Id_string.h"
 #include "Image.h"
-
-using namespace My_names;
 
 //Заполнение переданных контейнеров базы данных из файлов.
 void database_initialization(const string & file1, const string & file2, map<int, Id_string> & strings, list<Image> & images)

@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-#include "My_names.h"
 #include "Id_string.h"
 
 int Id_string::counter = 0;//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
