@@ -23,7 +23,7 @@ public:
 	//Виртуальный деструктор.
 	virtual ~Figure() {}
 
-	virtual void print(Ar60_30 & ws) const = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
+	
 
 //ГЕТТЕРЫ
 
@@ -32,11 +32,29 @@ public:
 
 //МЕТОДЫ ДВИЖЕНИЯ
 
-	virtual void moveRight() { ++loc.x; }//Передвинуть правее.
-	virtual void moveLeft() { --loc.x; }//Передвинуть левее.
-	virtual void moveUp() { --loc.y; }//Передвинуть выше.
-	virtual void moveDown() { ++loc.y; }//Передвинуть ниже.
+	//Используется NVI (невиртуальный интерфейс).
 
+	//Передвинуть правее.
+	void move_right() { moveRight(); }
+	//Передвинуть левее.
+	void move_left() { moveLeft(); }
+	//Передвинуть выше.
+	void move_up() { moveUp(); }
+	//Передвинуть ниже.
+	void move_down() { moveDown(); }
+
+protected:
+
+	virtual void moveRight() { ++loc.x; }
+	virtual void moveLeft() { --loc.x; }
+	virtual void moveUp() { --loc.y; }
+	virtual void moveDown() { ++loc.y; }
+
+public:
+
+//ДРУГИЕ
+
+	virtual void print(Ar60_30 & ws) const = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
 };
 
 
@@ -249,6 +267,8 @@ public:
 
 
 	//МЕТОДЫ ДВИЖЕНИЯ
+
+private:
 
 	virtual void moveRight() { Figure::moveRight(); point_A.x++; point_B.x++; }//Передвинуть правее.
 	virtual void moveLeft() { Figure::moveLeft(); point_A.x--; point_B.x--; }//Передвинуть левее.
