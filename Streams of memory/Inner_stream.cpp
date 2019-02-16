@@ -2,7 +2,7 @@
 #include "Inner_stream.h"
 
 //ѕолучить дл€ чтени€ произвольный кадр потока.
-const Inner_frame & Inner_stream::get_frame(size_t num) const
+const Inner_frame & Inner_stream::get_ro_frame(size_t num) const
 {
 	//ќсобенность в том, что num должен считатьс€ с конца деки, т.к. надо, чтобы кадр с большим номером был отсн€т ранее.
 
@@ -13,12 +13,12 @@ const Inner_frame & Inner_stream::get_frame(size_t num) const
 	return data[len - 1 - num];
 }
 
-//ѕерегрузка дл€ измен€ющих действий.
+//ѕолучить произвольный кадр дл€ измен€ющих действий.
 Inner_frame & Inner_stream::get_frame(size_t num)
 {
 	//ќсобенность в том, что num должен считатьс€ с конца деки, т.к. надо, чтобы кадр с большим номером был отсн€т ранее.
 
-	return const_cast<Inner_frame &> (const_cast<const Inner_stream* >(this)->get_frame(num));
+	return const_cast<Inner_frame &> ((this)->get_ro_frame(num));
 }
 
 //ѕодготовить кадр ввода дл€ повторного заполнени€.

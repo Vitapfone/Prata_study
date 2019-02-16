@@ -43,8 +43,8 @@ public:
 	Inner_frame & Input_frame (){ return input_frame; }
 
 	//Получить для чтения произвольный кадр потока.
-	const Inner_frame & get_frame(size_t num) const;
-	//Перегрузка для изменяющих действий.
+	const Inner_frame & get_ro_frame(size_t num) const;
+	//Получить произвольный кадр для изменяющих действий.
 	Inner_frame & get_frame(size_t num);
 
 //СЕТТЕРЫ

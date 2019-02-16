@@ -44,7 +44,7 @@ public:
 	Outer_frame<W, H> & Input_frame() { return input_frame; }
 
 	//Получить для чтения произвольный кадр потока.
-	const Outer_frame<W, H>  & get_frame(size_t num) const;
+	const Outer_frame<W, H>  & get_ro_frame(size_t num) const;
 
 //СЕТТЕРЫ
 
@@ -128,7 +128,7 @@ inline void Outer_stream<W, H>::print_frame(const Outer_frame<W, H> & fr) const
 
 //Получить для чтения произвольный кадр потока.
 template<size_t W, size_t H>
-const Outer_frame<W, H> & Outer_stream<W, H>::get_frame(size_t num) const
+const Outer_frame<W, H> & Outer_stream<W, H>::get_ro_frame(size_t num) const
 {
 	//Особенность в том, что num должен считаться с конца деки, т.к. надо, чтобы кадр с большим номером был отснят ранее.
 

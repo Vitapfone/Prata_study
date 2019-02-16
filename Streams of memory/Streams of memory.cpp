@@ -75,7 +75,7 @@ int main()
 		vector<Warning> warnings;
 
 		//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Файл Cluster.h
-		Warning w1 = most_filled_cluster(outs.get_frame(0), ' ');
+		Warning w1 = most_filled_cluster(outs.get_ro_frame(0), ' ');
 
 		//Заносим предупреждение в вектор.
 		warnings.push_back(w1);
@@ -83,7 +83,7 @@ int main()
 		if (i > 0)//Проверка нужна, т.к. в самом начале записи еще нет второго кадра потока.
 		{
 			//Простейшая ф-я управления вниманием. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
-			Warning w2 = most_difference_in_cluster(outs.get_frame(0), outs.get_frame(1));
+			Warning w2 = most_difference_in_cluster(outs.get_ro_frame(0), outs.get_ro_frame(1));
 			//Заносим предупреждение в вектор.
 			warnings.push_back(w2);
 		}
@@ -103,7 +103,7 @@ int main()
 		//Передача данных от внешнего потока внутреннему. Пока без каких-либо ограничений и модификаций.
 
 		//Внешний поток выдает свой нулевой кадр. 
-		Outer_frame<Width, Height> outer_data = outs.get_frame(0);
+		Outer_frame<Width, Height> outer_data = outs.get_ro_frame(0);
 
 		//Буфер для конвертации данных в формат кадра внутреннего потока.
 		Inner_frame buffer;
@@ -129,7 +129,7 @@ int main()
 		foc.relocate(most_important.where());
 
 		//Создаем ссылку на первый кадр потока, чтобы не вызывать функцию каждый раз.
-		Inner_frame & current_frame = ins.get_frame(0);
+		const Inner_frame & current_frame = ins.get_ro_frame(0);
 
 		int count = 0;
 		//cout << "Before elemental clusterization" << endl;
