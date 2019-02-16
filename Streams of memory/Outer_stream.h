@@ -134,14 +134,8 @@ const Outer_frame<W, H> & Outer_stream<W, H>::get_frame(size_t num) const
 
 	size_t len = data.size();
 
-	if (data.empty())
-		{
-			throw std::logic_error("Empty stream!\n");
-		}
-	if (num < 0 || num >= len)
-	{
-		throw std::out_of_range("Out of range!\n");
-	}
+	assert(num >= 0 && num < len);
+
 	return data[len - 1 - num];
 }
 
