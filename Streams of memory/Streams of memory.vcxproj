@@ -158,6 +158,7 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="Inner_stream.h" />
     <ClInclude Include="Inspector.h" />
+    <ClInclude Include="Link.h" />
     <ClInclude Include="My_names.h" />
     <ClInclude Include="Outer_stream.h" />
     <ClInclude Include="pch.h" />
