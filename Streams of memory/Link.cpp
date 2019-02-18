@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Link.h"
 
+int Link::counter = 0;//Инициализация счетчика.
+
 //Конструктор с полной спецификацией аргументов.
 Link::Link(Image * l_ptr, int l_id, int l_str, Id_string * r_ptr, int r_id, int r_str): left_ptr(l_ptr), left_id(l_id), left_strength(l_str),
 		right_ptr(r_ptr), right_id(r_id), right_strength(r_str)
@@ -28,6 +30,14 @@ inline void Link::set_right_obj(Id_string * r_ptr, int r_id, int r_str)
 	right_ptr = r_ptr;
 	right_id = r_id;
 	right_strength = r_str;
+}
+
+//Установить айди.
+void Link::set_id(int new_id)
+{
+	id = new_id;
+	if (counter < id)
+		counter = id;
 }
 
 //Инициализировать информацию о дате и времени создания.
@@ -69,4 +79,36 @@ bool Links::bin_write(ofstream & fout, const Link & link)
 	{
 		return false;
 	}
+}
+
+//Прочитать связь из бинарного файла.
+bool Links::bin_read(ifstream & fin, Link & link)
+{
+	//Чтение данных во временные переменные.
+
+	int id;
+	fin.read((char*)&id, sizeof(id));
+	char time_date[26];
+	fin.read(time_date, 26);
+	int l_id;
+	fin.read((char*)&l_id, sizeof(l_id));
+	int l_str;
+	fin.read((char*)&l_str, sizeof(l_str));
+	int r_id;
+	fin.read((char*)&r_id, sizeof(r_id));
+	int r_str;
+	fin.read((char*)&r_str, sizeof(r_str));
+
+	if (!fin)//Если произошел сбой, то сразу возвращаем отказ.
+	{
+		return false;
+	}
+
+	//Установка членов.
+	link.set_id(id);
+	link.set_time_date(time_date);
+	link.set_left_attr(l_id, l_str);
+	link.set_right_attr(r_id, r_str);
+
+	return true;
 }

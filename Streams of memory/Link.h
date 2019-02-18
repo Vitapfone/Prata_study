@@ -32,6 +32,8 @@ public:
 
 	//Выдать идентификатор
 	int get_id() const { return id; }
+	//Выдать значение счетчика.
+	int get_counter() const{ return counter; }
 	//Выдать информацию о дате и времени создания.
 	const string get_time_date() const { return time_date; }
 
@@ -53,12 +55,27 @@ public:
 
 	//Установить связь с левым объектом.
 	void set_left_obj(Image* l_ptr, int l_id, int l_str);
+	//Установить указатель на левый объект.
+	void set_left_ptr(Image* l_ptr) { left_ptr = l_ptr; }
+	//Установить атрибуты левого объекта
+	void set_left_attr(int l_id, int l_str) { left_id = l_id; left_strength = l_str; }
+
 	//Установить связь с правым объектом.
 	void set_right_obj(Id_string* r_ptr, int r_id, int r_str);
+	//Установить указатель на правый объект.
+	void set_right_ptr(Id_string* r_ptr) { right_ptr = r_ptr; }
+	//Установить атрибуты правого объекта.
+	void set_right_attr(int r_id, int r_str) { right_id = r_id; right_strength = r_str; }
+
 	//Установить айди.
-	void set_id(int new_id) {id=new_id;}
+	void set_id(int new_id);
+	//Установить счетчик.
+	void set_counter(int new_counter) { counter = new_counter; }
 	//Инициализировать информацию о дате и времени создания.
 	void Time_date();
+	//Установить информацию о дате и времени создания.
+	void set_time_date(const string & t_d) { strcpy_s(time_date, 26, t_d.c_str()); }
+	void set_time_date(const char* t_d){ strcpy_s(time_date, 26, t_d); }
 };
 
 

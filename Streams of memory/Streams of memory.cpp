@@ -13,6 +13,7 @@
 #include "Focus of attention.h"
 //#include "Id_string.h"
 #include "Image.h"
+#include "Link.h"
 
 
 //using namespace My_names;
@@ -39,7 +40,8 @@ int main()
 	//ЗАПОЛНЕНИЕ БАЗЫ ДАННЫХ ИЗ ФАЙЛОВ.
 
 	map<int, Id_string> string_map;//Карта для хранения прочитанных строк в соответствии с их идентификаторами.
-	list<Image> im_list;//Вектор образов
+	map<int, Link> link_map;//Карта для хранения связей в соответствии с их айди.
+	map<int,Image> image_map;//Карта для образов.
 	//Функция выполняет всю работу.
 	database_initialization("Strings\\strings_data.bin", "Figures\\figures_data.bin", string_map, im_list);
 	
