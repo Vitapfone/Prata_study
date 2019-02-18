@@ -6,22 +6,30 @@
 
 using namespace My_names;
 using Inner_frame = vector<vector<char>>;
+enum class Link_side {no, left, right}; //Перечисление для определения стороны связи, к которой прикреплен этот образ.
 
 class Image
 {
-	struct Link_ptr //Структура для представления нумерованной связи объекта.
-	{
-		Id_string* ps = nullptr; //Указатель, имитирующий некую информативную связь объекта образа.
-		int id = 0; //Идентификатор для этого указателя, позволит потом найти эту строку.
-	};
+	int id = 0;//Идентификатор самого образа.
+	static int counter;//Статический счетчик для получения уникальных айди.
 
 	vector<vector<bool>> data;// Вектор булевых векторов, где будет храниться образ.
 
 	size_t width = 0, height = 0; //Высота и ширина образа.
 	double aspect_rate = 0.0;//Отношение ширины к высоте.
 
+	class Link;//Предварительное объявление для класса связи.
+
+	struct Link_ptr //Структура для представления нумерованной связи объекта.
+	{
+		Link* pl = nullptr; //Указатель, имитирующий некую информативную связь объекта образа.
+		Link_side ls = Link_side::no;
+		int id = 0; //Идентификатор для этого указателя, позволит потом найти эту строку.
+	};
+
+
 	Link_ptr is_link;//Связь для подтверждающей строки.
-	Link_ptr non_link;//Связь для опровергающей строки.
+	
 
 public:
 
@@ -31,8 +39,6 @@ public:
 
 	//Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
 	Image(const Borders & bs, const Inner_frame & ws, char, char);
-	//Конструктор заполнит внутренний вектор из бинарного файла.
-	Image(ifstream &);
 
 	~Image() {}
 
@@ -45,16 +51,14 @@ public:
 	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
 
 	const Link_ptr get_is_link() const { return is_link; }//Выдать подтверждающую связь.
-	const Link_ptr get_non_link() const { return non_link; }//Выдать опровергающую связь.
+	
 	
 	const vector<vector<bool>> & get_data() const { return data; }//Выдать вектор образа.
 
 //СЕТТЕРЫ
 
-	void set_is_link(Id_string* is) { is_link.ps = is; /*is_link.id = is->get_id();*/ }//Установить связь с некоей строкой с идентификатором.
+	void set_is_link(Link* is) { is_link.pl = is; /*is_link.id = is->get_id();*/ }//Установить связь.
 	void set_is_link(Link_ptr const & other) { is_link = other; }
-	void set_non_link(Id_string* is) { non_link.ps = is; /*non_link.id = is->get_id();*/ }
-	void set_non_link(Link_ptr const & other) { non_link = other; }
 
 //ДРУГИЕ
 
