@@ -9,17 +9,7 @@
 #ifndef PCH_H
 #define PCH_H
 
+// TODO: add headers that you want to pre-compile here
 #include <iostream>
-#include <fstream>
-#include <array>
-#include <deque>
-#include <map>
-#include <set>
-#include <list>
-#include <Windows.h>
-#include <vector>
-#include <string>
-//#include <utility>
-#include <cassert>
 #include <ctime>
 #endif //PCH_H

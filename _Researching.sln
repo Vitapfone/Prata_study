@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "List reverse", "List revers
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Streams of memory", "Streams of memory\Streams of memory.vcxproj", "{95D9547C-0387-4A1C-9A42-BEFD8308790E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "For tests", "For tests\For tests.vcxproj", "{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x64.Build.0 = Release|x64
 		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x86.ActiveCfg = Release|Win32
 		{95D9547C-0387-4A1C-9A42-BEFD8308790E}.Release|x86.Build.0 = Release|Win32
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Debug|x64.ActiveCfg = Debug|x64
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Debug|x64.Build.0 = Debug|x64
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Debug|x86.ActiveCfg = Debug|Win32
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Debug|x86.Build.0 = Debug|Win32
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Release|x64.ActiveCfg = Release|x64
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Release|x64.Build.0 = Release|x64
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Release|x86.ActiveCfg = Release|Win32
+		{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

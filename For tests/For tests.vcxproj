@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{95D9547C-0387-4A1C-9A42-BEFD8308790E}</ProjectGuid>
+    <ProjectGuid>{8E9DC116-3151-4B07-ACDF-F7EC6317C2CD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Streamsofmemory</RootNamespace>
+    <RootNamespace>Fortests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,38 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Cluster.h" />
-    <ClInclude Include="Figures.h" />
-    <ClInclude Include="Focus of attention.h" />
-    <ClInclude Include="Id_string.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="Inner_stream.h" />
-    <ClInclude Include="Inspector.h" />
-    <ClInclude Include="Link.h" />
-    <ClInclude Include="My_names.h" />
-    <ClInclude Include="Outer_stream.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Simple structures.h" />
-    <ClInclude Include="Warning.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cluster.cpp" />
-    <ClCompile Include="Figures.cpp" />
-    <ClCompile Include="Focus_of_attention.cpp" />
-    <ClCompile Include="Id_string.cpp" />
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="Database functions.cpp" />
-    <ClCompile Include="Inner_stream.cpp" />
-    <ClCompile Include="Inspector.cpp" />
-    <ClCompile Include="Link.cpp" />
+    <ClCompile Include="For tests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Streams of memory.cpp" />
-    <ClCompile Include="Warning.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
