@@ -16,25 +16,23 @@ void Image::init(ifstream & fin)
 		data.push_back(temp);
 	}
 
-	//Читаем айдишники.
+	//Читаем айдишник связи.
 	fin.read((char*)&is_link.id, sizeof is_link.id);
-	fin.read((char*)&non_link.id, sizeof non_link.id);
+	//Читаем маркер стороны связи.
+	fin.read((char*)&is_link.ls, sizeof is_link.ls);
 }
 
-//Конструктор заполнит внутренний вектор из бинарного файла.
-Image::Image(ifstream & ifs) : data(vector<vector<bool>>())
-{
-	//Прочитать ширину и высоту образа.
-	ifs.read((char*)&width, sizeof width);
-	ifs.read((char*)&height, sizeof height);
-	aspect_rate = static_cast<double> (width) / height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
-	init(ifs);//Читаем все остальное.
-}
+
+int Image::counter = 0;//Инициализация счетчика.
 
 //Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
 Image::Image(const Borders & bs, const Inner_frame & ws, char bg, char obj) : data(vector<vector<bool>>())
 {
+	//Обновление счетчика и установка айди.
+	++counter;
+	id = counter;
+
 	//cout << "Constructing... ";
 	for (int i = bs.y_min, i2 = 0; i <= bs.y_max; ++i, ++i2)
 	{
@@ -83,18 +81,21 @@ bool Image::bin_read(ifstream & fin)
 
 	Image temp;//Создается временный объект, с которым и происходят все изменения.
 
-	//Прочитать ширину и высоту образа.
-	
-	if (!fin.read((char*)&temp.width, sizeof width))
+	//Прочитать айди.
+	if (!fin.read((char*)&temp.id, sizeof id))
 	{
 		return false;
 	}
+
+	//Прочитать ширину и высоту образа.
+	fin.read((char*)&temp.width, sizeof width);
+	
 	fin.read((char*)&temp.height, sizeof height);
 	temp.aspect_rate = static_cast<double>(temp.width) / temp.height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
 	try
 	{
-		temp.init(fin);//Читаем все остальное.
+		temp.init(fin);
 	}
 	catch (std::bad_alloc & ex)
 	{
@@ -115,6 +116,7 @@ bool Image::bin_read(ifstream & fin)
 //Записать в бинарный файл.
 bool Image::bin_write(ofstream & fout) const
 {
+	fout.write((char*)&id, sizeof id);//Запись айди.
 	fout.write((char*)&width, sizeof width);//Запись ширины.
 	fout.write((char*)&height, sizeof height);//Запись высоты.
 
@@ -127,9 +129,11 @@ bool Image::bin_write(ofstream & fout) const
 			fout.write((char*)&elem, sizeof elem);
 		}
 	}
-	//Запись айди связей.
+	//Запись айди связи.
 	fout.write((char*)&is_link.id, sizeof is_link.id);
-	fout.write((char*)&non_link.id, sizeof non_link.id);
+	//Запись маркера стороны.
+	fout.write((char*)&is_link.ls, sizeof is_link.ls);
+	
 
 	if (fout)//Если все успешно,
 	{
@@ -143,21 +147,21 @@ bool Image::bin_write(ofstream & fout) const
 
 
 //Оператор выведет эл-ты внутреннего вектора. Вообще используется для записи в текстовый файл.
-ostream & operator<<(ostream & os, const Image & im)
-{
-	for (size_t i = 0; i < im.get_data().size(); ++i)
-	{
-		for (size_t j = 0; j < im.get_data()[0].size(); ++j)
-		{
-			os << im.get_data()[i][j];
-		}
-		os << endl;
-	}
-	os << '\n';
-	os << im.get_is_link().id << ' ' << im.get_non_link().id << endl;
-
-	return os;
-}
+//ostream & operator<<(ostream & os, const Image & im)
+//{
+//	for (size_t i = 0; i < im.get_data().size(); ++i)
+//	{
+//		for (size_t j = 0; j < im.get_data()[0].size(); ++j)
+//		{
+//			os << im.get_data()[i][j];
+//		}
+//		os << endl;
+//	}
+//	os << '\n';
+//	os << im.get_is_link().id << ' ' << im.get_non_link().id << endl;
+//
+//	return os;
+//}
 
 
 //Функция выяснит совпадают ли образы.

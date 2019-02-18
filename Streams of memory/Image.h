@@ -55,6 +55,11 @@ public:
 	
 	const vector<vector<bool>> & get_data() const { return data; }//Выдать вектор образа.
 
+//private:
+	//vector<vector<bool>> & get_data() { return data; }//Выдать вектор образа. Неконстантная закрытая перегрузка.
+
+//public:
+
 //СЕТТЕРЫ
 
 	void set_is_link(Link* is) { is_link.pl = is; /*is_link.id = is->get_id();*/ }//Установить связь.
@@ -79,7 +84,7 @@ public:
 };
 
 //Оператор выведет эл-ты внутреннего вектора.
-ostream & operator<<(ostream &, const Image &);
+//ostream & operator<<(ostream &, const Image &);
 
 //Функция выяснит совпадают ли образы. 
 bool image_equality(const Image & im1, const Image & im2, double min_equality);
