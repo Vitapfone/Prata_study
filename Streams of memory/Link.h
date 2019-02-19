@@ -45,7 +45,7 @@ public:
 	int get_left_strength() const { return left_strength; }
 
 	//Выдать указатель на правый объект.
-	Id_string* get_right_ptr() const { return right_ptr; }
+	Id_string* get_right_ptr() const { /*assert(right_ptr != nullptr);*/ cout << "Get_right_ptr\n"; return right_ptr; }
 	//Выдать правый идентификатор.
 	int get_right_id() const{ return right_id; }
 	//Выдать правую силу.

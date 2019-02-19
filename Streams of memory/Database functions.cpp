@@ -3,7 +3,7 @@
 #include "Link.h"
 
 //Заполнение переданных контейнеров базы данных из файлов.
-void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> links, map<int, Id_string> & strings)
+void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
 {
 	//Конструирование образов из файлов.
 
@@ -22,6 +22,7 @@ void database_initialization(const string & file1, const string & file2, const s
 
 	while (Links::bin_read(ifs_links, temp2))
 	{
+		cout << "link inserting\n";
 		links[temp2.get_id()] = temp2;
 	}
 
@@ -43,27 +44,31 @@ void database_initialization(const string & file1, const string & file2, const s
 		auto & curr_image = e.second;
 		auto & link = links[curr_image.get_is_link().id];
 		curr_image.set_is_link(&link);
+		cout << "curr_image.get_is_link = " << curr_image.get_is_link().id << endl;
 	}
 
 	for (auto & e : links)
 	{
+		cout << "for : links\n";
 		Link & curr_link = e.second;
 		Image & image = images[curr_link.get_left_id()];
 		curr_link.set_left_ptr(&image);
 		Id_string & string = strings[curr_link.get_right_id()];
 		curr_link.set_right_ptr(&string);
 	}
-
+	cout << links.size() << endl;
 	for (auto & e : strings)
 	{
 		Id_string & curr_string = e.second;
 		Link & link = links[curr_string.get_link_id()];
 		curr_string.set_is_link(&link);
+		cout << "curr_string.get_link_id() = " << curr_string.get_link_id() << endl;
 	}
+	cout << links.size() << endl;
 }
 
 //Запись содержимого контейнеров в файлы.
-void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> links, map<int, Id_string> & strings)
+void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
 {
 	ofstream ofsImages(file1, ofstream::binary);//Создаем файл для записи образов.
 	for (const auto & e : images)

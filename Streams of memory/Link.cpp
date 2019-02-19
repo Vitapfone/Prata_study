@@ -84,10 +84,16 @@ bool Links::bin_write(ofstream & fout, const Link & link)
 //Прочитать связь из бинарного файла.
 bool Links::bin_read(ifstream & fin, Link & link)
 {
+	cout << "Links::bin_read\n";
 	//Чтение данных во временные переменные.
 
 	int id;
-	fin.read((char*)&id, sizeof(id));
+	if (!fin.read((char*)&id, sizeof(id)))
+	{
+		cout << "return false 1\n";
+		return false;
+	}
+
 	char time_date[26];
 	fin.read(time_date, 26);
 	int l_id;
@@ -101,6 +107,7 @@ bool Links::bin_read(ifstream & fin, Link & link)
 
 	if (!fin)//Если произошел сбой, то сразу возвращаем отказ.
 	{
+		cout << "return false 2\n";
 		return false;
 	}
 
@@ -110,5 +117,6 @@ bool Links::bin_read(ifstream & fin, Link & link)
 	link.set_left_attr(l_id, l_str);
 	link.set_right_attr(r_id, r_str);
 
+	cout << "Return true\n";
 	return true;
 }

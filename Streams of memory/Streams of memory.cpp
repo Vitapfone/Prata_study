@@ -20,16 +20,16 @@
 
 constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
 constexpr size_t Height = 56;//Константа, задающая высоту рабочего пространства.
-constexpr size_t Frames = 130;//Количество переданных в поток кадров.
+constexpr size_t Frames = 1;//Количество переданных в поток кадров.
 
 constexpr double Equality_min = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
 void figure_moving(Figure &, size_t);//Движение фигуры в зависимости от стадии цикла записи.
 
 //Заполнение переданных контейнеров базы данных из файлов.
-void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> links, map<int, Id_string> & strings);
+void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings);
 //Запись содержимого контейнеров в файлы.
-void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> links, map<int, Id_string> & strings);
+void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings);
 
 int main()
 {
@@ -42,16 +42,25 @@ int main()
 	map<int, Id_string> string_map;//Карта для хранения прочитанных строк в соответствии с их идентификаторами.
 	map<int, Link> link_map;//Карта для хранения связей в соответствии с их айди.
 	map<int,Image> image_map;//Карта для образов.
+
+	cout << "Before database initialisation\n";
+
 	//Функция выполняет всю работу.
-	database_initialization("Strings\\strings_data.bin", "Links\\links_data.bin", "Figures\\figures_data.bin", image_map, link_map, string_map);
+	database_initialization(  "Figures\\figures_data.bin", "Links\\links_data.bin", "Strings\\strings_data.bin", image_map, link_map, string_map);
 	
+	cout << "After database initialisation\n";
+	cout << image_map.size() << ' ' << link_map.size() << ' ' << string_map.size() << endl;
+	
+	char g;
+	cin >> g;
+	cin.ignore(1000, '\n');
 
 	//КОНСТРУИРОВАНИЕ ПОТОКОВ
-	//Square fig(20, 10, 10);//Фигура для демонстрации записи в поток.
+	Square fig(20, 3, 50);//Фигура для демонстрации записи в поток.
 	//My::Rectangle fig(20, 10, 10);
 	//Circle fig(20, 10, 9);
 	//Rhomb fig(20, 10, 10);
-	Triangle fig(20, 10, 10);
+	//Triangle fig(20, 10, 10);
 
 	Outer_stream<Width, Height> outs(3);//Внешний поток заданной длины.
 	Inner_stream ins(Width, Height, Frames - 2);//Внутренний поток.
@@ -186,7 +195,7 @@ int main()
 				cout << "Images are equal!!\t";
 
 				//Через связь надо получить доступ к строке.
-				cout << figure.get_is_link().pl->get_right_ptr()->get_data() << endl;
+				cout << (figure.get_is_link().pl->get_right_ptr()->get_data()) << endl;
 
 				Image::decrease_counter();//Уменьшаем счетчик, т.к. эта фигура не будет записываться в файл.
 
@@ -231,11 +240,16 @@ int main()
 			//Вставляем новую связь в карту.
 			link_map[new_link.get_id()] = new_link;
 			string_map[new_string.get_id()] = new_string;//Вставляем новые строки в карту.
-			im_list.push_back(figure);//Образ неизвестной ранее фигуры добавляется в вектор эталонов.
+			image_map[figure.get_id()] = figure;//Вставляем новую фигуру в карту.
+
+			assert(new_string.get_id() == figure.get_id());
+			cout << new_string.get_id() << ' ' << figure.get_id() << endl;
 
 			//Вектор, дополненный новой фигурой, перебирается еще раз, чтобы проверить распознавание этой добавленной фигуры.
-			for (const Image &im : im_list)
+			for (const auto & e : image_map)
 			{
+				auto & im = e.second;
+
 				if (image_equality(figure, im, Equality_min))//Если образы совпадают.
 				{
 					match = true;
@@ -258,7 +272,7 @@ int main()
 
 		
 
-		system("cls");
+		//system("cls");
 
 		//Движение фигуры в зависимости от стадии цикла записи.
 		figure_moving(fig, i);
@@ -271,9 +285,10 @@ int main()
 
 
 //УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////
-
+	cout << image_map.size() << ' ' << link_map.size() << ' ' << string_map.size() << endl;
+	
 	//Функция выполняет всю работу.
-	database_recording("Strings\\strings_data.bin", "Links\\links_data.bin", "Figures\\figures_data.bin", image_map, link_map, string_map);
+	database_recording("Figures\\figures_data.bin", "Links\\links_data.bin", "Strings\\strings_data.bin", image_map, link_map, string_map);
 
 	//ins.play(10);//Вывод содержимого потока в консоль.
 

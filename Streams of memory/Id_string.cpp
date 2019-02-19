@@ -6,15 +6,15 @@ int Id_string::counter = 0;//Инициализация не константн�
 //Заполнить строку и айдишник из бин. файла.
 void Id_string::init(ifstream & fin, size_t len)
 {
+	
 	//Выделяем под нее память. Для работы с массивом это должно быть отражено в параметре шаблона.
 	auto buf = make_unique<char[]>(len);
 	
 	fin.read(buf.get(), len);//Читаем в эту память.
 	data.assign(buf.get());//Присваиваем содержимое буфера строке.
 
-
-
-	
+	fin.read((char*)&im_link.id, sizeof im_link.id);//Прочитать айди связи.
+	fin.read((char*)&im_link.ls, sizeof im_link.ls);//Прочитать маркер стороны связи.
 }
 
 ////Конструктор из бинарного файла.
@@ -30,12 +30,13 @@ void Id_string::init(ifstream & fin, size_t len)
 bool Id_string::bin_write(ofstream & fout) const
 {
 	fout.write((char*)&id, sizeof id);//Записываем id.
-
+	
 	size_t len = data.size() + 1;//Получаем размер строки, хранимой объектом.
 	fout.write((char*)&len, sizeof len);//Записываем этот размер.
 	fout.write(data.c_str(), len);//Записываем саму строку.
 	
 	fout.write((char*)&im_link.id, sizeof im_link.id);//Записываем айди связи.
+	cout << "fout.write((char*)&im_link.id, sizeof im_link.id), im_link.id = " << im_link.id << endl;
 	fout.write((char*)&im_link.ls, sizeof im_link.ls);//Записываем маркер стороны связи.
 
 	if (fout)//Ели все успешно записано, возвращаем true.
@@ -62,9 +63,10 @@ bool Id_string::bin_read(ifstream & fin)
 	{
 		return false;//то возвращаем false.
 	}
-
+	
 	//Читаем длину строки.
 	size_t len;
+	
 	fin.read((char*)&len, sizeof len);
 
 	try
@@ -73,7 +75,7 @@ bool Id_string::bin_read(ifstream & fin)
 	}
 	catch (std::bad_alloc & ex)//Если будет исключение, то чтение файла откатится назад к началу записи об этой строке.
 	{
-		cerr << ex.what() << endl;
+		cerr << ex.what() << " in Id_string::bin_read\n";
 		int l = sizeof len;
 		fin.seekg(-l, ifstream::cur);
 		return false;

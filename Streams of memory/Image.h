@@ -6,7 +6,7 @@
 
 using namespace My_names;
 using Inner_frame = vector<vector<char>>;
-enum class Link_side {no, left, right}; //Перечисление для определения стороны связи, к которой прикреплен этот образ.
+//enum class Link_side {no, left, right}; //Перечисление для определения стороны связи, к которой прикреплен этот образ.
 class Link;//Предварительное объявление для класса связи.
 
 class Image
@@ -21,12 +21,12 @@ class Image
 
 	
 
-	struct Link_ptr //Структура для представления нумерованной связи объекта.
-	{
-		Link* pl = nullptr; //Указатель, имитирующий некую информативную связь объекта образа.
-		Link_side ls = Link_side::no;
-		int id = 0; //Идентификатор для этого указателя, позволит потом найти эту строку.
-	};
+	//struct Link_ptr //Структура для представления нумерованной связи объекта.
+	//{
+	//	Link* pl = nullptr; //Указатель, имитирующий некую информативную связь объекта образа.
+	//	Link_side ls = Link_side::no;
+	//	int id = 0; //Идентификатор для этого указателя, позволит потом найти эту строку.
+	//};
 
 
 	Link_ptr is_link;//Связь для подтверждающей строки.
@@ -52,7 +52,7 @@ public:
 	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
 
 	int get_id()const { return id; }
-	const Link_ptr get_is_link() const { return is_link; }//Выдать подтверждающую связь.
+	const Link_ptr get_is_link() const { cout << "Get is_link\n"; return is_link; }//Выдать подтверждающую связь.
 	
 	
 	const vector<vector<bool>> & get_data() const { return data; }//Выдать вектор образа.

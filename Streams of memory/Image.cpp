@@ -99,7 +99,8 @@ bool Image::bin_read(ifstream & fin)
 	}
 	catch (std::bad_alloc & ex)
 	{
-		cerr << ex.what() << endl;
+		
+		cerr << ex.what() << " in Image::bin_read\n";
 		return false;//При исключении чтение завершится.
 	}
 
