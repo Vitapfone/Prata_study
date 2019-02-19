@@ -4,6 +4,8 @@
 
 using namespace My_names;
 
+enum class Link_side { no, left, right }; //Перечисление для определения стороны связи, к которой прикреплена эта строка.
+
 class Id_string
 {
 public:
@@ -18,8 +20,7 @@ public:
 		if (counter < id)
 			counter = id;
 	}
-	//конструктор из бинарного файла.
-	Id_string(ifstream &);
+	
 	~Id_string() {}
 
 //МЕТОДЫ
@@ -34,6 +35,28 @@ public:
 
 	int get_counter() const { return counter; }//Выдать счетчик
 	int & get_counter() { return counter; }
+
+	int get_link_id()const { return im_link.id; }//Выдать айди связи.
+	Link_side get_ls()const { return im_link.ls; }//Выдать маркер стороны.
+
+	class Link;//Предварительное объявление для класса связи.
+
+	struct Link_ptr //Структура для представления нумерованной связи объекта.
+	{
+		Link* pl = nullptr; //Указатель, имитирующий некую информативную связь объекта строки.
+		Link_side ls = Link_side::no;//Маркер стороны связи. Указывает, к какой стороне связи присоединена строка. По умолчанию ни к какой.
+		int id = 0; //Идентификатор для этого указателя, позволит потом найти этот образ.
+	};
+
+	const Link_ptr get_im_link() const { return im_link; }//Выдать связь.
+
+//СЕТТЕРЫ
+
+	void set_is_link(Link* is) { im_link.pl = is; /*is_link.id = is->get_id();*/ }//Установить связь.
+	void set_is_link(Link_ptr const & other) { im_link = other; }
+
+
+//ДРУГИЕ
 
 	//Записать в бинарный файл.
 	bool bin_write(ofstream & fout)const;
@@ -52,10 +75,11 @@ private:
 	int id = 0;
 	static int counter;//Не константный статический член нельзя инициализировать в классе.
 
+	Link_ptr im_link;//Связь для некоего образа.
 };
 
-//Оператор вывода для записи в текстовый файл.
+//Оператор вывода.
 ostream & operator<< (ostream &, const Id_string &);
 
-//Оператор ввода из текстового файла.
-istream & operator>>(istream &, Id_string &);
+////Оператор ввода из текстового файла.
+//istream & operator>>(istream &, Id_string &);

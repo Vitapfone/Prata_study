@@ -15,7 +15,7 @@
 #include <deque>
 #include <map>
 #include <set>
-#include <list>
+//#include <list>
 #include <Windows.h>
 #include <vector>
 #include <string>
