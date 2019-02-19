@@ -188,9 +188,9 @@ int main()
 				//Через связь надо получить доступ к строке.
 				cout << figure.get_is_link().pl->get_right_ptr()->get_data() << endl;
 
-				break;//Как только совпадение найдено, завершаем проверку.
-
 				Image::decrease_counter();//Уменьшаем счетчик, т.к. эта фигура не будет записываться в файл.
+
+				break;//Как только совпадение найдено, завершаем проверку.
 			}
 
 			//else//Образы не совпадают.
@@ -214,16 +214,23 @@ int main()
 			cin >> figure_name;
 
 			string new_figure_link{ "This is " + figure_name + "." };//Конструируются строки сообщений, которые здесь имитируют связи новой фигуры.
-			Id_string id_new_figure_link(new_figure_link);
-			string new_figure_non_link = "Not equal to " + figure_name + ".";
-			Id_string id_new_figure_non_link(new_figure_non_link);
+			Id_string new_string(new_figure_link);
+			
+			
+			
 
-			string_map[id_new_figure_link.get_id()] = id_new_figure_link;//Вставляем новые строки в карту.
-			string_map[id_new_figure_non_link.get_id()] = id_new_figure_non_link;
+			//Создаем новую связь для образа и строки.
+			Link new_link(&figure, figure.get_id(), 10, &new_string, new_string.get_id(), 10);
+			
 
-			figure.set_is_link(&string_map[id_new_figure_link.get_id()]);//Фигура получает свои связи.
-			figure.set_non_link(&string_map[id_new_figure_non_link.get_id()]);
+			//Регистрируем связь в образе.
+			figure.set_is_link({ &new_link, Link_side::left, new_link.get_id() });
+			//Регистрируем связь в строке.
+			new_string.set_is_link({ &new_link, Link_side::right, new_link.get_id() });
 
+			//Вставляем новую связь в карту.
+			link_map[new_link.get_id()] = new_link;
+			string_map[new_string.get_id()] = new_string;//Вставляем новые строки в карту.
 			im_list.push_back(figure);//Образ неизвестной ранее фигуры добавляется в вектор эталонов.
 
 			//Вектор, дополненный новой фигурой, перебирается еще раз, чтобы проверить распознавание этой добавленной фигуры.
@@ -233,8 +240,12 @@ int main()
 				{
 					match = true;
 					figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
-					cout << "Images are equal!!\n\t" << (figure.get_is_link().ps->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
-					break;
+					cout << "Images are equal!!\t";
+
+					//Через связь надо получить доступ к строке.
+					cout << figure.get_is_link().pl->get_right_ptr()->get_data() << endl;
+
+					break;//Как только совпадение найдено, завершаем проверку.
 				}
 				//else//Образы не совпадают.
 				//{
