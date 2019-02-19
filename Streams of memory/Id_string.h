@@ -5,6 +5,7 @@
 using namespace My_names;
 
 enum class Link_side { no, left, right }; //Перечисление для определения стороны связи, к которой прикреплена эта строка.
+class Link;//Предварительное объявление для класса связи.
 
 class Id_string
 {
@@ -36,10 +37,12 @@ public:
 	int get_counter() const { return counter; }//Выдать счетчик
 	int & get_counter() { return counter; }
 
-	int get_link_id()const { return im_link.id; }//Выдать айди связи.
-	Link_side get_ls()const { return im_link.ls; }//Выдать маркер стороны.
+	//Выдать айди связи.
+	int get_link_id()const { return im_link.id; }
+	//Выдать маркер стороны.
+	Link_side get_ls()const { return im_link.ls; }
 
-	class Link;//Предварительное объявление для класса связи.
+	
 
 	struct Link_ptr //Структура для представления нумерованной связи объекта.
 	{
@@ -52,7 +55,7 @@ public:
 
 //СЕТТЕРЫ
 
-	void set_is_link(Link* is) { im_link.pl = is; /*is_link.id = is->get_id();*/ }//Установить связь.
+	void set_is_link(Link* is) { im_link.pl = is; }//Установить связь.
 	void set_is_link(Link_ptr const & other) { im_link = other; }
 
 

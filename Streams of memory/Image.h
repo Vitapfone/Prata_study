@@ -7,6 +7,7 @@
 using namespace My_names;
 using Inner_frame = vector<vector<char>>;
 enum class Link_side {no, left, right}; //Перечисление для определения стороны связи, к которой прикреплен этот образ.
+class Link;//Предварительное объявление для класса связи.
 
 class Image
 {
@@ -18,7 +19,7 @@ class Image
 	size_t width = 0, height = 0; //Высота и ширина образа.
 	double aspect_rate = 0.0;//Отношение ширины к высоте.
 
-	class Link;//Предварительное объявление для класса связи.
+	
 
 	struct Link_ptr //Структура для представления нумерованной связи объекта.
 	{
@@ -50,6 +51,7 @@ public:
 	size_t get_height() const { return height; }//Выдать высоту.
 	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
 
+	int get_id()const { return id; }
 	const Link_ptr get_is_link() const { return is_link; }//Выдать подтверждающую связь.
 	
 	
@@ -64,6 +66,7 @@ public:
 
 	void set_is_link(Link* is) { is_link.pl = is; /*is_link.id = is->get_id();*/ }//Установить связь.
 	void set_is_link(Link_ptr const & other) { is_link = other; }
+	
 
 //ДРУГИЕ
 

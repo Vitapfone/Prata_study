@@ -27,9 +27,9 @@ constexpr double Equality_min = 0.85;//Константа, определяющ�
 void figure_moving(Figure &, size_t);//Движение фигуры в зависимости от стадии цикла записи.
 
 //Заполнение переданных контейнеров базы данных из файлов.
-void database_initialization(const string & file1, const string & file2, map<int, Id_string> & strings, list<Image> & images);
+void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> links, map<int, Id_string> & strings);
 //Запись содержимого контейнеров в файлы.
-void database_recording(const string & file1, const string & file2, map<int, Id_string> & strings, list<Image> & images);
+void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> links, map<int, Id_string> & strings);
 
 int main()
 {
@@ -43,7 +43,7 @@ int main()
 	map<int, Link> link_map;//Карта для хранения связей в соответствии с их айди.
 	map<int,Image> image_map;//Карта для образов.
 	//Функция выполняет всю работу.
-	database_initialization("Strings\\strings_data.bin", "Figures\\figures_data.bin", string_map, im_list);
+	database_initialization("Strings\\strings_data.bin", "Links\\links_data.bin", "Figures\\figures_data.bin", image_map, link_map, string_map);
 	
 
 	//КОНСТРУИРОВАНИЕ ПОТОКОВ
@@ -254,7 +254,7 @@ int main()
 //УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////
 
 	//Функция выполняет всю работу.
-	database_recording("Strings\\strings_data.bin", "Figures\\figures_data.bin", string_map, im_list);
+	database_recording("Strings\\strings_data.bin", "Links\\links_data.bin", "Figures\\figures_data.bin", image_map, link_map, string_map);
 
 	//ins.play(10);//Вывод содержимого потока в консоль.
 
