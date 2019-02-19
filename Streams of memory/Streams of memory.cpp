@@ -175,14 +175,22 @@ int main()
 		bool match = false;//Логическая переменная, истинность которой означает, что образ распознан.
 
 		//Тут проверяется соответствие образов актуальной фигуры и образа, ранее записанного в файл. Выводятся сообщения о соответствии.
-		for (const Image &im : im_list)
+		for (const auto & e : image_map)
 		{
+			auto & im = e.second;
+
 			if (image_equality(figure, im, Equality_min))//Если образы совпадают.
 			{
 				match = true;
 				figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
-				cout << "Images are equal!!\t" << (figure.get_is_link().ps->get_data()) << endl;//Выводим содержимое указателя, сообщая юзеру, что это за фигура.
+				cout << "Images are equal!!\t";
+
+				//Через связь надо получить доступ к строке.
+				cout << figure.get_is_link().pl->get_right_ptr()->get_data() << endl;
+
 				break;//Как только совпадение найдено, завершаем проверку.
+
+				Image::decrease_counter();//Уменьшаем счетчик, т.к. эта фигура не будет записываться в файл.
 			}
 
 			//else//Образы не совпадают.

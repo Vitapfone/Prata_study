@@ -76,6 +76,9 @@ public:
 	//Прочитать из бинарного файла.
 	bool bin_read(ifstream & fin);
 
+	//Уменьшить счетчик.
+	static void decrease_counter() { --counter; }
+
 private:
 	//Заполнить вн.вектор и айдишники из бин. файла
 	void init(ifstream & fin);
