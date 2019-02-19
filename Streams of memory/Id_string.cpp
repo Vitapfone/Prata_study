@@ -36,7 +36,6 @@ bool Id_string::bin_write(ofstream & fout) const
 	fout.write(data.c_str(), len);//Записываем саму строку.
 	
 	fout.write((char*)&im_link.id, sizeof im_link.id);//Записываем айди связи.
-	cout << "fout.write((char*)&im_link.id, sizeof im_link.id), im_link.id = " << im_link.id << endl;
 	fout.write((char*)&im_link.ls, sizeof im_link.ls);//Записываем маркер стороны связи.
 
 	if (fout)//Ели все успешно записано, возвращаем true.
@@ -81,10 +80,10 @@ bool Id_string::bin_read(ifstream & fin)
 		return false;
 	}
 
+	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
+
 	if (counter < id)//Обновляем счетчик,если надо.
 		counter = id;
-
-	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
 
 	if (fin)//Если все прочитано успешно, то возвращаем true.
 	{

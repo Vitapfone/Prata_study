@@ -10,7 +10,7 @@ void Image::init(ifstream & fin)
 	for (size_t i = 0; i < height; i++)
 	{
 		buf.reset(new bool[width]);//Выделяем буфер.
-		//cout << "Read into buf\n";
+		
 		fin.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
 		temp.assign(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
 		data.push_back(temp);
@@ -105,6 +105,9 @@ bool Image::bin_read(ifstream & fin)
 	}
 
 	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
+
+	if (counter < id)//Обновляем счетчик,если надо.
+		counter = id;
 
 	if (fin)
 		return true;

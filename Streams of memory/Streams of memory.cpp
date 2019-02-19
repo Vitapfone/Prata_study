@@ -20,7 +20,7 @@
 
 constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
 constexpr size_t Height = 56;//Константа, задающая высоту рабочего пространства.
-constexpr size_t Frames = 1;//Количество переданных в поток кадров.
+constexpr size_t Frames = 120;//Количество переданных в поток кадров.
 
 constexpr double Equality_min = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
@@ -43,24 +43,20 @@ int main()
 	map<int, Link> link_map;//Карта для хранения связей в соответствии с их айди.
 	map<int,Image> image_map;//Карта для образов.
 
-	cout << "Before database initialisation\n";
+	//cout << "Before database initialisation\n";
 
 	//Функция выполняет всю работу.
 	database_initialization(  "Figures\\figures_data.bin", "Links\\links_data.bin", "Strings\\strings_data.bin", image_map, link_map, string_map);
 	
-	cout << "After database initialisation\n";
-	cout << image_map.size() << ' ' << link_map.size() << ' ' << string_map.size() << endl;
+	//cout << "After database initialisation\n";
 	
-	char g;
-	cin >> g;
-	cin.ignore(1000, '\n');
-
 	//КОНСТРУИРОВАНИЕ ПОТОКОВ
-	Square fig(20, 3, 50);//Фигура для демонстрации записи в поток.
-	//My::Rectangle fig(20, 10, 10);
-	//Circle fig(20, 10, 9);
-	//Rhomb fig(20, 10, 10);
-	//Triangle fig(20, 10, 10);
+
+	//Square fig(20, 3, 50);//Фигура для демонстрации записи в поток.
+	//My::Rectangle fig(20, 3, 50);
+	//Circle fig(40, 27, 25);
+	//Rhomb fig(60, 27, 52);
+	Triangle fig(20, 3, 10);
 
 	Outer_stream<Width, Height> outs(3);//Внешний поток заданной длины.
 	Inner_stream ins(Width, Height, Frames - 2);//Внутренний поток.
@@ -243,7 +239,7 @@ int main()
 			image_map[figure.get_id()] = figure;//Вставляем новую фигуру в карту.
 
 			assert(new_string.get_id() == figure.get_id());
-			cout << new_string.get_id() << ' ' << figure.get_id() << endl;
+			
 
 			//Вектор, дополненный новой фигурой, перебирается еще раз, чтобы проверить распознавание этой добавленной фигуры.
 			for (const auto & e : image_map)
@@ -269,10 +265,7 @@ int main()
 			}
 		}
 
-
-		
-
-		//system("cls");
+		system("cls");
 
 		//Движение фигуры в зависимости от стадии цикла записи.
 		figure_moving(fig, i);
@@ -285,7 +278,7 @@ int main()
 
 
 //УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////
-	cout << image_map.size() << ' ' << link_map.size() << ' ' << string_map.size() << endl;
+	
 	
 	//Функция выполняет всю работу.
 	database_recording("Figures\\figures_data.bin", "Links\\links_data.bin", "Strings\\strings_data.bin", image_map, link_map, string_map);

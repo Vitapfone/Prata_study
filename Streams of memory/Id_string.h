@@ -5,7 +5,9 @@
 using namespace My_names;
 
 enum class Link_side { no, left, right }; //Перечисление для определения стороны связи, к которой прикреплена эта строка.
+
 class Link;//Предварительное объявление для класса связи.
+
 struct Link_ptr //Структура для представления нумерованной связи объекта. Id_string.h
 {
 	Link* pl = nullptr; //Указатель, имитирующий некую информативную связь объекта строки.
@@ -20,7 +22,7 @@ public:
 
 	Id_string() = default;
 	//Конструктор из строки.
-	Id_string(const string & s) :data(s) { ++counter; id = counter;/* cout << id<< endl; */}
+	Id_string(const string & s) :data(s) { ++counter; id = counter; }
 	//Конструктор из строки и id.
 	Id_string(const string & s, int id):data(s), id(id)
 	{
@@ -35,7 +37,7 @@ public:
 //ГЕТТЕРЫ
 
 	const string get_data() const { return data; }//Выдать копию хранимой строки.
-	string & get_data() { cout << "Get_data\n"; return data; }
+	string & get_data() { return data; }
 
 	int get_id() const { return id; }//Выдать идентификатор.
 	int & get_id() { return id; }
