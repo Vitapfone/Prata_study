@@ -9,10 +9,13 @@ void Image::init(ifstream & fin)
 
 	for (size_t i = 0; i < height; i++)
 	{
-		buf.reset(new bool[width]);//Выделяем буфер.
+		//Выделяем буфер.
+		buf.reset(new bool[width]);
 		
-		fin.read((char*)buf.get(), width);//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		temp.assign(buf.get(), buf.get() + width);//Создаем временный вектор из буфера.
+		//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
+		fin.read((char*)buf.get(), width);
+		//Создаем временный вектор из буфера.
+		temp.assign(buf.get(), buf.get() + width);
 		data.push_back(temp);
 	}
 
@@ -21,8 +24,6 @@ void Image::init(ifstream & fin)
 	//Читаем маркер стороны связи.
 	fin.read((char*)&is_link.ls, sizeof is_link.ls);
 }
-
-
 
 int Image::counter = 0;//Инициализация счетчика.
 
@@ -104,9 +105,11 @@ bool Image::bin_read(ifstream & fin)
 		return false;//При исключении чтение завершится.
 	}
 
-	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
+	//Если все прошло без исключений, то временный объект обменивается с вызывающим.
+	swap(*this, temp);
 
-	if (counter < id)//Обновляем счетчик,если надо.
+	//Обновляем счетчик,если надо.
+	if (counter < id)
 		counter = id;
 
 	if (fin)
@@ -120,9 +123,9 @@ bool Image::bin_read(ifstream & fin)
 //Записать в бинарный файл.
 bool Image::bin_write(ofstream & fout) const
 {
-	fout.write((char*)&id, sizeof id);//Запись айди.
-	fout.write((char*)&width, sizeof width);//Запись ширины.
-	fout.write((char*)&height, sizeof height);//Запись высоты.
+	fout.write((char*)	&id,		sizeof id);
+	fout.write((char*)	&width,		sizeof width);
+	fout.write((char*)	&height,	sizeof height);
 
 	bool elem;//Временное хранилище для эл-та.
 	for (size_t i = 0; i < height; i++)//Поэлементная запись.

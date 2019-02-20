@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Id_string.h"
 
-int Id_string::counter = 0;//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
+int Id_string::counter = 0;	//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
 
 //Заполнить строку и айдишник из бин. файла.
 void Id_string::init(ifstream & fin, size_t len)
@@ -9,12 +9,15 @@ void Id_string::init(ifstream & fin, size_t len)
 	
 	//Выделяем под нее память. Для работы с массивом это должно быть отражено в параметре шаблона.
 	auto buf = make_unique<char[]>(len);
-	
-	fin.read(buf.get(), len);//Читаем в эту память.
-	data.assign(buf.get());//Присваиваем содержимое буфера строке.
+	//Читаем в эту память.
+	fin.read(buf.get(), len);
+	//Присваиваем содержимое буфера строке.
+	data.assign(buf.get());
 
-	fin.read((char*)&im_link.id, sizeof im_link.id);//Прочитать айди связи.
-	fin.read((char*)&im_link.ls, sizeof im_link.ls);//Прочитать маркер стороны связи.
+	//Прочитать айди связи.
+	fin.read((char*)&im_link.id, sizeof im_link.id);
+	//Прочитать маркер стороны связи.
+	fin.read((char*)&im_link.ls, sizeof im_link.ls);
 }
 
 ////Конструктор из бинарного файла.
@@ -29,14 +32,20 @@ void Id_string::init(ifstream & fin, size_t len)
 //Записать в бинарный файл.
 bool Id_string::bin_write(ofstream & fout) const
 {
-	fout.write((char*)&id, sizeof id);//Записываем id.
+	//Записываем id.
+	fout.write((char*)&id, sizeof id);
 	
-	size_t len = data.size() + 1;//Получаем размер строки, хранимой объектом.
-	fout.write((char*)&len, sizeof len);//Записываем этот размер.
-	fout.write(data.c_str(), len);//Записываем саму строку.
+	//Получаем размер строки, хранимой объектом.
+	size_t len = data.size() + 1;
+	//Записываем этот размер.
+	fout.write((char*)&len, sizeof len);
+	//Записываем саму строку.
+	fout.write(data.c_str(), len);
 	
-	fout.write((char*)&im_link.id, sizeof im_link.id);//Записываем айди связи.
-	fout.write((char*)&im_link.ls, sizeof im_link.ls);//Записываем маркер стороны связи.
+	//Записываем айди связи.
+	fout.write((char*)&im_link.id, sizeof im_link.id);
+	//Записываем маркер стороны связи.
+	fout.write((char*)&im_link.ls, sizeof im_link.ls);
 
 	if (fout)//Ели все успешно записано, возвращаем true.
 	{
@@ -47,8 +56,6 @@ bool Id_string::bin_write(ofstream & fout) const
 		return false;
 	}
 }
-
-
 
 //Прочитать из бинарного файла.
 bool Id_string::bin_read(ifstream & fin)
@@ -64,13 +71,14 @@ bool Id_string::bin_read(ifstream & fin)
 	}
 	
 	//Читаем длину строки.
+
 	size_t len;
-	
 	fin.read((char*)&len, sizeof len);
 
 	try
 	{
-		temp.init(fin, len);//Заполнить все остальное.
+		//Заполнить все остальное.
+		temp.init(fin, len);
 	}
 	catch (std::bad_alloc & ex)//Если будет исключение, то чтение файла откатится назад к началу записи об этой строке.
 	{

@@ -19,21 +19,21 @@ Link::Link(Image * l_ptr, int l_id, int l_str, Id_string * r_ptr, int r_id, int 
 //Установить связь с левым объектом.
 inline void Link::set_left_obj(Image * l_ptr, int l_id, int l_str)
 {
-	left_ptr = l_ptr;
-	left_id = l_id;
-	left_strength = l_str;
+	left_ptr		= l_ptr;
+	left_id			= l_id;
+	left_strength	= l_str;
 }
 
 //Установить связь с правым объектом.
 inline void Link::set_right_obj(Id_string * r_ptr, int r_id, int r_str)
 {
-	right_ptr = r_ptr;
-	right_id = r_id;
-	right_strength = r_str;
+	right_ptr		= r_ptr;
+	right_id		= r_id;
+	right_strength	= r_str;
 }
 
 //Установить айди.
-void Link::set_id(int new_id)
+inline void Link::set_id(int new_id)
 {
 	id = new_id;
 	if (counter < id)

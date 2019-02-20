@@ -12,13 +12,14 @@ class Link;//Предварительное объявление для клас
 
 class Image
 {
-	int id = 0;//Идентификатор самого образа.
-	static int counter;//Статический счетчик для получения уникальных айди.
+	int id				= 0;	//Идентификатор самого образа.
+	static int counter;			//Статический счетчик для получения уникальных айди.
 
 	vector<vector<bool>> data;// Вектор булевых векторов, где будет храниться образ.
 
-	size_t width = 0, height = 0; //Высота и ширина образа.
-	double aspect_rate = 0.0;//Отношение ширины к высоте.
+	size_t	width		= 0;	//Высота и ширина образа.
+	size_t	height		= 0;	
+	double	aspect_rate = 0.0;	//Отношение ширины к высоте.
 
 	Link_ptr is_link;//Связь для подтверждающей строки.
 	
@@ -37,15 +38,17 @@ public:
 
 //ГЕТТЕРЫ
 
-	size_t get_widht() const { return width; }//Выдать ширину.
-	size_t get_height() const { return height; }//Выдать высоту.
-	double get_aspect() const { return aspect_rate; }//Выдать отношение ширины к высоте.
+	size_t	get_widht() const	{ return width; }
+	size_t	get_height() const	{ return height; }
+	double	get_aspect() const	{ return aspect_rate; }
 
 	int get_id()const { return id; }
-	const Link_ptr get_is_link() const {  return is_link; }//Выдать подтверждающую связь.
-	
-	
-	const vector<vector<bool>> & get_data() const { return data; }//Выдать вектор образа.
+
+	//Выдать подтверждающую связь.
+	const Link_ptr get_is_link() const {  return is_link; }
+
+	//Выдать вектор образа.
+	const vector<vector<bool>> & get_data() const { return data; }
 
 //private:
 	//vector<vector<bool>> & get_data() { return data; }//Выдать вектор образа. Неконстантная закрытая перегрузка.
@@ -54,8 +57,9 @@ public:
 
 //СЕТТЕРЫ
 
-	void set_is_link(Link* is) { is_link.pl = is; }//Установить связь.
-	void set_is_link(Link_ptr const & other) { is_link = other; }
+	//Установить связь.
+	void	set_is_link(Link* is)				{ is_link.pl = is; }
+	void	set_is_link(Link_ptr const & other) { is_link = other; }
 	
 
 //ДРУГИЕ

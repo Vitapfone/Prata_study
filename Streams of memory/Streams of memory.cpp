@@ -18,30 +18,44 @@
 
 //using namespace My_names;
 
-constexpr size_t Width = 120;//Константа, задающая ширину рабочего пространства.
-constexpr size_t Height = 56;//Константа, задающая высоту рабочего пространства.
-constexpr size_t Frames = 120;//Количество переданных в поток кадров.
+constexpr size_t Width		= 120;	//Константа, задающая ширину рабочего пространства.
+constexpr size_t Height		= 56;	//Константа, задающая высоту рабочего пространства.
+constexpr size_t Frames		= 120;	//Количество переданных в поток кадров.
 
 constexpr double Equality_min = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
-void figure_moving(Figure &, size_t);//Движение фигуры в зависимости от стадии цикла записи.
+//Движение фигуры в зависимости от стадии цикла записи.
+void figure_moving(Figure &, size_t);
 
 //Заполнение переданных контейнеров базы данных из файлов.
-void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings);
+void database_initialization(const string &			file1,
+							 const string &			file2, 
+							 const string &			file3, 
+							 map<int, Image> &		images, 
+							 map<int, Link> &		links, 
+							 map<int, Id_string> &	strings);
+
 //Запись содержимого контейнеров в файлы.
-void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings);
+void database_recording(const string &			file1,
+						const string &			file2,
+						const string &			file3,
+						map<int, Image> &		images,
+						map<int, Link> &		links,
+						map<int, Id_string> &	strings);
+
 
 int main()
 {
+	//Пауза для удобства начального позиционирования окна консоли.
 	system("pause");
 	
 //УЧАСТОК ИНИЦИАЛИЗАЦИИ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//ЗАПОЛНЕНИЕ БАЗЫ ДАННЫХ ИЗ ФАЙЛОВ.
 
-	map<int, Id_string> string_map;//Карта для хранения прочитанных строк в соответствии с их идентификаторами.
-	map<int, Link> link_map;//Карта для хранения связей в соответствии с их айди.
-	map<int,Image> image_map;//Карта для образов.
+	map<int, Id_string> string_map;	//Карта для хранения прочитанных строк в соответствии с их идентификаторами.
+	map<int, Link>		link_map;	//Карта для хранения связей в соответствии с их айди.
+	map<int,Image>		image_map;	//Карта для образов.
 
 	//cout << "Before database initialisation\n";
 
@@ -58,13 +72,14 @@ int main()
 	//Rhomb fig(60, 27, 52);
 	Triangle fig(20, 3, 10);
 
-	Outer_stream<Width, Height> outs(3);//Внешний поток заданной длины.
+	Outer_stream<Width, Height> outs(3);		//Внешний поток заданной длины.
 	Inner_stream ins(Width, Height, Frames - 2);//Внутренний поток.
 
 	Focus_of_attention foc(10, 10, ins.Input_frame());//Задаем начальное положение фокуса внимания.
 
 
 //УЧАСТОК РАБОЧЕГО ПРОЦЕССА//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	for (size_t i = 0; i < Frames; i++)//Цикл записи.
 	{
 
@@ -78,8 +93,8 @@ int main()
 
 	//УЧАСТОК УПРАВЛЕНИЯ ВНИМАНИЕМ ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-		//Вектор для хранения предупреждений от функций управления вниманием внешнего потока.
-		vector<Warning> warnings;
+		
+		vector<Warning> warnings;//Вектор для хранения предупреждений от функций управления вниманием внешнего потока.
 
 		//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Файл Cluster.h
 		Warning w1 = most_filled_cluster(outs.get_ro_frame(0), ' ');
@@ -112,8 +127,8 @@ int main()
 		//Внешний поток выдает свой нулевой кадр. 
 		Outer_frame<Width, Height> outer_data = outs.get_ro_frame(0);
 
-		//Буфер для конвертации данных в формат кадра внутреннего потока.
-		Inner_frame buffer;
+		Inner_frame buffer;//Буфер для конвертации данных в формат кадра внутреннего потока.
+
 		for (auto & e : outer_data)//Конвертация.
 		{
 			buffer.emplace_back(e.cbegin(), e.cend());
@@ -147,7 +162,8 @@ int main()
 		} while (!foc.go_inside(current_frame));//Пока фокус не попал на объект, будем пытаться его туда направить.
 		//cout << "Number of relocations: " << count << endl;//Показываем, сколько раз пришлось двигать фокус.
 
-		foc.assign_object(current_frame);//Устанавливаем символ объекта.
+		//Устанавливаем символ объекта.
+		foc.assign_object(current_frame);
 		
 
 		//КОНСТРУИРОВАНИЕ ОБРАЗА
@@ -187,7 +203,9 @@ int main()
 			if (image_equality(figure, im, Equality_min))//Если образы совпадают.
 			{
 				match = true;
-				figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+
+				//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+				figure.set_is_link(im.get_is_link());
 				cout << "Images are equal!!\t";
 
 				//Через связь надо получить доступ к строке.
@@ -212,22 +230,19 @@ int main()
 
 		if (match == false)//Образы не совпали ни с одним эталоном.
 		{
-			//Временные строки.
-			string figure_name;
+			string figure_name;//Временные строки.
 
-			cout << "Adding new figure  to a database. It's name is:";//Надо ввести имя для новой фигуры.
+			//Надо ввести имя для новой фигуры.
+			cout << "Adding new figure  to a database. It's name is:";
 			cin >> figure_name;
 
-			string new_figure_link{ "This is " + figure_name + "." };//Конструируются строки сообщений, которые здесь имитируют связи новой фигуры.
+			//Конструируются строки сообщений, которые здесь имитируют связи новой фигуры.
+			string new_figure_link{ "This is " + figure_name + "." };
 			Id_string new_string(new_figure_link);
 			
-			
-			
-
 			//Создаем новую связь для образа и строки.
 			Link new_link(&figure, figure.get_id(), 10, &new_string, new_string.get_id(), 10);
 			
-
 			//Регистрируем связь в образе.
 			figure.set_is_link({ &new_link, Link_side::left, new_link.get_id() });
 			//Регистрируем связь в строке.
@@ -235,12 +250,13 @@ int main()
 
 			//Вставляем новую связь в карту.
 			link_map[new_link.get_id()] = new_link;
-			string_map[new_string.get_id()] = new_string;//Вставляем новые строки в карту.
-			image_map[figure.get_id()] = figure;//Вставляем новую фигуру в карту.
+			//Вставляем новые строки в карту.
+			string_map[new_string.get_id()] = new_string;
+			//Вставляем новую фигуру в карту.
+			image_map[figure.get_id()] = figure;
 
 			assert(new_string.get_id() == figure.get_id());
 			
-
 			//Вектор, дополненный новой фигурой, перебирается еще раз, чтобы проверить распознавание этой добавленной фигуры.
 			for (const auto & e : image_map)
 			{
@@ -249,7 +265,8 @@ int main()
 				if (image_equality(figure, im, Equality_min))//Если образы совпадают.
 				{
 					match = true;
-					figure.set_is_link(im.get_is_link());//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+					//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
+					figure.set_is_link(im.get_is_link());
 					cout << "Images are equal!!\t";
 
 					//Через связь надо получить доступ к строке.
@@ -263,7 +280,7 @@ int main()
 				//}
 				cout << endl;
 			}
-		}
+		}//if (match == false)//Образы не совпали ни с одним эталоном.
 
 		system("cls");
 
@@ -273,8 +290,10 @@ int main()
 
 	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ ///////////////////////////////////////////////////////////////////////////////
 
-		warnings.clear();//Очищаем список предупреждений, чтобы заполнить его в следующем цикле.
-	}
+		//Очищаем список предупреждений, чтобы заполнить его в следующем цикле.
+		warnings.clear();
+
+	}//for (size_t i = 0; i < Frames; i++)//Цикл записи.
 
 
 //УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////

@@ -32,12 +32,14 @@ void database_initialization(const string & file1, const string & file2, const s
 
 	while (temp3.bin_read(ifs_str))//Пока не достигнут конец файла.
 	{
-		strings[temp3.get_id()] = temp3;//Вставляем прочитанное в карту.
+		//Вставляем прочитанное в карту.
+		strings[temp3.get_id()] = temp3;
 	}
 
 
 	//Связать все объекты друг-с-другом.
 
+	//Образы получают связи.
 	for (auto & e : images)
 	{
 		auto & curr_image = e.second;
@@ -45,6 +47,7 @@ void database_initialization(const string & file1, const string & file2, const s
 		curr_image.set_is_link(&link);
 	}
 
+	//Связи получают свои указатели на образы и строки.
 	for (auto & e : links)
 	{
 		Link & curr_link = e.second;
@@ -54,6 +57,7 @@ void database_initialization(const string & file1, const string & file2, const s
 		curr_link.set_right_ptr(&string);
 	}
 	
+	//Строки получают связи.
 	for (auto & e : strings)
 	{
 		Id_string & curr_string = e.second;
@@ -65,20 +69,23 @@ void database_initialization(const string & file1, const string & file2, const s
 //Запись содержимого контейнеров в файлы.
 void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
 {
-	ofstream ofsImages(file1, ofstream::binary);//Создаем файл для записи образов.
+	ofstream ofsImages(file1, ofstream::binary);//Создаем файл для записи образов. Папка должна быть создана заранее.
+	//Запистываем все образы.
 	for (const auto & e : images)
 	{
 		e.second.bin_write(ofsImages);
 	}
 
 	ofstream ofs_links(file2, ofstream::binary);
+	//Записываем все связи.
 	for (const auto & e : links)
 	{
 		Links::bin_write(ofs_links, e.second);
 	}
 
-	ofstream ofstrings(file3, ofstream::binary);//Создаем файл для записи связанных с образами строк. Папка должна быть создана заранее.
-	for (const auto &e : strings)//Записываем все строки из карты.
+	ofstream ofstrings(file3, ofstream::binary);//Создаем файл для записи связанных с образами строк.
+	//Записываем все строки из карты.
+	for (const auto &e : strings)
 	{
 		e.second.bin_write(ofstrings);
 	}
