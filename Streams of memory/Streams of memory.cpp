@@ -69,9 +69,9 @@ int main()
 
 	//Square fig(20, 3, 50);//Фигура для демонстрации записи в поток.
 	//My::Rectangle fig(20, 3, 50);
-	//Circle fig(40, 27, 25);
+	Circle fig(40, 10, 5);
 	//Rhomb fig(60, 27, 52);
-	Triangle fig(20, 3, 10);
+	//Triangle fig(20, 3, 10);
 
 	Outer_stream<Width, Height> outs(3);		//Внешний поток заданной длины.
 	Inner_stream ins(Width, Height, Frames - 2);//Внутренний поток.

@@ -6,10 +6,10 @@
 //Функция переместит фокус внимания в примерный центр тяжести объекта.
 void Focus_of_attention::to_Weight_Center(const Inner_frame & ws)
 {
-	bool foc_move_up = false;//Переменная, показывающая, что фокус уже передвигался вверх.
-	bool foc_move_down = false;//Переменная, показывающая, что фокус уже передвигался вниз.
-	int upCount = 0;//Счетчик пикселей объекта выше фокуса.
-	int downCount = 0;//Счетчик пикселей объекта ниже фокуса.
+	bool	foc_move_up		= false;	//Переменная, показывающая, что фокус уже передвигался вверх.
+	bool	foc_move_down	= false;	//Переменная, показывающая, что фокус уже передвигался вниз.
+	int		upCount			= 0;		//Счетчик пикселей объекта выше фокуса.
+	int		downCount		= 0;		//Счетчик пикселей объекта ниже фокуса.
 
 	while ((foc_move_up == false) || (foc_move_down == false))//Пока фокус не двигался в обе стороны.
 	{
@@ -39,13 +39,13 @@ void Focus_of_attention::to_Weight_Center(const Inner_frame & ws)
 		}
 		if (upCount > downCount)//Если выше пикселей больше,
 		{
-			--loc.y;//то передвигаем фокус вверх
-			foc_move_up = true;//Теперь фокус двигался вверх.
+			--loc.y;			//то передвигаем фокус вверх
+			foc_move_up = true;	//Теперь фокус двигался вверх.
 		}
 		else if (upCount < downCount)//Если меньше --
 		{
-			++loc.y;//передвигаем вниз.
-			foc_move_down = true;//Теперь фокус двигался вниз.
+			++loc.y;				//передвигаем вниз.
+			foc_move_down = true;	//Теперь фокус двигался вниз.
 		}
 		else//Если выше и ниже пикселей одинаково,
 		{
@@ -54,10 +54,10 @@ void Focus_of_attention::to_Weight_Center(const Inner_frame & ws)
 	}
 	//cout << "upCount: " << upCount << " downCount " << downCount << endl;
 
-	bool foc_move_left = false;//Переменная, показывающая, что фокус уже передвигался влево.
-	bool foc_move_right = false;//Переменная, показывающая, что фокус уже передвигался вправо.
-	int leftCount = 0;//Счетчик пикселей объекта левее фокуса.
-	int rightCount = 0;//Счетчик пикселей объекта правее фокуса.
+	bool	foc_move_left	= false;	//Переменная, показывающая, что фокус уже передвигался влево.
+	bool	foc_move_right	= false;	//Переменная, показывающая, что фокус уже передвигался вправо.
+	int		leftCount		= 0;		//Счетчик пикселей объекта левее фокуса.
+	int		rightCount		= 0;		//Счетчик пикселей объекта правее фокуса.
 
 	while ((foc_move_left == false) || (foc_move_right == false))//Все аналогично действиям для игреков.
 	{
@@ -134,7 +134,9 @@ bool Focus_of_attention::go_inside(const Inner_frame& ws)
 {
 	Location fcl = clusterize(ws);//Получаем наиболее заполненный элементарный кластер.
 	Location center = { fcl.x + 3, fcl.y + 3 }; //Середина этого кластера.
-	relocate(center); //Передвигаем фокус. 
+
+	//Передвигаем фокус. 
+	relocate(center); 
 
 	if (ws[loc.y][loc.x] == background)
 	{
@@ -162,7 +164,8 @@ void Focus_of_attention::part_concentrate_to_object(const Inner_frame & ws)
 
 	//Положение центра объекта.
 	Location center = { (borders.x_max + borders.x_min) / 2, (borders.y_max + borders.y_min) / 2 };
-	relocate(center); //Перенесем фокус внимания в центр области, занимаемой объектом
+	//Перенесем фокус внимания в центр области, занимаемой объектом
+	relocate(center); 
 
 	//Режим внимания меняется на частично сконцентрированный.
 	mode_par_con();
