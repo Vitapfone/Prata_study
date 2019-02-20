@@ -76,16 +76,23 @@ public:
 	//Установить информацию о дате и времени создания.
 	void	set_time_date(const string & t_d)	{ strcpy_s(time_date, 26, t_d.c_str()); }
 	void	set_time_date(const char* t_d)		{ strcpy_s(time_date, 26, t_d); }
+
+//ДРУГИЕ
+
+	//Записать связь в бинарный файл.
+	bool	bin_write(ofstream & fout) const;
+	//Прочитать связь из бинарного файла.
+	bool	bin_read(ifstream & fin);
 };
 
 
-//НЕ ЧЛЕНЫ
-
-namespace Links
-{
-	//Записать связь в бинарный файл.
-	bool	bin_write(ofstream & fout, const Link & link);
-
-	//Прочитать связь из бинарного файла.
-	bool	bin_read(ifstream & fin, Link & link);
-}
+////НЕ ЧЛЕНЫ
+//
+//namespace Links
+//{
+//	//Записать связь в бинарный файл.
+//	bool	bin_write(ofstream & fout, const Link & link);
+//
+//	//Прочитать связь из бинарного файла.
+//	bool	bin_read(ifstream & fin, Link & link);
+//}

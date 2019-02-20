@@ -47,29 +47,15 @@ inline void Link::Time_date()
 	ctime_s(time_date, 26, &timer);
 }
 
-
-//ДАЛЕЕ ФУНКЦИИ НЕ-ЧЛЕНЫ.
-
 //Записать связь в бинарный файл.
-bool Links::bin_write(ofstream & fout, const Link & link)
+bool Link::bin_write(ofstream & fout) const
 {
-	int id = link.get_id();
 	fout.write((char*)&id, sizeof(id));
-
-	const string time_date = link.get_time_date();
-	fout.write(time_date.c_str(), 26);
-
-	id = link.get_left_id();
-	fout.write((char*)&id, sizeof(id));
-
-	int strength = link.get_left_strength();
-	fout.write((char*)&strength, sizeof(strength));
-
-	id = link.get_right_id();
-	fout.write((char*)&id, sizeof(id));
-
-	strength = link.get_right_strength();
-	fout.write((char*)&strength, sizeof(strength));
+	fout.write(time_date, 26);
+	fout.write((char*)&left_id, sizeof(left_id));
+	fout.write((char*)&left_strength, sizeof(left_strength));
+	fout.write((char*)&right_id, sizeof(right_id));
+	fout.write((char*)&right_strength, sizeof(right_strength));
 
 	if (fout)//Ели все успешно записано, возвращаем true.
 	{
@@ -82,37 +68,104 @@ bool Links::bin_write(ofstream & fout, const Link & link)
 }
 
 //Прочитать связь из бинарного файла.
-bool Links::bin_read(ifstream & fin, Link & link)
+bool Link::bin_read(ifstream & fin)
 {
-	//Чтение данных во временные переменные.
+	using std::swap;//Используется прием "copy and swap" для безопасности при исключении.
+	Link temp;//Создается временный объект, с которым и происходят все изменения.
 
-	int id;
-	if (!fin.read((char*)&id, sizeof(id)))
+	//Прочитать айди.
+	if (!fin.read((char*)&temp.id, sizeof id))
 	{
 		return false;
 	}
 
-	char time_date[26];
-	fin.read(time_date, 26);
-	int l_id;
-	fin.read((char*)&l_id, sizeof(l_id));
-	int l_str;
-	fin.read((char*)&l_str, sizeof(l_str));
-	int r_id;
-	fin.read((char*)&r_id, sizeof(r_id));
-	int r_str;
-	fin.read((char*)&r_str, sizeof(r_str));
+	fin.read(temp.time_date, 26);
+	fin.read((char*)&temp.left_id, sizeof(left_id));
+	fin.read((char*)&temp.left_strength, sizeof(left_strength));
+	fin.read((char*)&temp.right_id, sizeof(right_id));
+	fin.read((char*)&temp.right_strength, sizeof(right_strength));
 
 	if (!fin)//Если произошел сбой, то сразу возвращаем отказ.
 	{
 		return false;
 	}
 
-	//Установка членов.
-	link.set_id(id);
-	link.set_time_date(time_date);
-	link.set_left_attr(l_id, l_str);
-	link.set_right_attr(r_id, r_str);
+	//Если все прошло без исключений, то временный объект обменивается с вызывающим.
+	swap(*this, temp);
+
+	//Обновляем счетчик,если надо.
+	if (counter < id)
+		counter = id;
 
 	return true;
 }
+
+
+//ДАЛЕЕ ФУНКЦИИ НЕ-ЧЛЕНЫ.
+
+//Записать связь в бинарный файл.
+//bool Links::bin_write(ofstream & fout, const Link & link)
+//{
+//	int id = link.get_id();
+//	fout.write((char*)&id, sizeof(id));
+//
+//	const string time_date = link.get_time_date();
+//	fout.write(time_date.c_str(), 26);
+//
+//	id = link.get_left_id();
+//	fout.write((char*)&id, sizeof(id));
+//
+//	int strength = link.get_left_strength();
+//	fout.write((char*)&strength, sizeof(strength));
+//
+//	id = link.get_right_id();
+//	fout.write((char*)&id, sizeof(id));
+//
+//	strength = link.get_right_strength();
+//	fout.write((char*)&strength, sizeof(strength));
+//
+//	if (fout)//Ели все успешно записано, возвращаем true.
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+
+//Прочитать связь из бинарного файла.
+//bool Links::bin_read(ifstream & fin, Link & link)
+//{
+//	//Чтение данных во временные переменные.
+//
+//	int id;
+//	if (!fin.read((char*)&id, sizeof(id)))
+//	{
+//		return false;
+//	}
+//
+//	char time_date[26];
+//	fin.read(time_date, 26);
+//	int l_id;
+//	fin.read((char*)&l_id, sizeof(l_id));
+//	int l_str;
+//	fin.read((char*)&l_str, sizeof(l_str));
+//	int r_id;
+//	fin.read((char*)&r_id, sizeof(r_id));
+//	int r_str;
+//	fin.read((char*)&r_str, sizeof(r_str));
+//
+//	if (!fin)//Если произошел сбой, то сразу возвращаем отказ.
+//	{
+//		return false;
+//	}
+//
+//	//Установка членов.
+//	link.set_id(id);
+//	link.set_time_date(time_date);
+//	link.set_left_attr(l_id, l_str);
+//	link.set_right_attr(r_id, r_str);
+//
+//	return true;
+//}

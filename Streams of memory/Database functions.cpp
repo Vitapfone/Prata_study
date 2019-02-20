@@ -20,7 +20,7 @@ void database_initialization(const string & file1, const string & file2, const s
 	ifstream ifs_links(file2, ifstream::binary);
 	Link temp2;
 
-	while (Links::bin_read(ifs_links, temp2))
+	while (temp2.bin_read(ifs_links))
 	{
 		links[temp2.get_id()] = temp2;
 	}
@@ -80,7 +80,7 @@ void database_recording(const string & file1, const string & file2, const string
 	//Записываем все связи.
 	for (const auto & e : links)
 	{
-		Links::bin_write(ofs_links, e.second);
+		e.second.bin_write(ofs_links);
 	}
 
 	ofstream ofstrings(file3, ofstream::binary);//Создаем файл для записи связанных с образами строк.

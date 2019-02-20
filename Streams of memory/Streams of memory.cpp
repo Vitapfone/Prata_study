@@ -60,7 +60,8 @@ int main()
 	//cout << "Before database initialisation\n";
 
 	//Функция выполняет всю работу.
-	database_initialization(  "Figures\\figures_data.bin", "Links\\links_data.bin", "Strings\\strings_data.bin", image_map, link_map, string_map);
+	database_initialization(	"Figures\\figures_data.bin",	"Links\\links_data.bin",	"Strings\\strings_data.bin", 
+								image_map,						link_map,					string_map);
 	
 	//cout << "After database initialisation\n";
 	
@@ -85,9 +86,10 @@ int main()
 
 	//УЧАСТОК ВВОДА ДАННЫХ ВО ВНЕШНИЙ ПОТОК /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		fig.print(outs.Input_frame());//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
-
-		outs.process();//Кадр ввода отправляется в поток.
+		//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
+		fig.print(outs.Input_frame());
+		//Кадр ввода отправляется в поток.
+		outs.process();
 
 
 
@@ -300,7 +302,8 @@ int main()
 	
 	
 	//Функция выполняет всю работу.
-	database_recording("Figures\\figures_data.bin", "Links\\links_data.bin", "Strings\\strings_data.bin", image_map, link_map, string_map);
+	database_recording(	"Figures\\figures_data.bin",	"Links\\links_data.bin",	"Strings\\strings_data.bin", 
+						image_map,						link_map,					string_map);
 
 	//ins.play(10);//Вывод содержимого потока в консоль.
 
