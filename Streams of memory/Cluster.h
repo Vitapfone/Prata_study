@@ -104,7 +104,7 @@ void Cluster::diff_counter(const Outer_frame<W,H> & frame_1, const Outer_frame<W
 }
 
 
-//Простейшая функция управления вниманием. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
+//Простейший сторожевой алгоритм. Выдает координаты кластера, в котором больше всего точек, отличных от фона. Cluster.h.
 template<size_t W, size_t H>
 const Warning most_filled_cluster(const Outer_frame<W,H> & ws, char background)
 {
@@ -134,7 +134,7 @@ const Warning most_filled_cluster(const Outer_frame<W,H> & ws, char background)
 	return Warning("Unidentified contrast object!", { x, y }, vc[0].get_count());
 }
 
-//Простейшая ф-я управления вниманием. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
+//Простейший сторожевой алгоритм. Выдает предупреждение с координатами кластера, в котором больше всего точек, состояние которых изменилось с прошлого кадра.
 template<size_t W, size_t H>
 const Warning most_difference_in_cluster(const Outer_frame<W,H> & frame_1, const Outer_frame<W,H> & frame_2)
 {
