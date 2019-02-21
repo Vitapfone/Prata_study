@@ -16,7 +16,8 @@ class Figure
 
 public:
 
-//Конструкторы.
+//КОНСТРУКТОРЫ
+
 	Figure() = default;
 	Figure(int x, int y) : loc{ x, y } {}
 	explicit Figure(const Location & lc) : loc(lc) {}
@@ -54,7 +55,8 @@ public:
 
 //ДРУГИЕ
 
-	virtual void print(Ar60_30 & ws) const = 0; //Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
+	//Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
+	virtual void print(Ar60_30 & ws) const = 0; 
 };
 
 
@@ -67,16 +69,19 @@ class Circle : public Figure//Наследуется от Figure.
 
 public:
 
-	//Конструкторы.
+	//КОНСТРУКТОРЫ
+
 	Circle() = default;
 	Circle(int x, int y, size_t r) : Figure(x, y), radius(r) {}
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
-	void print(Ar60_30 & ws) const;//Унаследованная функция отрисовки.
+	//Унаследованная функция отрисовки.
+	void print(Ar60_30 & ws) const;
 
+	//Функция отрисовки круга для любого рабочего пространства.
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws) const;//Функция отрисовки круга для любого рабочего пространства.
+	void print(array<array<char, W>, H> & ws) const;
 };
 
 //Функция отрисовки круга для любого рабочего пространства.
@@ -107,7 +112,7 @@ namespace My//Необходимость в новом пространстве 
 	//Класс прямоугольника.
 	class Rectangle : public Figure
 	{
-		int a = 0;//Длина меньшей стороны.
+		int a = 0;	//Длина меньшей стороны.
 
 	public:
 
@@ -116,11 +121,12 @@ namespace My//Необходимость в новом пространстве 
 		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) {}
 		Rectangle(const Location & lc, size_t a1) : Figure(lc), a(a1) {}
 
-		void print(Ar60_30 &ws) const;//Функция отрисовки прямоугольника, унаследованная от предка.
+		//Функция отрисовки прямоугольника, унаследованная от предка.
+		void print(Ar60_30 &ws) const;
 
+		//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 		template<size_t W, size_t H> 
-		void print(array<array<char, W>, H> & ws) const;//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
-
+		void print(array<array<char, W>, H> & ws) const;
 	};
 }
 
@@ -152,15 +158,18 @@ class Rhomb : public Figure
 public:
 
 	//КОНСТРУКТОРЫ
+
 	Rhomb() = default;
 	Rhomb(int x, int y, size_t diag) : Figure(x, y), diagonal(diag) {}
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
-	void print(Ar60_30 & ws) const; //Переопределение виртуальной функции из базового класса.
+	//Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 & ws) const; 
 
+	//Шаблон функции для отрисовки в рабочем пространстве любого размера.
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws) const;//Шаблон функции для отрисовки в рабочем пространстве любого размера.
+	void print(array<array<char, W>, H> & ws) const;
 
 };
 
@@ -207,15 +216,18 @@ class Square : public Figure
 
 public:
 
-	//КОНСТРУКТОР
+	//КОНСТРУКТОРЫ
+
 	Square(int x = 0, int y = 0, int a1 = 0) : Figure(x, y), a(a1) {}
 	Square(const Location & lc, int a1 = 0) : Figure(lc), a(a1) {}
 	~Square() {}
 	
-	void print(Ar60_30 &ws) const;//Функция отрисовки квадрата.
+	//Функция отрисовки квадрата.
+	void print(Ar60_30 &ws) const;
 
+	//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws) const;//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
+	void print(array<array<char, W>, H> & ws) const;
 
 };
 
@@ -243,11 +255,10 @@ void Square::print(array<array<char, W>, H> & ws) const
 
 class Triangle : public Figure //Класс, представляющий равнобедренный прямоугольный треугольник.
 {
-	int cathetus = 0;// Длина катета.
-	Location point_A{ 0, 0 };//Координаты вершины с прямым углом.
-	//int point_A_x = 0, point_A.y = 0;
-	Location point_B{ 0, 0 };//Координаты второй вершины с острым углом. Координаты первой наследуются от Figure. 
-	//int point_B.x = 0, point_B_y = 0; 
+	int			cathetus	= 0;		// Длина катета.
+	Location	point_A		{ 0, 0 };	//Координаты вершины с прямым углом.
+	Location	point_B		{ 0, 0 };	//Координаты второй вершины с острым углом. Координаты первой наследуются от Figure. 
+	
 
 public:
 
@@ -260,21 +271,22 @@ public:
 	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
 	~Triangle() {}
 
-	void print(Ar60_30 &ws) const; //Переопределение виртуальной функции из базового класса.
+	//Переопределение виртуальной функции из базового класса.
+	void print(Ar60_30 &ws) const; 
 
+	//Отрисовка треугольника для рабочего пространства любого размера.
 	template<size_t W, size_t H> 
-	void print(array<array<char, W>, H> & ws) const;//Отрисовка треугольника для рабочего пространства любого размера.
+	void print(array<array<char, W>, H> & ws) const;
 
 
 	//МЕТОДЫ ДВИЖЕНИЯ
 
 private:
 
-	virtual void moveRight() { Figure::moveRight(); point_A.x++; point_B.x++; }//Передвинуть правее.
-	virtual void moveLeft() { Figure::moveLeft(); point_A.x--; point_B.x--; }//Передвинуть левее.
-	virtual void moveUp() { Figure::moveUp(); point_A.y--; point_B.y--; }//Передвинуть выше.
-	virtual void moveDown() { Figure::moveDown(); point_A.y++; point_B.y++; }//Передвинуть ниже.
-
+	virtual void moveRight()	{ Figure::moveRight(); point_A.x++; point_B.x++; }	//Передвинуть правее.
+	virtual void moveLeft()		{ Figure::moveLeft(); point_A.x--; point_B.x--; }	//Передвинуть левее.
+	virtual void moveUp()		{ Figure::moveUp(); point_A.y--; point_B.y--; }		//Передвинуть выше.
+	virtual void moveDown()		{ Figure::moveDown(); point_A.y++; point_B.y++; }	//Передвинуть ниже.
 
 };
 

@@ -15,14 +15,13 @@ enum class Attention_mode{Distributed, Partially_concentrated};
 
 class Focus_of_attention
 {
-	//Координаты фокуса внимания.
-	Location loc{ 0, 0 };
+	
+	Location	loc			{ 0, 0 };//Координаты фокуса внимания.
+	char		background	=' ';	//Фон. По умолчанию пробел, как наиболее вероятный фон.
+	char		object		= '0';
+	Borders		borders;			//Структура для хранения информации о границах области внимания.
 
-	char background =' ';//Фон. По умолчанию пробел, как наиболее вероятный фон.
-	char object = '0';
 	Attention_mode mode = Attention_mode::Distributed;//Режим внимания. По умолчанию распределенное.
-
-	Borders borders;//Структура для хранения информации о границах области внимания.
 
 public:
 //КОНСТРУКТОР
@@ -30,6 +29,7 @@ public:
 	Focus_of_attention(int x, int y, const Inner_frame & ws, char back = ' ') : loc{ x, y }, background(back), borders{ 0, static_cast<int>(ws[0].size() - 1), 0, static_cast<int>(ws.size() - 1) } {}
 
 //ЗАПРЕЩЕНО
+
 	//Запрещено копирование
 	Focus_of_attention(const Focus_of_attention &) = delete;
 	//Запрещено присвоение.
@@ -61,14 +61,11 @@ public:
 	void mode_par_con() { mode = Attention_mode::Partially_concentrated; }
 
 	//Установить объект.
-	
 	void assign_object(const Inner_frame & ws) { object = ws[loc.y][loc.x]; }
-
 
 //ДРУГИЕ
 
 	//Обозначить  положение.
-	 
 	void mark(Inner_frame & ws) { ws[loc.y][loc.x] = '+'; }
 
 	//Переместить.

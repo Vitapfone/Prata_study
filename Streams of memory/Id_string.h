@@ -45,6 +45,7 @@ public:
 	int		get_counter() const { return counter; }	//Выдать счетчик
 	int &	get_counter()		{ return counter; }
 
+
 	//Выдать айди связи.
 	int get_link_id()const { return im_link.id; }
 	//Выдать маркер стороны.
@@ -54,9 +55,9 @@ public:
 
 //СЕТТЕРЫ
 
-	void	set_is_link(Link* is)				{ im_link.pl = is; }	//Установить связь.
+	//Установить связь.
+	void	set_is_link(Link* is)				{ im_link.pl = is; }	
 	void	set_is_link(Link_ptr const & other) { im_link = other; }
-
 
 //ДРУГИЕ
 

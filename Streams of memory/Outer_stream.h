@@ -11,15 +11,15 @@ using Outer_frame = array<array<char, W>, H>;
 template<size_t W, size_t H>
 class Outer_stream
 {
-	Outer_frame<W, H> input_frame;//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
-	deque<Outer_frame<W, H>> data;//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
-	size_t max_size;//Максимальный размер деки и длина потока.
+	Outer_frame<W, H>			input_frame;	//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
+	deque<Outer_frame<W, H>>	data;			//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
+	size_t						max_size;		//Максимальный размер деки и длина потока.
 
 public:
 
 //КОНСТРУКТОРЫ
 
-	explicit Outer_stream(size_t ms = 100);
+	explicit Outer_stream(size_t max_sz = 100);
 
 	~Outer_stream() {}
 
@@ -57,7 +57,7 @@ public:
 	void print_input() const;
 
 	//Отладочный вывод содержимого потока.
-	void play(unsigned dur) const;
+	//void play(unsigned dur) const;
 
 	//Внести новые данные в поток. Удалить старые.
 	void process();
@@ -88,7 +88,7 @@ inline void Outer_stream<W, H>::prepare_for_input()
 
 //Конструктор.
 template<size_t W, size_t H>
-Outer_stream<W, H>::Outer_stream(size_t ms) : max_size(ms)
+Outer_stream<W, H>::Outer_stream(size_t max_sz) : max_size(max_sz)
 {
 	//Подготавливаем кадр ввода.
 	prepare_for_input();
@@ -148,34 +148,36 @@ inline void Outer_stream<W, H>::print_input() const
 
 
 //Отладочный вывод содержимого потока. Параметр -- задержка кадра на экране.
-template<size_t W, size_t H>
-void Outer_stream<W, H>::play(unsigned dur) const
-{
-	int i = 0;//Счетчик выведенных кадров.
-	
-	for (auto & e : data)//Перебираются все кадры.
-	{
-		print_frame(e);
-
-		cout << ++i << endl;
-
-		Sleep(dur);//Задержка. Windows.h
-		system("cls");//Очищаем экран консоли.
-	}
-}
+//template<size_t W, size_t H>
+//void Outer_stream<W, H>::play(unsigned dur) const
+//{
+//	int i = 0;//Счетчик выведенных кадров.
+//	
+//	for (auto & e : data)//Перебираются все кадры.
+//	{
+//		print_frame(e);
+//
+//		cout << ++i << endl;
+//
+//		Sleep(dur);//Задержка. Windows.h
+//		system("cls");//Очищаем экран консоли.
+//	}
+//}
 
 //Внести новые данные в поток. Удалить старые.
 template<size_t W, size_t H>
 void Outer_stream<W, H>::process()
 {
-	data.push_back(input_frame);//Вставляем заполненный кадр ввода в деку.
+	//Вставляем заполненный кадр ввода в деку.
+	data.push_back(input_frame);
 	
 	if (data.size() > max_size)//Если размер деки превышает максимум, то убираем один кадр из начала, где находятся самые старые данные. 
 	{
 		data.pop_front();
 	}
 
-	prepare_for_input();//Подготовить кадр ввода для повторного заполнения.
+	//Подготовить кадр ввода для повторного заполнения.
+	prepare_for_input();
 }
 
 

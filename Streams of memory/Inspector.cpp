@@ -4,7 +4,6 @@
 
 const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 {
-	//cout << "\nStart left-inspecting..." << endl;
 	set<int> xset, yset; //Списки координат, пройденных инспектором.
 
 	bool is_finished = false; //Переменная, сообщающая о том, завершен ли обход.
@@ -225,7 +224,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg
 				&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1])
 		{
-			cout << "pos 8, ";
+			//cout << "pos 8, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -252,7 +251,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
 		{
-			cout << "pos 10, ";
+			//cout << "pos 10, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -267,7 +266,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 				&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj
 				&& ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 11, ";
+			//cout << "pos 11, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -281,7 +280,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
 		{
-			cout << "pos 12, ";
+			//cout << "pos 12, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -295,7 +294,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 13, ";
+			//cout << "pos 13, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -309,7 +308,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 14, ";
+			//cout << "pos 14, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -323,7 +322,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
 		{
-			cout << "pos 15, ";
+			//cout << "pos 15, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -337,7 +336,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
 				&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 16, ";
+			//cout << "pos 16, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -352,7 +351,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 				&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj
 				&& ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 17, ";
+			//cout << "pos 17, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -367,7 +366,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
 				&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
 		{
-			cout << "pos 18, ";
+			//cout << "pos 18, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -381,7 +380,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
 				&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 19, ";
+			//cout << "pos 19, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -395,7 +394,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == bg
 				&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 20, ";
+			//cout << "pos 20, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -409,7 +408,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
 				&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
 		{
-			cout << "pos 21, ";
+			//cout << "pos 21, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -423,7 +422,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
 				&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 22, ";
+			//cout << "pos 22, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -438,7 +437,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 				&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj
 				&& ws[loc.y + 1][loc.x] == obj)
 		{
-			cout << "pos 23 ";
+			//cout << "pos 23 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -452,7 +451,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
 				&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
 		{
-			cout << "pos 24, ";
+			//cout << "pos 24, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -466,7 +465,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg
 				&& ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
 		{
-			cout << "pos 25, ";
+			//cout << "pos 25, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -480,7 +479,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
 		{
-			cout << "pos 26, ";
+			//cout << "pos 26, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -494,7 +493,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
 				&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
 		{
-			cout << "pos 27, ";
+			//cout << "pos 27, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -508,7 +507,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
 				&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
 		{
-			cout << "pos 28.";
+			//cout << "pos 28.";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -522,7 +521,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 				&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
 		{
-			cout << "pos 29 ";
+			//cout << "pos 29 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -538,7 +537,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
 				&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 30 ";
+			//cout << "pos 30 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -552,7 +551,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg
 				&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
 		{
-			cout << "pos 31 ";
+			//cout << "pos 31 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -566,7 +565,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == bg
 				&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 32 ";
+			//cout << "pos 32 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -580,7 +579,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == obj
 				&& ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == obj)
 		{
-			cout << "pos 33 ";
+			//cout << "pos 33 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -592,28 +591,28 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 																																										
 	}
 
-	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; //Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, 
-																			//пройденные инспектором.
+	//Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, пройденные инспектором.
+	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; 																		
 }
 
 
 //Функция определит, когда пора завершать обход.
 int Inspector::start_stop(bool & is_started, bool & is_finished, int & start_x, int & start_y)
 {
-	if (is_started == true && loc.x == start_x && loc.y == start_y)// Если обход начат ранее, и координаты инспектора равны координатам старта обхода, то значит он 
-																// сделал круг, и обход можно считать завершенным.
+	if (is_started == true && loc.x == start_x && loc.y == start_y)	// Если обход начат ранее, и координаты инспектора равны координатам старта обхода, то значит он 
+																	// сделал круг, и обход можно считать завершенным.
 	{
 		is_finished = true;
 		return 1;
 	}
-	if (is_started == false)//Если обход еще не стартовал,
+	if (is_started == false)	//Если обход еще не стартовал,
 	{
-		is_started = true; // то объявляем старт
-		start_x = loc.x;// и запоминаем координаты старта.
-		start_y = loc.y;
+		is_started	= true;		// то объявляем старт
+		start_x		= loc.x;	// и запоминаем координаты старта.
+		start_y		= loc.y;
 		
 	}
-	//cout << "( " << loc.x << ", " << loc.y << " ) ";
+	
 	return 0;
 }
 

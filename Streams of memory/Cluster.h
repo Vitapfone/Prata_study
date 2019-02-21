@@ -14,9 +14,9 @@ using Outer_frame = array<array<char, W>, H>;
 class Cluster
 {
 	
-	Location loc{ 0, 0 };//Координаты левого верхнего края кластера.
-	size_t s = 5; //Длина стороны квадратного кластера.
-	int count = 0; //Количество точек, признанных отличными от фона, либо особенных по другому признаку(зависит от контекста).
+	Location	loc		{ 0, 0 };	//Координаты левого верхнего края кластера.
+	size_t		s		= 5;		//Длина стороны квадратного кластера.
+	int			count	= 0;		//Количество точек, признанных отличными от фона, либо особенных по другому признаку(зависит от контекста).
 
 public:
 
@@ -69,16 +69,15 @@ public:
 template<size_t W, size_t H>
 void Cluster::counter(const Outer_frame<W,H> & ws, char background)
 {
-	//cout << "Counting... " << endl;
-	for (int y = loc.y; y != (loc.y + s); ++y)//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
+	for (int y = loc.y; y != (loc.y + s); ++y)		//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
 	{
 		for (int x = loc.x; x != (loc.x + s); ++x)
 		{
-			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
+			if (x >= 0 && x < W && y >= 0 && y < H)	//Условие, предостерегающее от выхода за границы массива.
 			{
-				if (ws[y][x] != background)//Если эл-т не равен фону,
+				if (ws[y][x] != background)			//Если эл-т не равен фону,
 				{
-					++count;//то увеличивает счетчик таких эл-тов.
+					++count;						//то увеличивает счетчик таких эл-тов.
 				}
 			}
 		}
@@ -89,15 +88,15 @@ void Cluster::counter(const Outer_frame<W,H> & ws, char background)
 template<size_t W, size_t H>
 void Cluster::diff_counter(const Outer_frame<W,H> & frame_1, const Outer_frame<W,H> & frame_2)
 {
-	for (int y = loc.y; y != (loc.y + s); ++y)//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
+	for (int y = loc.y; y != (loc.y + s); ++y)		//Перебирает все эл-ты рабочего пространства в границах квадратного кластера.
 	{
 		for (int x = loc.x; x != (loc.x + s); ++x)
 		{
-			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
+			if (x >= 0 && x < W && y >= 0 && y < H)	//Условие, предостерегающее от выхода за границы массива.
 			{
-				if (frame_1[y][x] != frame_2[y][x])//Если соответствующие элементы не равны,
+				if (frame_1[y][x] != frame_2[y][x])	//Если соответствующие элементы не равны,
 				{
-					++count;//то увеличивает счетчик таких эл-тов.
+					++count;						//то увеличивает счетчик таких эл-тов.
 				}
 			}
 		}
@@ -124,16 +123,13 @@ const Warning most_filled_cluster(const Outer_frame<W,H> & ws, char background)
 	{
 		e.counter(ws, background);
 	}
-	//cout << "After cluster counting" << endl;
-
+	
 	//Найти наиболее заполненный кластер.
 	sort(vc.begin(), vc.end(), [](Cluster & c1, Cluster & c2) {return c1.get_count() > c2.get_count(); });
 
 	//Вычисляем координаты середины кластера.
 	int x = vc[0].where().x + vc[0].get_s() / 2;
 	int y = vc[0].where().y + vc[0].get_s() / 2;
-
-	//cout << vc[0].get_count() << " Bacground '" << background << "'\n";
 
 	return Warning("Unidentified contrast object!", { x, y }, vc[0].get_count());
 }
@@ -142,7 +138,7 @@ const Warning most_filled_cluster(const Outer_frame<W,H> & ws, char background)
 template<size_t W, size_t H>
 const Warning most_difference_in_cluster(const Outer_frame<W,H> & frame_1, const Outer_frame<W,H> & frame_2)
 {
-	static constexpr double difference_coefficient = 1.2;//Коэффициент важности для предупреждения о разности в кластере.
+	static constexpr double difference_coefficient = 1.2;	//Коэффициент важности для предупреждения о разности в кластере.
 
 	//Создаем кластеры для поиска
 	vector<Cluster> vc;
@@ -155,7 +151,7 @@ const Warning most_difference_in_cluster(const Outer_frame<W,H> & frame_1, const
 		}
 	}
 
-	for (auto & e : vc)//Каждый кластер подсчитывает кол-во знаков, состояние которых изменилось с прошлого кадра.
+	for (auto & e : vc)	//Каждый кластер подсчитывает кол-во знаков, состояние которых изменилось с прошлого кадра.
 	{
 		e.diff_counter(frame_1, frame_2);
 	}

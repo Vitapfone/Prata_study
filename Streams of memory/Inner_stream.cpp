@@ -37,16 +37,16 @@ void Inner_stream::prepare_for_input()
 //Внести новые данные в поток. Удалить старые.
 void Inner_stream::process()
 {
-	data.push_back(input_frame);//Вставляем заполненный кадр ввода в деку.
-	//cout << data.size() << ' ';
+	//Вставляем заполненный кадр ввода в деку.
+	data.push_back(input_frame);
+	
 	if (data.size() > max_size)//Если размер деки превышает максимум, то убираем один кадр из начала, где находятся самые старые данные. 
 	{
-		//cout << max_size << endl;
-		//cout << "???\n";
 		data.pop_front();
 	}
 
-	prepare_for_input();//Подготовить кадр ввода для повторного заполнения.
+	//Подготовить кадр ввода для повторного заполнения.
+	prepare_for_input();
 }
 
 //Вспомогательная ф-я для отрисовки кадра в консоли. Дает кадру видимые границы. 
@@ -67,25 +67,19 @@ void make_borders(Inner_frame & fr)
 	}
 }
 
-////Функция отрисовки одного кадра.
-//void Inner_stream::print_frame(Inner_frame & fr)
-//{
-//	::print_frame(fr);
-//}
-
 //Отладочный вывод содержимого потока.
-void Inner_stream::play(unsigned dur)
-{
-	Inner_frame frame_copy;//Копия кадра, чтобы не записывать видимые границы кадра(только для удобства просмотра в консоли) в сам поток.
-	for (const auto & e : data)
-	{
-		frame_copy = e;
-		print_frame(frame_copy);//Отрисовываем копию.
-
-		Sleep(dur);//Задержка. Windows.h
-		system("cls");//Очищаем экран консоли.
-	}
-}
+//void Inner_stream::play(unsigned dur)
+//{
+//	Inner_frame frame_copy;//Копия кадра, чтобы не записывать видимые границы кадра(только для удобства просмотра в консоли) в сам поток.
+//	for (const auto & e : data)
+//	{
+//		frame_copy = e;
+//		print_frame(frame_copy);//Отрисовываем копию.
+//
+//		Sleep(dur);//Задержка. Windows.h
+//		system("cls");//Очищаем экран консоли.
+//	}
+//}
 
 //Свободная функция для отрисовки кадра.
 void print_frame(Inner_frame & fr)

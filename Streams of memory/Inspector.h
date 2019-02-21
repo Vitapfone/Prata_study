@@ -9,13 +9,14 @@ using Inner_frame = vector<vector<char>>;
 class Inspector
 {
 	
-	Location loc{ 0, 0 };
-	char bg = ' ';//Фон, по умолчанию пробел.
-	char obj;//Объект.
+	Location	loc	{ 0, 0 };
+	char		bg	= ' ';	//Фон, по умолчанию пробел.
+	char		obj;		//Объект.
 
 public:
 
-//Конструктор.
+//КОНСТРУКТОР
+
 	Inspector(int x, int y, char b, char o) : loc{ x, y }, bg(b), obj(o) {}
 
 //ЗАПРЕЩЕНО
@@ -25,11 +26,12 @@ public:
 	//Запрещено присвоение.
 	Inspector & operator=(Inspector const &) = delete;
 
-	//Методы движения.
-	void moveLeft() { --loc.x; }
-	void moveRight() { ++loc.x; }
-	void moveUp() { --loc.y; }
-	void moveDown() { ++loc.y; }
+	//МЕТОДЫ ДВИЖЕНИЯ
+
+	void moveLeft()		{ --loc.x; }
+	void moveRight()	{ ++loc.x; }
+	void moveUp()		{ --loc.y; }
+	void moveDown()		{ ++loc.y; }
 
 	//Функция обхода слева. Второй параметр определяет, будет обход по часовой стрелке или против.
 	template<size_t W, size_t H> 
@@ -47,13 +49,14 @@ private:
 template<size_t W, size_t H> 
 const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool clockwise)
 {
-	cout << "\nStart left-inspecting..." << endl;
-	set<int> xset, yset; //Списки координат, пройденных инспектором.
+	//cout << "\nStart left-inspecting..." << endl;
 
-	bool is_finished = false; //Переменная, сообщающая о том, завершен ли обход.
-	bool is_started = false; //Переменная, сообщающая о том, начат ли обход.
+	set<int> xset, yset;		//Списки координат, пройденных инспектором.
 
-	int start_x, start_y; //Переменные для хранения координат начала поиска.
+	bool is_finished	= false;	//Переменная, сообщающая о том, завершен ли обход.
+	bool is_started		= false;	//Переменная, сообщающая о том, начат ли обход.
+
+	int start_x, start_y;			//Переменные для хранения координат начала поиска.
 
 
 	while (!is_finished)//Пока обход не закончен.
@@ -268,7 +271,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg
 			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1])
 		{
-			cout << "pos 8, ";
+			//cout << "pos 8, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -295,7 +298,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
 		{
-			cout << "pos 10, ";
+			//cout << "pos 10, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -310,7 +313,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj
 			&& ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 11, ";
+			//cout << "pos 11, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -324,7 +327,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
 		{
-			cout << "pos 12, ";
+			//cout << "pos 12, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -338,7 +341,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 13, ";
+			//cout << "pos 13, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -352,7 +355,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 14, ";
+			//cout << "pos 14, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -366,7 +369,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
 		{
-			cout << "pos 15, ";
+			//cout << "pos 15, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -380,7 +383,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
 			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 16, ";
+			//cout << "pos 16, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -395,7 +398,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj
 			&& ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 17, ";
+			//cout << "pos 17, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -409,7 +412,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
 			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
 		{
-			cout << "pos 18, ";
+			//cout << "pos 18, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -423,7 +426,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
 			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 19, ";
+			//cout << "pos 19, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -437,7 +440,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == bg
 			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 20, ";
+			//cout << "pos 20, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -451,7 +454,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
 			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
 		{
-			cout << "pos 21, ";
+			//cout << "pos 21, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -465,7 +468,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
 			&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 22, ";
+			//cout << "pos 22, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -480,7 +483,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj
 			&& ws[loc.y + 1][loc.x] == obj)
 		{
-			cout << "pos 23 ";
+			//cout << "pos 23 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -494,7 +497,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
 			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
 		{
-			cout << "pos 24, ";
+			//cout << "pos 24, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -508,7 +511,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg
 			&& ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
 		{
-			cout << "pos 25, ";
+			//cout << "pos 25, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -522,7 +525,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
 		{
-			cout << "pos 26, ";
+			//cout << "pos 26, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -536,7 +539,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
 			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
 		{
-			cout << "pos 27, ";
+			//cout << "pos 27, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -550,7 +553,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
 			&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
 		{
-			cout << "pos 28.";
+			//cout << "pos 28.";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -564,7 +567,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
 			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
 		{
-			cout << "pos 29 ";
+			//cout << "pos 29 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -580,7 +583,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
 			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
 		{
-			cout << "pos 30 ";
+			//cout << "pos 30 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -594,7 +597,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg
 			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
 		{
-			cout << "pos 31 ";
+			//cout << "pos 31 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -608,7 +611,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == bg
 			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
 		{
-			cout << "pos 32 ";
+			//cout << "pos 32 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -622,7 +625,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == obj
 			&& ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == obj)
 		{
-			cout << "pos 33 ";
+			//cout << "pos 33 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
@@ -631,7 +634,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 			//continue;
 		}
 	}
-
-	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; //Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, 
-																			//пройденные инспектором.
+	
+	//Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, пройденные инспектором.
+	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; 																		
 }
