@@ -34,7 +34,6 @@ Image::Image(const Borders & bs, const Inner_frame & ws, char bg, char obj) : da
 	++counter;
 	id = counter;
 
-	//cout << "Constructing... ";
 	for (int i = bs.y_min, i2 = 0; i <= bs.y_max; ++i, ++i2)
 	{
 		//cout << "i=" << i << " ";
@@ -179,21 +178,11 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 	if (im1.get_aspect() >= im2.get_aspect()*0.9 && im1.get_aspect() <= im2.get_aspect()*1.1)//Если отношения сторон двух образов различаются в пределах +-10%, то их можно 
 																							// сравнивать подробнее.
 	{
-		Image wider = (im1.get_widht() >= im2.get_widht()) ? im1 : im2;//Временный образ для хранения более широкой фигуры.
-		//cout << "Wider image:" << endl;
-		//wider.visualize();
-
-		Image narrow = (im1.get_widht() < im2.get_widht()) ? im1 : im2;//Временный образ для узкой фигуры.
-		//cout << "Narrow image:" << endl;
-		//narrow.visualize();
-
-		Image higher = (im1.get_height() >= im2.get_height()) ? im1 : im2;//Временный образ для хранения более высокой фигуры.
-		//cout << "Higher image:" << endl;
-		//higher.visualize();
-
-		Image low = (im1.get_height() < im2.get_height()) ? im1 : im2;//Временный образ для низкой фигуры.
-		//cout << "Lower image:" << endl;
-		//low.visualize();
+		Image wider		= (im1.get_widht() >= im2.get_widht()) ?	im1 : im2;	//Временный образ для хранения более широкой фигуры.
+		Image narrow	= (im1.get_widht() < im2.get_widht()) ?		im1 : im2;	//Временный образ для узкой фигуры.
+		Image higher	= (im1.get_height() >= im2.get_height()) ?	im1 : im2;	//Временный образ для хранения более высокой фигуры.
+		Image low		= (im1.get_height() < im2.get_height()) ?	im1 : im2;	//Временный образ для низкой фигуры.
+		
 
 		unsigned count = 0;//Счетчик совпадений.
 		//Тут происходит очень сложная операция сравнения двух образов разных размеров с использованием относительного положения элементов (пикселей).
@@ -211,8 +200,6 @@ bool image_equality(const Image & im1, const Image & im2, double min_equality)
 
 		size_t max_square = higher.get_height()*wider.get_widht();//Максимально возможное кол-во элементов в образе.
 		double equality = count / static_cast<double>(max_square);//Доля совпадений из всех проверок.
-
-		//cout << count << " " << max_square << " " << equality << endl;
 
 		if (equality >= min_equality)//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 		{
