@@ -11,14 +11,22 @@ int main()
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
+	sf::Clock clock;//Стартует счетчик времени.
+
 	while (window.isOpen())
 	{
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+
+		sf::Time elapsed1 = clock.restart();//Получаем прошедшее время. Обнуляем счетчик.
+		std::cout << elapsed1.asMicroseconds() << std::endl;
+		
+
 
 		window.clear();
 		window.draw(shape);
