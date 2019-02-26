@@ -77,8 +77,8 @@ int main()
 
 	//Square fig(20, 3, 50);//Фигура для демонстрации записи в поток.
 	//My::Rectangle fig(20, 3, 50);
-	Circle fig(40, 10, 5);
-	//Rhomb fig(60, 27, 52);
+	//Circle fig(40, 2, 8);
+	Rhomb fig(40, 2, 16);
 	//Triangle fig(20, 3, 10);
 
 

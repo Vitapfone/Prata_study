@@ -633,7 +633,7 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 			yset.insert(loc.y - 1), yset.insert(loc.y), yset.insert(loc.y + 1);
 			//continue;
 		}
-	}
+	}//while (!is_finished)//Пока обход не закончен.
 	
 	//Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, пройденные инспектором.
 	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; 																		

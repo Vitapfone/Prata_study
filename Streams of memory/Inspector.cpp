@@ -589,7 +589,7 @@ const Borders Inspector::left_inspect(const Inner_frame & ws, bool clockwise)
 		}
 																																									
 																																										
-	}
+	}//while (!is_finished)//Пока обход не закончен.
 
 	//Возвращаем сконструированную на месте стр-ру, содержащую наименьшие и наибольшие координаты, пройденные инспектором.
 	return { *xset.begin(), *xset.rbegin(), *yset.begin(), *yset.rbegin() }; 																		

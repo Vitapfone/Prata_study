@@ -72,7 +72,7 @@ public:
 	//КОНСТРУКТОРЫ
 
 	Circle() = default;
-	Circle(int x, int y, size_t r) : Figure(x, y), radius(r) {}
+	Circle(int x, int y, size_t r) : Figure(x + r, y + r), radius(r) {}
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
@@ -160,7 +160,7 @@ public:
 	//КОНСТРУКТОРЫ
 
 	Rhomb() = default;
-	Rhomb(int x, int y, size_t diag) : Figure(x, y), diagonal(diag) {}
+	Rhomb(int x, int y, size_t diag) : Figure(x + diag / 2, y + diag / 2), diagonal(diag) {}
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
