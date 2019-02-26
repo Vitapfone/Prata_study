@@ -1,26 +1,39 @@
-﻿// Советы по началу работы 
+﻿// SFML Hello World.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include "pch.h"
+#include <SFML/Graphics.hpp>
+
+
+int main()
+{
+	sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		window.clear();
+		window.draw(shape);
+		window.display();
+	}
+
+}
+
+// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
+// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+// Советы по началу работы 
 //   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
 //   2. В окне Team Explorer можно подключиться к системе управления версиями.
 //   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
 //   4. В окне "Список ошибок" можно просматривать ошибки.
 //   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
 //   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
-
-#ifndef PCH_H
-#define PCH_H
-
-#include <iostream>
-#include <fstream>
-#include <array>
-#include <deque>
-#include <map>
-#include <set>
-//#include <list>
-//#include <Windows.h>
-#include <vector>
-#include <string>
-//#include <utility>
-#include <cassert>
-#include <ctime>
-
-#endif //PCH_H
