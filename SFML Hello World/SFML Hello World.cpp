@@ -7,9 +7,27 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+
+	//Создание окна
+	sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!", sf::Style::Default, settings);
+	window.setPosition(sf::Vector2i(50, 50));
+
+	//Включение вертикальной синхронизации.
+	window.setVerticalSyncEnabled(true);
+
+	sf::CircleShape shape(200.f, 50);
+	shape.setPosition(20.f, 20.f);
+	shape.setFillColor(sf::Color::White);
+	
+	
+	// define a 120x50 rectangle
+	sf::RectangleShape rectangle(sf::Vector2f(220.f, 150.f));
+	rectangle.setFillColor(sf::Color::Red);
+	rectangle.setPosition(400, 400);
+	
+
 
 	sf::Clock clock;//Стартует счетчик времени.
 
@@ -21,16 +39,27 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+
+			
+
+			
+
+			
+
+			
 		}
 
 		sf::Time elapsed1 = clock.restart();//Получаем прошедшее время. Обнуляем счетчик.
 		std::cout << elapsed1.asMicroseconds() << std::endl;
 		
+		
 
-
-		window.clear();
+		window.clear(sf::Color::Black);
 		window.draw(shape);
+		window.draw(rectangle);
 		window.display();
+
+		
 	}
 
 }
