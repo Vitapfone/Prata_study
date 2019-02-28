@@ -7,11 +7,10 @@
 
 int main()
 {
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
+	
 
 	//Создание окна
-	sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
 	window.setPosition(sf::Vector2i(50, 50));
 
 	//Включение вертикальной синхронизации.
