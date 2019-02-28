@@ -69,12 +69,19 @@ class Circle : public Figure//Наследуется от Figure.
 
 public:
 
-	//КОНСТРУКТОРЫ
+//КОНСТРУКТОРЫ
 
 	Circle() = default;
 	Circle(int x, int y, size_t r) : Figure(x + r, y + r), radius(r) {}
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
+
+//ГЕТТЕРЫ
+
+	//Получить радиус.
+	int get_radius() const { return radius; }
+
+//ДРУГИЕ
 
 	//Унаследованная функция отрисовки.
 	void print(Ar60_30 & ws) const;
@@ -116,10 +123,17 @@ namespace My//Необходимость в новом пространстве 
 
 	public:
 
-		//КОНСТРУКТОРЫ
+	//КОНСТРУКТОРЫ
 
 		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) {}
 		Rectangle(const Location & lc, size_t a1) : Figure(lc), a(a1) {}
+
+	//ГЕТТЕРЫ
+
+		//Выдать длину стороны.
+		int get_side_length() const { return a; }
+
+	//ДРУГИЕ
 
 		//Функция отрисовки прямоугольника, унаследованная от предка.
 		void print(Ar60_30 &ws) const;
@@ -163,6 +177,11 @@ public:
 	Rhomb(int x, int y, size_t diag) : Figure(x + diag / 2, y + diag / 2), diagonal(diag) {}
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
+
+	//ГЕТТЕРЫ
+
+	//Получить диагональ.
+	int get_diagonal() const { return diagonal; }
 
 	//Переопределение виртуальной функции из базового класса.
 	void print(Ar60_30 & ws) const; 
@@ -222,6 +241,14 @@ public:
 	Square(const Location & lc, int a1 = 0) : Figure(lc), a(a1) {}
 	~Square() {}
 	
+//ГЕТТЕРЫ
+
+	//Выдать длину стороны.
+	int get_side_length() const { return a; }
+
+
+//ДРУГИЕ
+
 	//Функция отрисовки квадрата.
 	void print(Ar60_30 &ws) const;
 
@@ -270,6 +297,16 @@ public:
 	}
 	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
 	~Triangle() {}
+
+	//ГЕТТЕРЫ
+
+	//Получить длину катета.
+	int get_cathetus() const { return cathetus; }
+	//Получить точку А.
+	Location get_point_A() const { return point_A; }
+	//Получить точку Б.
+	Location get_point_B() const { return point_B; }
+
 
 	//Переопределение виртуальной функции из базового класса.
 	void print(Ar60_30 &ws) const; 

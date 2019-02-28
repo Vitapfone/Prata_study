@@ -22,5 +22,6 @@
 //#include <utility>
 #include <cassert>
 #include <ctime>
+#include <SFML/Graphics.hpp>
 
 #endif //PCH_H

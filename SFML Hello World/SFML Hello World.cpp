@@ -38,14 +38,6 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-
-			
-
-			
-
-			
-
-			
 		}
 
 		sf::Time elapsed1 = clock.restart();//Получаем прошедшее время. Обнуляем счетчик.

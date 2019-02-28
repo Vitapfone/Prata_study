@@ -14,7 +14,6 @@
 //#include "Id_string.h"
 #include "Image.h"
 #include "Link.h"
-#include <SFML/Graphics.hpp>
 
 //using namespace My_names;
 
@@ -42,6 +41,9 @@ void database_recording(const string &			file1,
 						map<int, Image> &		images,
 						map<int, Link> &		links,
 						map<int, Id_string> &	strings);
+
+//Создание отрисовываемой формы на основе типа фигуры.
+unique_ptr<sf::Shape> get_visible_shape(const Figure* fig);
 
 
 int main()
@@ -74,11 +76,11 @@ int main()
 
 	//КОНСТРУИРОВАНИЕ ФИГУР
 
-	//Square fig(20, 3, 50);//Фигура для демонстрации записи в поток.
-	//My::Rectangle fig(20, 3, 50);
+	//Square fig(20, 3, 10);//Фигура для демонстрации записи в поток.
+	//My::Rectangle fig(20, 3, 10);
 	//Circle fig(40, 2, 8);
-	Rhomb fig(40, 2, 16);
-	//Triangle fig(20, 3, 10);
+	//Rhomb fig(40, 2, 16);
+	Triangle fig(20, 3, 10);
 
 
 	//ИНИЦИАЛИЗАЦИЯ ГРАФИКИ
@@ -90,7 +92,20 @@ int main()
 	//Включение вертикальной синхронизации.
 	window.setVerticalSyncEnabled(true);
 
+	unique_ptr<sf::Shape>	shape;
+	Location				pos;
 
+	if (shape = get_visible_shape(&fig))
+	{
+		pos = fig.where();
+		shape->setPosition(pos.x, pos.y);
+	}
+	else
+	{
+		cout << "Error! Wrong figure!";
+		exit(EXIT_FAILURE);
+	}
+	
 
 //УЧАСТОК РАБОЧЕГО ПРОЦЕССА//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -98,6 +113,16 @@ int main()
 
 	for (size_t i = 0; window.isOpen() && i < Frames; i++)//Цикл записи. Можно прервать, закрыв графическое окно.
 	{
+		//ОБРАБОТКА СОБЫТИЙ ГРАФИЧЕСКОГО ОКНА
+
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)//Если нажать на крестик (как обычно),
+				window.close();//то окно закроется.
+		}
+
+
 
 	//УЧАСТОК ВВОДА ДАННЫХ ВО ВНЕШНИЙ ПОТОК /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -207,6 +232,10 @@ int main()
 		//Отрисовываем текущий кадр.
 		print_frame(current_frame_copy);
 
+		window.clear(sf::Color::Black);
+		window.draw(*shape);
+		window.display();
+
 
 		//РАСПОЗНАВАНИЕ ОБРАЗА
 
@@ -304,6 +333,9 @@ int main()
 		//Движение фигуры в зависимости от стадии цикла записи.
 		figure_moving(fig, i);
 
+		pos = fig.where();
+		shape->setPosition(pos.x, pos.y);
+
 
 	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ ///////////////////////////////////////////////////////////////////////////////
 
@@ -350,3 +382,47 @@ void figure_moving(Figure & fig, size_t i)
 	}
 }
 
+
+//Создание отрисовываемой формы на основе типа фигуры.
+unique_ptr<sf::Shape> get_visible_shape(const Figure* fig)
+{
+	if (const Square* sq = dynamic_cast<const Square*>(fig))
+	{
+		size_t side = sq->get_side_length();
+		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side, side)));
+	}
+
+	if (const My::Rectangle* rc = dynamic_cast<const My::Rectangle*>(fig))
+	{
+		size_t side = rc->get_side_length();
+		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side*1.6, side)));
+	}
+
+	if (const Circle* ccl = dynamic_cast<const Circle*>(fig))
+	{
+		size_t rad = ccl->get_radius();
+		return unique_ptr<sf::Shape>(new sf::CircleShape(rad));
+	}
+
+	if (const Rhomb* rb = dynamic_cast<const Rhomb*>(fig))
+	{
+		size_t diag = rb->get_diagonal();
+		return unique_ptr<sf::Shape>(new sf::CircleShape(diag / 2, 4));
+	}
+
+	if (const Triangle* tr = dynamic_cast<const Triangle*>(fig))
+	{
+		Location point		= tr->where();
+		Location point_a	= tr->get_point_A();
+		Location point_b	= tr->get_point_B();
+
+		sf::ConvexShape triangle(3);
+		triangle.setPoint(0, sf::Vector2f(point.x, point.y));
+		triangle.setPoint(1, sf::Vector2f(point_a.x, point_a.y));
+		triangle.setPoint(2, sf::Vector2f(point_b.x, point_b.y));
+
+		return unique_ptr<sf::Shape> (new sf::ConvexShape(triangle)); 
+	}
+
+	return nullptr;
+}
