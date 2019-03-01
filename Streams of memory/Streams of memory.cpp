@@ -17,9 +17,10 @@
 
 //using namespace My_names;
 
-constexpr size_t Width		= 120;	//Константа, задающая ширину рабочего пространства.
-constexpr size_t Height		= 56;	//Константа, задающая высоту рабочего пространства.
-constexpr size_t Frames		= 120;	//Количество переданных в поток кадров.
+constexpr size_t	Width		= 120;	//Константа, задающая ширину рабочего пространства.
+constexpr size_t	Height		= 56;	//Константа, задающая высоту рабочего пространства.
+constexpr size_t	Frames		= 120;	//Количество переданных в поток кадров.
+constexpr float		Scale		= 10.0;	//Коэффициент масштаба отображаемого кадра относительно кадра потока.
 
 constexpr double Equality_min = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
@@ -43,7 +44,7 @@ void database_recording(const string &			file1,
 						map<int, Id_string> &	strings);
 
 //Создание отрисовываемой формы на основе типа фигуры.
-unique_ptr<sf::Shape> get_visible_shape(const Figure* fig);
+unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale);
 
 
 int main()
@@ -78,15 +79,15 @@ int main()
 
 	//Square fig(20, 3, 10);//Фигура для демонстрации записи в поток.
 	//My::Rectangle fig(20, 3, 10);
-	//Circle fig(40, 2, 8);
-	//Rhomb fig(40, 2, 16);
-	Triangle fig(20, 3, 10);
+	//Circle fig(20, 2, 10);
+	//Rhomb fig(20, 2, 10);
+	Triangle fig(20, 3, 19);
 
 
 	//ИНИЦИАЛИЗАЦИЯ ГРАФИКИ
 
 	//Создание окна
-	sf::RenderWindow window(sf::VideoMode(Width, Height), "Streams of memory");
+	sf::RenderWindow window(sf::VideoMode(Width*Scale, Height*Scale), "Streams of memory");
 	window.setPosition(sf::Vector2i(50, 50));
 
 	//Включение вертикальной синхронизации.
@@ -95,10 +96,12 @@ int main()
 	unique_ptr<sf::Shape>	shape;
 	Location				pos;
 
-	if (shape = get_visible_shape(&fig))
+	if (shape = get_visible_shape(&fig, Scale))
 	{
+		cout << "New visible shape!\n";
 		pos = fig.where();
-		shape->setPosition(pos.x, pos.y);
+		shape->setPosition(pos.x*Scale, pos.y*Scale);
+		cout << "It has position!\n";
 	}
 	else
 	{
@@ -106,6 +109,9 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	
+	sf::CircleShape mark(5);
+	mark.setFillColor(sf::Color::Red);
+
 
 //УЧАСТОК РАБОЧЕГО ПРОЦЕССА//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -113,11 +119,13 @@ int main()
 
 	for (size_t i = 0; window.isOpen() && i < Frames; i++)//Цикл записи. Можно прервать, закрыв графическое окно.
 	{
+		cout << "Main cycle\n";
 		//ОБРАБОТКА СОБЫТИЙ ГРАФИЧЕСКОГО ОКНА
 
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			cout << "Events processing\n";
 			if (event.type == sf::Event::Closed)//Если нажать на крестик (как обычно),
 				window.close();//то окно закроется.
 		}
@@ -126,8 +134,10 @@ int main()
 
 	//УЧАСТОК ВВОДА ДАННЫХ ВО ВНЕШНИЙ ПОТОК /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		cout << "Inner frame input\n";
 		//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
 		fig.print(outs.Input_frame());
+		cout << "After printing\n";
 		//Кадр ввода отправляется в поток.
 		outs.process();
 
@@ -135,6 +145,7 @@ int main()
 
 	//УЧАСТОК РАБОТЫ СТОРОЖЕВЫХ АЛГОРИТМОВ ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+		cout << "Warnings area\n";
 		
 		vector<Warning> warnings;//Вектор для хранения предупреждений от функций управления вниманием внешнего потока.
 
@@ -158,6 +169,7 @@ int main()
 
 	//УЧАСТОК РАБОТЫ ФИЛЬТРА ВОСПРИЯТИЯ. НА БУДУЩЕЕ. ПОКА НИЧЕГО НЕТ!///////////////////////////////////////////////////////////////////////////
 
+		cout << "Filter area\n";
 		//На будущее. Фильтр восприятия обрабатывает все предупреждения, корректируя их важность. 
 
 		//После занесения всех предупреждений сортируем так, чтобы первым эл-том был тот, у кого наибольшая важность.
@@ -196,7 +208,7 @@ int main()
 		const Inner_frame & current_frame = ins.get_ro_frame(0);
 
 		int count = 0;
-		//cout << "Before elemental clusterization" << endl;
+		cout << "Before elemental clusterization" << endl;
 		do
 		{
 			++count;
@@ -217,23 +229,27 @@ int main()
 		Borders object_area = foc.get_borders();
 
 		//Попробуем найти "центр тяжести" объекта.
-		//cout << "Searching center of gravity..." << endl;
+		cout << "Searching center of gravity..." << endl;
 		foc.to_Weight_Center(current_frame);
 
 		//Создаем образ.
 		Image figure(object_area, current_frame, foc.get_background(), foc.get_object());
 		
 		//Копия текущего кадра, чтобы все его модификации для наглядности не сохранялись в потоке.
-		Inner_frame current_frame_copy = current_frame;
-		foc.mark(current_frame_copy); //Обозначаем положение фокуса внимания.
+		//Inner_frame current_frame_copy = current_frame;
+		//foc.mark(current_frame_copy); //Обозначаем положение фокуса внимания.
 
+		cout << "Before mark positioning\n";
+		mark.setPosition(foc.get_x()*Scale, foc.get_y()*Scale);
+		cout << foc.get_x() << ", " << foc.get_y() << endl;
 		cout << endl;
 
 		//Отрисовываем текущий кадр.
-		print_frame(current_frame_copy);
-
+		//print_frame(current_frame_copy);
+		cout << "Before clearing\n";
 		window.clear(sf::Color::Black);
 		window.draw(*shape);
+		window.draw(mark);
 		window.display();
 
 
@@ -328,13 +344,14 @@ int main()
 			}
 		}//if (match == false)//Образы не совпали ни с одним эталоном.
 
-		system("cls");
+		//system("cls");
 
 		//Движение фигуры в зависимости от стадии цикла записи.
 		figure_moving(fig, i);
 
 		pos = fig.where();
-		shape->setPosition(pos.x, pos.y);
+		cout << pos.x << ", " << pos.y << endl;
+		shape->setPosition(pos.x*Scale, pos.y*Scale);
 
 
 	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ ///////////////////////////////////////////////////////////////////////////////
@@ -342,7 +359,7 @@ int main()
 		//Очищаем список предупреждений, чтобы заполнить его в следующем цикле.
 		warnings.clear();
 
-	}//for (size_t i = 0; i < Frames; i++)//Цикл записи.
+	}//for (size_t i = 0; window.isOpen() && i < Frames; i++)//Цикл записи.
 
 
 //УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////
@@ -384,30 +401,30 @@ void figure_moving(Figure & fig, size_t i)
 
 
 //Создание отрисовываемой формы на основе типа фигуры.
-unique_ptr<sf::Shape> get_visible_shape(const Figure* fig)
+unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale)
 {
 	if (const Square* sq = dynamic_cast<const Square*>(fig))
 	{
 		size_t side = sq->get_side_length();
-		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side, side)));
+		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side*scale, side*scale)));
 	}
 
 	if (const My::Rectangle* rc = dynamic_cast<const My::Rectangle*>(fig))
 	{
 		size_t side = rc->get_side_length();
-		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side*1.6, side)));
+		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side*1.6*scale, side*scale)));
 	}
 
 	if (const Circle* ccl = dynamic_cast<const Circle*>(fig))
 	{
 		size_t rad = ccl->get_radius();
-		return unique_ptr<sf::Shape>(new sf::CircleShape(rad));
+		return unique_ptr<sf::Shape>(new sf::CircleShape(rad*scale));
 	}
 
 	if (const Rhomb* rb = dynamic_cast<const Rhomb*>(fig))
 	{
 		size_t diag = rb->get_diagonal();
-		return unique_ptr<sf::Shape>(new sf::CircleShape(diag / 2, 4));
+		return unique_ptr<sf::Shape>(new sf::CircleShape(diag / 2*scale, 4));
 	}
 
 	if (const Triangle* tr = dynamic_cast<const Triangle*>(fig))
@@ -417,9 +434,9 @@ unique_ptr<sf::Shape> get_visible_shape(const Figure* fig)
 		Location point_b	= tr->get_point_B();
 
 		sf::ConvexShape triangle(3);
-		triangle.setPoint(0, sf::Vector2f(point.x, point.y));
-		triangle.setPoint(1, sf::Vector2f(point_a.x, point_a.y));
-		triangle.setPoint(2, sf::Vector2f(point_b.x, point_b.y));
+		triangle.setPoint(0, sf::Vector2f(point.x*scale, point.y*scale));
+		triangle.setPoint(1, sf::Vector2f(point_a.x*scale, point_a.y*scale));
+		triangle.setPoint(2, sf::Vector2f(point_b.x*scale, point_b.y*scale));
 
 		return unique_ptr<sf::Shape> (new sf::ConvexShape(triangle)); 
 	}
