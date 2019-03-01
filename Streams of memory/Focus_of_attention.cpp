@@ -157,7 +157,6 @@ void Focus_of_attention::part_concentrate_to_object(const Inner_frame & ws)
 
 	Borders object_area = ins.left_inspect(ws, 1);//Обходим фигуру по часовой стрелке, начиная с левого края. Получаем точные габариты в виде структуры, где указано, в каком диапазоне координат 
 														// содержится наша фигура.
-	//cout << "\nAfter inspecting..." << endl;
 
 	//Границы устанавливаются по результатам обхода.
 	borders = object_area;

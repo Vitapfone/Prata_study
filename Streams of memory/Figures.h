@@ -72,7 +72,7 @@ public:
 //КОНСТРУКТОРЫ
 
 	Circle() = default;
-	Circle(int x, int y, size_t r) : Figure(x + r, y + r), radius(r) {}
+	Circle(int x, int y, size_t r) : Figure(x, y), radius(r) {}
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
@@ -95,13 +95,13 @@ public:
 template<size_t W, size_t H> 
 void Circle::print(array<array<char, W>, H> & ws) const
 {
-	for (int y = where().y - radius; y <= where().y + radius; ++y)
+	for (int y = where().y; y <= where().y + 2*radius; ++y)
 	{
-		for (int x = where().x - radius; x <= where().x + radius; ++x)
+		for (int x = where().x; x <= where().x + 2*radius; ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)
 			{
-				if ((x - where().x)*(x - where().x) + (y - where().y)*(y - where().y) <= radius * radius)
+				if ((x - (where().x+radius))*(x - (where().x+radius)) + (y - (where().y+radius))*(y - (where().y+radius)) <= radius * radius)
 				{
 					ws[y][x] = '0';
 				}
@@ -171,17 +171,19 @@ class Rhomb : public Figure
 
 public:
 
-	//КОНСТРУКТОРЫ
+//КОНСТРУКТОРЫ
 
 	Rhomb() = default;
-	Rhomb(int x, int y, size_t diag) : Figure(x + diag / 2, y + diag / 2), diagonal(diag) {}
+	Rhomb(int x, int y, size_t diag) : Figure(x, y), diagonal(diag) {}
 	Rhomb(const Location & lc, size_t diag) : Figure(lc), diagonal(diag) {}
 	~Rhomb() {}
 
-	//ГЕТТЕРЫ
+//ГЕТТЕРЫ
 
 	//Получить диагональ.
 	int get_diagonal() const { return diagonal; }
+
+//ДРУГИЕ
 
 	//Переопределение виртуальной функции из базового класса.
 	void print(Ar60_30 & ws) const; 
@@ -195,13 +197,13 @@ public:
 template<size_t W, size_t H> 
 void Rhomb::print(array<array<char, W>, H> & ws) const
 {
-	for (int y = (where().y - diagonal / 2); y <= where().y; ++y)
+	for (int y = where().y; y <= (where().y+diagonal/2); ++y)
 	{
-		for (int x = (where().x - diagonal / 2); x <= (where().x + diagonal / 2); ++x)
+		for (int x = where().x; x <= (where().x + diagonal); ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= where().x - (y - (where().y - diagonal / 2)) && x <= where().x + (y - (where().y - diagonal / 2)))
+				if (x >= ((where().x+diagonal/2) - (y - where().y)) && x <= (where().x+diagonal/2) + (y - where().y))
 				{
 					ws[y][x] = '0';
 				}
@@ -209,13 +211,33 @@ void Rhomb::print(array<array<char, W>, H> & ws) const
 		}
 	}
 
-	for (int y = where().y; y <= where().y + diagonal / 2; ++y)
+	
+	if (diagonal % 2 != 0)//Случай нечетной длины диагонали. Нужно в связи с ограничениями растрового представления.
 	{
-		for (int x = where().x - diagonal / 2; x <= where().x + diagonal / 2; ++x)
+		for (int y = where().y + diagonal / 2-1; y <= (where().y + diagonal-1); ++y)
+		{
+			for (int x = where().x+1; x < (where().x + diagonal-1); ++x)
+			{
+				if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
+				{
+					if (x-1 >= ((where().x + diagonal / 2) - (where().y + diagonal - y)) && x+1 <= ((where().x + diagonal / 2) + (where().y + diagonal - y)))
+					{
+						ws[y][x] = '0';
+					}
+				}
+			}
+		}
+		return;
+	}
+
+	
+	for (int y = where().y+diagonal/2; y <= (where().y + diagonal); ++y)//Для четной длины диагонали.
+	{
+		for (int x = where().x; x < (where().x + diagonal); ++x)
 		{
 			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предохраняющее от выхода за границы массива.
 			{
-				if (x >= where().x - (where().y + diagonal / 2 - y) && x <= where().x + (where().y + +diagonal / 2 - y))
+				if (x >= ((where().x+diagonal/2) - (where().y + diagonal - y)) && x <= ((where().x+diagonal/2) + (where().y + diagonal - y)))
 				{
 					ws[y][x] = '0';
 				}
@@ -263,11 +285,11 @@ template<size_t W, size_t H>
 void Square::print(array<array<char, W>, H> & ws) const
 {
 
-	for (int y = where().y; y != (where().y + a); ++y) //Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
+	for (int y = where().y; y != (where().y + a); ++y)		//Функция отрисовывает квадрат, перебирая по очереди содержимое рядов.
 	{
-		for (int x = where().x; x != (where().x + a); ++x)//Внутренний цикл печатает символы ряда
+		for (int x = where().x; x != (where().x + a); ++x)	//Внутренний цикл печатает символы ряда
 		{
-			if (x >= 0 && x < W && y >= 0 && y < H)//Условие, предостерегающее от выхода за границы массива.
+			if (x >= 0 && x < W && y >= 0 && y < H)			//Условие, предостерегающее от выхода за границы массива.
 			{
 				ws[y][x] = '0';
 			}
@@ -289,16 +311,13 @@ class Triangle : public Figure //Класс, представляющий рав
 
 public:
 
-	//КОНСТРУКТОРЫ
+//КОНСТРУКТОРЫ
 	Triangle() = default;
-	Triangle(int x, int y, int cat) : Figure(x, y), cathetus(cat), point_A{ x, y + cathetus }, point_B{ x + cathetus, y + cathetus }
-	{
-		//cout << point_A_x << " " << point_A.y << " " << point_B.x << " " << point_B_y << endl;
-	}
+	Triangle(int x, int y, int cat) : Figure(x, y), cathetus(cat), point_A{ x, y + cathetus }, point_B{ x + cathetus, y + cathetus }{}
 	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
 	~Triangle() {}
 
-	//ГЕТТЕРЫ
+//ГЕТТЕРЫ
 
 	//Получить длину катета.
 	int get_cathetus() const { return cathetus; }
@@ -307,6 +326,8 @@ public:
 	//Получить точку Б.
 	Location get_point_B() const { return point_B; }
 
+
+//ДРУГИЕ
 
 	//Переопределение виртуальной функции из базового класса.
 	void print(Ar60_30 &ws) const; 

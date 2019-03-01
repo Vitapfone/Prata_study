@@ -2,16 +2,13 @@
 //
 
 #include "pch.h"
-//#include "My_names.h"
-//#include "Simple structures.h"
+
 #include "Outer_stream.h"
 #include "Inner_stream.h"
 #include "Figures.h"
 #include "Warning.h"
 #include "Cluster.h"
-//#include "Inspector.h"
 #include "Focus of attention.h"
-//#include "Id_string.h"
 #include "Image.h"
 #include "Link.h"
 
@@ -19,10 +16,11 @@
 
 constexpr size_t	Width		= 120;	//Константа, задающая ширину рабочего пространства.
 constexpr size_t	Height		= 56;	//Константа, задающая высоту рабочего пространства.
-constexpr size_t	Frames		= 120;	//Количество переданных в поток кадров.
+constexpr size_t	Frames		= 130;	//Количество переданных в поток кадров.
 constexpr float		Scale		= 10.0;	//Коэффициент масштаба отображаемого кадра относительно кадра потока.
+constexpr float		Rad			= 5.0;	//Радиус метки фокуса внимания.
 
-constexpr double Equality_min = 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
+constexpr double Equality_min	= 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
 //Движение фигуры в зависимости от стадии цикла записи.
 void figure_moving(Figure &, size_t);
@@ -60,13 +58,9 @@ int main()
 	map<int, Link>		link_map;	//Карта для хранения связей в соответствии с их айди.
 	map<int,Image>		image_map;	//Карта для образов.
 
-	//cout << "Before database initialisation\n";
-
 	//Функция выполняет всю работу.
 	database_initialization(	"Figures\\figures_data.bin",	"Links\\links_data.bin",	"Strings\\strings_data.bin", 
 								image_map,						link_map,					string_map);
-	
-	//cout << "After database initialisation\n";
 	
 	//КОНСТРУИРОВАНИЕ ПОТОКОВ
 
@@ -77,11 +71,11 @@ int main()
 
 	//КОНСТРУИРОВАНИЕ ФИГУР
 
-	//Square fig(20, 3, 10);//Фигура для демонстрации записи в поток.
-	//My::Rectangle fig(20, 3, 10);
+	//Square fig(20, 3, 13);//Фигура для демонстрации записи в поток.
+	//My::Rectangle fig(20, 3, 13);
 	//Circle fig(20, 2, 10);
-	//Rhomb fig(20, 2, 10);
-	Triangle fig(20, 3, 19);
+	//Rhomb fig(20, 2, 14);
+	Triangle fig(20, 3, 15);
 
 
 	//ИНИЦИАЛИЗАЦИЯ ГРАФИКИ
@@ -93,15 +87,13 @@ int main()
 	//Включение вертикальной синхронизации.
 	window.setVerticalSyncEnabled(true);
 
-	unique_ptr<sf::Shape>	shape;
-	Location				pos;
+	unique_ptr<sf::Shape>	shape;	//Форма из граф. библиотеки, которая будет представлять наши фигуры.
+	Location				pos;	//Положение этой формы.
 
-	if (shape = get_visible_shape(&fig, Scale))
+	if (shape = get_visible_shape(&fig, Scale))//Получение на основе типа фигуры.
 	{
-		cout << "New visible shape!\n";
 		pos = fig.where();
 		shape->setPosition(pos.x*Scale, pos.y*Scale);
-		cout << "It has position!\n";
 	}
 	else
 	{
@@ -109,7 +101,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	
-	sf::CircleShape mark(5);
+	sf::CircleShape mark(Rad);//Метка для фокуса внимания.
 	mark.setFillColor(sf::Color::Red);
 
 
@@ -119,13 +111,11 @@ int main()
 
 	for (size_t i = 0; window.isOpen() && i < Frames; i++)//Цикл записи. Можно прервать, закрыв графическое окно.
 	{
-		cout << "Main cycle\n";
 		//ОБРАБОТКА СОБЫТИЙ ГРАФИЧЕСКОГО ОКНА
 
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			cout << "Events processing\n";
 			if (event.type == sf::Event::Closed)//Если нажать на крестик (как обычно),
 				window.close();//то окно закроется.
 		}
@@ -134,10 +124,10 @@ int main()
 
 	//УЧАСТОК ВВОДА ДАННЫХ ВО ВНЕШНИЙ ПОТОК /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		cout << "Inner frame input\n";
+		
 		//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
 		fig.print(outs.Input_frame());
-		cout << "After printing\n";
+		
 		//Кадр ввода отправляется в поток.
 		outs.process();
 
@@ -145,7 +135,6 @@ int main()
 
 	//УЧАСТОК РАБОТЫ СТОРОЖЕВЫХ АЛГОРИТМОВ ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-		cout << "Warnings area\n";
 		
 		vector<Warning> warnings;//Вектор для хранения предупреждений от функций управления вниманием внешнего потока.
 
@@ -164,12 +153,9 @@ int main()
 		}
 		
 
-
-
-
 	//УЧАСТОК РАБОТЫ ФИЛЬТРА ВОСПРИЯТИЯ. НА БУДУЩЕЕ. ПОКА НИЧЕГО НЕТ!///////////////////////////////////////////////////////////////////////////
 
-		cout << "Filter area\n";
+		
 		//На будущее. Фильтр восприятия обрабатывает все предупреждения, корректируя их важность. 
 
 		//После занесения всех предупреждений сортируем так, чтобы первым эл-том был тот, у кого наибольшая важность.
@@ -208,14 +194,12 @@ int main()
 		const Inner_frame & current_frame = ins.get_ro_frame(0);
 
 		int count = 0;
-		cout << "Before elemental clusterization" << endl;
 		do
 		{
 			++count;
 
 		} while (!foc.go_inside(current_frame));//Пока фокус не попал на объект, будем пытаться его туда направить.
-		//cout << "Number of relocations: " << count << endl;//Показываем, сколько раз пришлось двигать фокус.
-
+		
 		//Устанавливаем символ объекта.
 		foc.assign_object(current_frame);
 		
@@ -229,29 +213,23 @@ int main()
 		Borders object_area = foc.get_borders();
 
 		//Попробуем найти "центр тяжести" объекта.
-		cout << "Searching center of gravity..." << endl;
 		foc.to_Weight_Center(current_frame);
 
 		//Создаем образ.
 		Image figure(object_area, current_frame, foc.get_background(), foc.get_object());
 		
-		//Копия текущего кадра, чтобы все его модификации для наглядности не сохранялись в потоке.
-		//Inner_frame current_frame_copy = current_frame;
-		//foc.mark(current_frame_copy); //Обозначаем положение фокуса внимания.
-
-		cout << "Before mark positioning\n";
-		mark.setPosition(foc.get_x()*Scale, foc.get_y()*Scale);
-		cout << foc.get_x() << ", " << foc.get_y() << endl;
-		cout << endl;
+		//Устанавливаем положение метки фокуса внимания.
+		mark.setPosition(foc.get_x()*Scale - Rad, foc.get_y()*Scale - Rad);
+		
 
 		//Отрисовываем текущий кадр.
-		//print_frame(current_frame_copy);
-		cout << "Before clearing\n";
+	
 		window.clear(sf::Color::Black);
 		window.draw(*shape);
 		window.draw(mark);
 		window.display();
 
+		//sf::sleep(sf::seconds(0.5));
 
 		//РАСПОЗНАВАНИЕ ОБРАЗА
 
@@ -268,10 +246,9 @@ int main()
 
 				//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
 				figure.set_is_link(im.get_is_link());
-				cout << "Images are equal!!\t";
 
 				//Через связь надо получить доступ к строке.
-				cout << (figure.get_is_link().pl->get_right_ptr()->get_data()) << endl;
+				//cout << (figure.get_is_link().pl->get_right_ptr()->get_data()) << endl;
 
 				Image::decrease_counter();//Уменьшаем счетчик, т.к. эта фигура не будет записываться в файл.
 
@@ -340,17 +317,15 @@ int main()
 				//{
 				//	cout << "No match!\n" << (im.get_non_link().ps->get_data()) << endl;//Выводим сообщение об этом и специфическое для эталонного образа сообщение.
 				//}
-				cout << endl;
+				//cout << endl;
 			}
 		}//if (match == false)//Образы не совпали ни с одним эталоном.
-
-		//system("cls");
 
 		//Движение фигуры в зависимости от стадии цикла записи.
 		figure_moving(fig, i);
 
+		//Устанавливаем новое положение формы на экране.
 		pos = fig.where();
-		cout << pos.x << ", " << pos.y << endl;
 		shape->setPosition(pos.x*Scale, pos.y*Scale);
 
 
@@ -368,8 +343,6 @@ int main()
 	//Функция выполняет всю работу.
 	database_recording(	"Figures\\figures_data.bin",	"Links\\links_data.bin",	"Strings\\strings_data.bin", 
 						image_map,						link_map,					string_map);
-
-	//ins.play(10);//Вывод содержимого потока в консоль.
 
 	cout << "End...\n";
 
@@ -400,7 +373,7 @@ void figure_moving(Figure & fig, size_t i)
 }
 
 
-//Создание отрисовываемой формы на основе типа фигуры.
+//Создание отрисовываемой формы на основе типа фигуры. Вынесено в отдельную функцию, чтобы не засорять классы зависимостью от графической библиотеки.
 unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale)
 {
 	if (const Square* sq = dynamic_cast<const Square*>(fig))
@@ -429,14 +402,12 @@ unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale)
 
 	if (const Triangle* tr = dynamic_cast<const Triangle*>(fig))
 	{
-		Location point		= tr->where();
-		Location point_a	= tr->get_point_A();
-		Location point_b	= tr->get_point_B();
+		size_t cat = tr->get_cathetus();
 
 		sf::ConvexShape triangle(3);
-		triangle.setPoint(0, sf::Vector2f(point.x*scale, point.y*scale));
-		triangle.setPoint(1, sf::Vector2f(point_a.x*scale, point_a.y*scale));
-		triangle.setPoint(2, sf::Vector2f(point_b.x*scale, point_b.y*scale));
+		triangle.setPoint(0, sf::Vector2f(0, 0));
+		triangle.setPoint(1, sf::Vector2f(0, cat*scale));
+		triangle.setPoint(2, sf::Vector2f(cat*scale, cat*scale));
 
 		return unique_ptr<sf::Shape> (new sf::ConvexShape(triangle)); 
 	}
