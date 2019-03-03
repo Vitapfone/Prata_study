@@ -6,7 +6,9 @@
 
 using namespace My_names;
 
-using Ar60_30 = array<array<char, 60>, 30>;
+
+
+using Frame = array<array<char, 120>, 80>;
 
 
 // Класс для абстрактной фигуры, на основе которой сделаны конкретные.
@@ -56,7 +58,7 @@ public:
 //ДРУГИЕ
 
 	//Чистая виртуальная функция отрисовки фигуры. Делает этот класс абстрактным.
-	virtual void print(Ar60_30 & ws) const = 0; 
+	virtual void print(Frame & ws) const = 0; 
 };
 
 
@@ -72,7 +74,7 @@ public:
 //КОНСТРУКТОРЫ
 
 	Circle() = default;
-	Circle(int x, int y, size_t r) : Figure(x, y), radius(r) {}
+	Circle(int x, int y, size_t r) : Figure(x, y), radius(r) { }
 	Circle(const Location & lc, size_t r) : Figure(lc), radius(r) {}
 	~Circle() {}
 
@@ -84,7 +86,7 @@ public:
 //ДРУГИЕ
 
 	//Унаследованная функция отрисовки.
-	void print(Ar60_30 & ws) const;
+	void print(Frame & ws) const;
 
 	//Функция отрисовки круга для любого рабочего пространства.
 	template<size_t W, size_t H> 
@@ -125,7 +127,7 @@ namespace My//Необходимость в новом пространстве 
 
 	//КОНСТРУКТОРЫ
 
-		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) {}
+		Rectangle(int x, int y, size_t a1) :Figure(x, y), a(a1) { }
 		Rectangle(const Location & lc, size_t a1) : Figure(lc), a(a1) {}
 
 	//ГЕТТЕРЫ
@@ -136,7 +138,7 @@ namespace My//Необходимость в новом пространстве 
 	//ДРУГИЕ
 
 		//Функция отрисовки прямоугольника, унаследованная от предка.
-		void print(Ar60_30 &ws) const;
+		void print(Frame &ws) const;
 
 		//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 		template<size_t W, size_t H> 
@@ -144,7 +146,7 @@ namespace My//Необходимость в новом пространстве 
 	};
 }
 
-//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
+//Шаблон для отрисовки прямоугольника в рабочем пространстве любого размера.
 template<size_t W, size_t H>
 void My::Rectangle::print(array<array<char, W>, H> & ws) const
 {
@@ -186,7 +188,7 @@ public:
 //ДРУГИЕ
 
 	//Переопределение виртуальной функции из базового класса.
-	void print(Ar60_30 & ws) const; 
+	void print(Frame & ws) const; 
 
 	//Шаблон функции для отрисовки в рабочем пространстве любого размера.
 	template<size_t W, size_t H> 
@@ -253,14 +255,14 @@ void Rhomb::print(array<array<char, W>, H> & ws) const
 //Класс квадрата.
 class Square : public Figure
 {
-	int a = 0;//Длина стороны.
+	size_t a = 0;//Длина стороны.
 
 public:
 
 	//КОНСТРУКТОРЫ
 
-	Square(int x = 0, int y = 0, int a1 = 0) : Figure(x, y), a(a1) {}
-	Square(const Location & lc, int a1 = 0) : Figure(lc), a(a1) {}
+	Square(int x = 0, int y = 0, size_t a1 = 0) : Figure(x, y), a(a1) {}
+	Square(const Location & lc, size_t a1 = 0) : Figure(lc), a(a1) {}
 	~Square() {}
 	
 //ГЕТТЕРЫ
@@ -272,7 +274,7 @@ public:
 //ДРУГИЕ
 
 	//Функция отрисовки квадрата.
-	void print(Ar60_30 &ws) const;
+	void print(Frame &ws) const;
 
 	//Шаблон для отрисовки квадрата в рабочем пространстве любого размера.
 	template<size_t W, size_t H> 
@@ -304,7 +306,7 @@ void Square::print(array<array<char, W>, H> & ws) const
 
 class Triangle : public Figure //Класс, представляющий равнобедренный прямоугольный треугольник.
 {
-	int			cathetus	= 0;		// Длина катета.
+	size_t		cathetus	= 0;		// Длина катета.
 	Location	point_A		{ 0, 0 };	//Координаты вершины с прямым углом.
 	Location	point_B		{ 0, 0 };	//Координаты второй вершины с острым углом. Координаты первой наследуются от Figure. 
 	
@@ -313,14 +315,24 @@ public:
 
 //КОНСТРУКТОРЫ
 	Triangle() = default;
-	Triangle(int x, int y, int cat) : Figure(x, y), cathetus(cat), point_A{ x, y + cathetus }, point_B{ x + cathetus, y + cathetus }{}
-	Triangle(const Location & lc, int cat) : Figure(lc), cathetus(cat), point_A{ lc.x, lc.y + cathetus }, point_B{ lc.x + cathetus, lc.y + cathetus }{}
+	Triangle(int x, int y, size_t cat) :	Figure(x, y), 
+											cathetus(cat), 
+											point_A{ x, y + static_cast<int>(cathetus) }, 
+											point_B{ x + static_cast<int>(cathetus), y + static_cast<int>(cathetus) }
+											{}
+
+	Triangle(const Location & lc, size_t cat) : Figure(lc), 
+												cathetus(cat), 
+												point_A{ lc.x, lc.y + static_cast<int>(cathetus) }, 
+												point_B{ lc.x + static_cast<int>(cathetus), lc.y + static_cast<int>(cathetus) }
+												{}
+
 	~Triangle() {}
 
 //ГЕТТЕРЫ
 
 	//Получить длину катета.
-	int get_cathetus() const { return cathetus; }
+	size_t get_cathetus() const { return cathetus; }
 	//Получить точку А.
 	Location get_point_A() const { return point_A; }
 	//Получить точку Б.
@@ -330,7 +342,7 @@ public:
 //ДРУГИЕ
 
 	//Переопределение виртуальной функции из базового класса.
-	void print(Ar60_30 &ws) const; 
+	void print(Frame &ws) const; 
 
 	//Отрисовка треугольника для рабочего пространства любого размера.
 	template<size_t W, size_t H> 

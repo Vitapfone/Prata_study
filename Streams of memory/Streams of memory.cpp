@@ -15,8 +15,8 @@
 //using namespace My_names;
 
 constexpr size_t	Width		= 120;	//Константа, задающая ширину рабочего пространства.
-constexpr size_t	Height		= 56;	//Константа, задающая высоту рабочего пространства.
-constexpr size_t	Frames		= 130;	//Количество переданных в поток кадров.
+constexpr size_t	Height		= 80;	//Константа, задающая высоту рабочего пространства.
+constexpr size_t	Frames		= 180;	//Количество переданных в поток кадров.
 constexpr float		Scale		= 10.0;	//Коэффициент масштаба отображаемого кадра относительно кадра потока.
 constexpr float		Rad			= 5.0;	//Радиус метки фокуса внимания.
 
@@ -43,6 +43,12 @@ void database_recording(const string &			file1,
 
 //Создание отрисовываемой формы на основе типа фигуры.
 unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale);
+
+//Вывести меню выбора типа фигуры.
+void display_menu();
+
+//Функция для выбора типа создаваемой фигуры.
+unique_ptr<Figure> select_figure();
 
 
 int main()
@@ -71,11 +77,7 @@ int main()
 
 	//КОНСТРУИРОВАНИЕ ФИГУР
 
-	//Square fig(20, 3, 13);//Фигура для демонстрации записи в поток.
-	//My::Rectangle fig(20, 3, 13);
-	//Circle fig(20, 2, 10);
-	//Rhomb fig(20, 2, 14);
-	Triangle fig(20, 3, 15);
+	unique_ptr<Figure> fig = select_figure();
 
 
 	//ИНИЦИАЛИЗАЦИЯ ГРАФИКИ
@@ -90,9 +92,9 @@ int main()
 	unique_ptr<sf::Shape>	shape;	//Форма из граф. библиотеки, которая будет представлять наши фигуры.
 	Location				pos;	//Положение этой формы.
 
-	if (shape = get_visible_shape(&fig, Scale))//Получение на основе типа фигуры.
+	if (shape = get_visible_shape(fig.get(), Scale))//Получение отрисовываемой формы на основе типа фигуры.
 	{
-		pos = fig.where();
+		pos = fig->where();
 		shape->setPosition(pos.x*Scale, pos.y*Scale);
 	}
 	else
@@ -126,7 +128,7 @@ int main()
 
 		
 		//Фигура отрисовывает себя на предоставленном потоком кадре ввода.
-		fig.print(outs.Input_frame());
+		fig->print(outs.Input_frame());
 		
 		//Кадр ввода отправляется в поток.
 		outs.process();
@@ -134,7 +136,7 @@ int main()
 
 
 	//УЧАСТОК РАБОТЫ СТОРОЖЕВЫХ АЛГОРИТМОВ ///////////////////////////////////////////////////////////////////////////////////////////////////
-
+		
 		
 		vector<Warning> warnings;//Вектор для хранения предупреждений от функций управления вниманием внешнего потока.
 
@@ -184,7 +186,7 @@ int main()
 
 
 
-
+		
 	//УЧАСТОК РАБОТЫ АЛГОРИТМОВ ВНУТРЕННЕГО ПОТОКА//////////////////////////////////////////////////////////////////////////////////////////////
 
 		//Переместить фокус внимания к месту, указанному в важнейшем предупреждении.
@@ -203,15 +205,15 @@ int main()
 		//Устанавливаем символ объекта.
 		foc.assign_object(current_frame);
 		
-
+		
 		//КОНСТРУИРОВАНИЕ ОБРАЗА
 
 		//Область внимания устанавливается в размер не больший, чем нужно для вмещения всего объекта.
 		foc.part_concentrate_to_object(current_frame);//Режим внимания теперь частично-сконцентрированный.
-
+		
 		//Границы зоны объекта. В них и будет работать алгоритм распознавания.
 		Borders object_area = foc.get_borders();
-
+		
 		//Попробуем найти "центр тяжести" объекта.
 		foc.to_Weight_Center(current_frame);
 
@@ -221,7 +223,7 @@ int main()
 		//Устанавливаем положение метки фокуса внимания.
 		mark.setPosition(foc.get_x()*Scale - Rad, foc.get_y()*Scale - Rad);
 		
-
+		
 		//Отрисовываем текущий кадр.
 	
 		window.clear(sf::Color::Black);
@@ -322,10 +324,10 @@ int main()
 		}//if (match == false)//Образы не совпали ни с одним эталоном.
 
 		//Движение фигуры в зависимости от стадии цикла записи.
-		figure_moving(fig, i);
+		figure_moving(*fig, i);
 
 		//Устанавливаем новое положение формы на экране.
-		pos = fig.where();
+		pos = fig->where();
 		shape->setPosition(pos.x*Scale, pos.y*Scale);
 
 
@@ -412,5 +414,83 @@ unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale)
 		return unique_ptr<sf::Shape> (new sf::ConvexShape(triangle)); 
 	}
 
+	return nullptr;
+}
+
+//Вывести меню выбора типа фигуры.
+void display_menu()
+{
+	cout << "Enter type of figure:\n"
+		 << "a) square\t b) rectangle\t c) circle\n"
+		 << "d) rhomb\t e) triangle\n";
+}
+
+//Обработка цифрового ввода.
+size_t only_digits_input()
+{
+	size_t ln;
+	
+	while (!(cin>>ln))
+	{
+		cout << "Only digits!\n";
+		cin.clear();
+		cin.ignore(1000, '\n');
+	}
+	
+	return ln;
+}
+
+//Функция для выбора типа создаваемой фигуры.
+unique_ptr<Figure> select_figure()
+{
+	display_menu();
+	char ch;
+	while(cin >> ch)
+	{
+		switch (ch)
+		{
+		case 'a':
+			cout << "Enter side length: ";
+			size_t len;
+			len = only_digits_input();
+			
+			return unique_ptr<Figure> { new Square{ 20, 3, len } };
+			
+		case 'b':
+			cout << "Enter side length: ";
+			size_t len1;
+			len1 = only_digits_input();
+
+			return unique_ptr<Figure> { new My::Rectangle{ 20, 3, len1 }};
+			
+		case 'c':
+			cout << "Enter radius: ";
+			size_t rad;
+			rad = only_digits_input();
+
+			return unique_ptr<Figure> { new Circle{ 20, 3, rad }};
+			
+
+		case 'd':
+			cout << "Enter diagonal: ";
+			size_t diag;
+			diag = only_digits_input();
+
+			return unique_ptr<Figure> { new Rhomb{ 20, 3, diag }};
+			
+		case 'e':
+			cout << "Enter cathetus: ";
+			size_t cat;
+			cat = only_digits_input();
+
+			return unique_ptr<Figure> { new Triangle{ 20, 3, cat }};
+
+		default:
+			cout << "Wrong letter!\n";
+			cin.ignore(1000, '\n');
+			display_menu();
+			break;
+		}
+	}
 	return nullptr;
 }
