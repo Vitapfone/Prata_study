@@ -163,5 +163,5 @@ const Warning most_difference_in_cluster(const Outer_frame<W,H> & frame_1, const
 	int x = vc[0].where().x_ + vc[0].get_s() / 2;
 	int y = vc[0].where().y_ + vc[0].get_s() / 2;
 
-	return Warning("Difference in frames! May be motion.", { x, y }, vc[0].get_count()*difference_coefficient);
+	return Warning("Difference in frames! May be motion.", { x, y }, static_cast<int>(vc[0].get_count()*difference_coefficient));
 }

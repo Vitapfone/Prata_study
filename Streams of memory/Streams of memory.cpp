@@ -16,7 +16,7 @@
 
 constexpr size_t	Width		= 120;	//Константа, задающая ширину рабочего пространства.
 constexpr size_t	Height		= 80;	//Константа, задающая высоту рабочего пространства.
-constexpr size_t	Frames		= 180;	//Количество переданных в поток кадров.
+constexpr size_t	Frames		= 200;	//Количество переданных в поток кадров.
 constexpr float		Scale		= 10.0;	//Коэффициент масштаба отображаемого кадра относительно кадра потока.
 constexpr float		Rad			= 5.0;	//Радиус метки фокуса внимания.
 
@@ -83,7 +83,7 @@ int main()
 	//ИНИЦИАЛИЗАЦИЯ ГРАФИКИ
 
 	//Создание окна
-	sf::RenderWindow window(sf::VideoMode(Width*Scale, Height*Scale), "Streams of memory");
+	sf::RenderWindow window(sf::VideoMode(Width*static_cast<size_t>(Scale), Height*static_cast<size_t>(Scale)), "Streams of memory");
 	window.setPosition(sf::Vector2i(50, 50));
 
 	//Включение вертикальной синхронизации.
@@ -222,7 +222,6 @@ int main()
 		
 		//Устанавливаем положение метки фокуса внимания.
 		mark.setPosition(foc.get_x()*Scale - Rad, foc.get_y()*Scale - Rad);
-		
 		
 		//Отрисовываем текущий кадр.
 	
@@ -387,7 +386,7 @@ unique_ptr<sf::Shape> get_visible_shape(const Figure* fig, float scale)
 	if (const My::Rectangle* rc = dynamic_cast<const My::Rectangle*>(fig))
 	{
 		size_t side = rc->get_side_length();
-		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side*1.6*scale, side*scale)));
+		return unique_ptr<sf::Shape>(new sf::RectangleShape(sf::Vector2f(side*1.6f*scale, side*scale)));
 	}
 
 	if (const Circle* ccl = dynamic_cast<const Circle*>(fig))
