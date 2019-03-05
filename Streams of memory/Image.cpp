@@ -5,70 +5,70 @@
 void Image::init(ifstream & fin)
 {
 	auto buf = make_unique<bool[]>(0);//Умный указатель на будущий буфер. Для работы с массивом это должно быть отражено в параметре шаблона.
-	vector<bool> temp(width);
+	vector<bool> temp(width_);
 
-	for (size_t i = 0; i < height; i++)
+	for (size_t i = 0; i < height_; i++)
 	{
 		//Выделяем буфер.
-		buf.reset(new bool[width]);
+		buf.reset(new bool[width_]);
 		
 		//Читаем в буфер кол-во байт, равное ширине ( размер bool == 1 байт).
-		fin.read((char*)buf.get(), width);
+		fin.read((char*)buf.get(), width_);
 		//Создаем временный вектор из буфера.
-		temp.assign(buf.get(), buf.get() + width);
-		data.push_back(temp);
+		temp.assign(buf.get(), buf.get() + width_);
+		data_.push_back(temp);
 	}
 
 	//Читаем айдишник связи.
-	fin.read((char*)&is_link.id, sizeof is_link.id);
+	fin.read((char*)&is_link_.id_, sizeof is_link_.id_);
 	//Читаем маркер стороны связи.
-	fin.read((char*)&is_link.ls, sizeof is_link.ls);
+	fin.read((char*)&is_link_.ls_, sizeof is_link_.ls_);
 }
 
-int Image::counter = 0;//Инициализация счетчика.
+int Image::counter_ = 0;//Инициализация счетчика.
 
 //Конструктор заполнит внутренний вектор на основе предоставленных диапазонов координат.
-Image::Image(const Borders & bs, const Inner_frame & ws, char bg, char obj) : data(vector<vector<bool>>())
+Image::Image(const Borders & bs, const Inner_frame & ws, char bg, char obj) : data_(vector<vector<bool>>())
 {
 	//Обновление счетчика и установка айди.
-	++counter;
-	id = counter;
+	++counter_;
+	id_ = counter_;
 
-	for (int i = bs.y_min, i2 = 0; i <= bs.y_max; ++i, ++i2)
+	for (int i = bs.y_min_, i2 = 0; i <= bs.y_max_; ++i, ++i2)
 	{
 		//cout << "i=" << i << " ";
-		data.push_back(vector<bool>());
-		for (int j = bs.x_min; j <= bs.x_max; ++j)
+		data_.push_back(vector<bool>());
+		for (int j = bs.x_min_; j <= bs.x_max_; ++j)
 		{
 			if (j >= 0 && j < ws[0].size() && i >= 0 && i < ws.size())//Условие, предостерегающее от выхода за границы массива.
 			{
 				if (ws[i][j] == obj)
 				{
-					data[i2].push_back(1);
+					data_[i2].push_back(1);
 				}
 				else
 				{
-					data[i2].push_back(0);
+					data_[i2].push_back(0);
 				}
 			}
 		}
 	}
 
-	width = data[0].size();//Ширина равна размеру элемента вн. вектора.
-	height = data.size();
+	width_ = data_[0].size();//Ширина равна размеру элемента вн. вектора.
+	height_ = data_.size();
 
-	aspect_rate = ((double)width / height);
+	aspect_rate_ = ((double)width_ / height_);
 }
 
 
 //Выводит в консоль образ в удобном для восприятия виде.
 void Image::visualize()
 {
-	for (size_t i = 0; i < data.size(); ++i)
+	for (size_t i = 0; i < data_.size(); ++i)
 	{
-		for (size_t j = 0; j < data[0].size(); ++j)
+		for (size_t j = 0; j < data_[0].size(); ++j)
 		{
-			cout << ((data[i][j] == 1)?'0':' ');
+			cout << ((data_[i][j] == 1)?'0':' ');
 		}
 		cout << endl;
 	}
@@ -82,16 +82,16 @@ bool Image::bin_read(ifstream & fin)
 	Image temp;//Создается временный объект, с которым и происходят все изменения.
 
 	//Прочитать айди.
-	if (!fin.read((char*)&temp.id, sizeof id))
+	if (!fin.read((char*)&temp.id_, sizeof id_))
 	{
 		return false;
 	}
 
 	//Прочитать ширину и высоту образа.
-	fin.read((char*)&temp.width, sizeof width);
+	fin.read((char*)&temp.width_, sizeof width_);
 	
-	fin.read((char*)&temp.height, sizeof height);
-	temp.aspect_rate = static_cast<double>(temp.width) / temp.height;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
+	fin.read((char*)&temp.height_, sizeof height_);
+	temp.aspect_rate_ = static_cast<double>(temp.width_) / temp.height_;//Приведение типов нужно, т.к. при целочисленном делении(когда оба числа целые) отбрасывается дробная часть.
 
 	try
 	{
@@ -108,8 +108,8 @@ bool Image::bin_read(ifstream & fin)
 	swap(*this, temp);
 
 	//Обновляем счетчик,если надо.
-	if (counter < id)
-		counter = id;
+	if (counter_ < id_)
+		counter_ = id_;
 
 	if (fin)
 		return true;
@@ -122,23 +122,23 @@ bool Image::bin_read(ifstream & fin)
 //Записать в бинарный файл.
 bool Image::bin_write(ofstream & fout) const
 {
-	fout.write((char*)	&id,		sizeof id);
-	fout.write((char*)	&width,		sizeof width);
-	fout.write((char*)	&height,	sizeof height);
+	fout.write((char*)	&id_,		sizeof id_);
+	fout.write((char*)	&width_,		sizeof width_);
+	fout.write((char*)	&height_,	sizeof height_);
 
 	bool elem;//Временное хранилище для эл-та.
-	for (size_t i = 0; i < height; i++)//Поэлементная запись.
+	for (size_t i = 0; i < height_; i++)//Поэлементная запись.
 	{
-		for (size_t j = 0; j < width; j++)
+		for (size_t j = 0; j < width_; j++)
 		{
-			elem = data[i][j];
+			elem = data_[i][j];
 			fout.write((char*)&elem, sizeof elem);
 		}
 	}
 	//Запись айди связи.
-	fout.write((char*)&is_link.id, sizeof is_link.id);
+	fout.write((char*)&is_link_.id_, sizeof is_link_.id_);
 	//Запись маркера стороны.
-	fout.write((char*)&is_link.ls, sizeof is_link.ls);
+	fout.write((char*)&is_link_.ls_, sizeof is_link_.ls_);
 	
 
 	if (fout)//Если все успешно,
@@ -164,7 +164,7 @@ bool Image::bin_write(ofstream & fout) const
 //		os << endl;
 //	}
 //	os << '\n';
-//	os << im.get_is_link().id << ' ' << im.get_non_link().id << endl;
+//	os << im.get_is_link().id_ << ' ' << im.get_non_link().id_ << endl;
 //
 //	return os;
 //}

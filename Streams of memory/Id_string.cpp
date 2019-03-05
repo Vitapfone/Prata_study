@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Id_string.h"
 
-int Id_string::counter = 0;	//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
+int Id_string::counter_ = 0;	//Инициализация не константного статического члена должна быть в его определении в области видимости файла.
 
 //Заполнить строку и айдишник из бин. файла.
 void Id_string::init(ifstream & fin, size_t len)
@@ -12,12 +12,12 @@ void Id_string::init(ifstream & fin, size_t len)
 	//Читаем в эту память.
 	fin.read(buf.get(), len);
 	//Присваиваем содержимое буфера строке.
-	data.assign(buf.get());
+	data_.assign(buf.get());
 
 	//Прочитать айди связи.
-	fin.read((char*)&im_link.id, sizeof im_link.id);
+	fin.read((char*)&im_link_.id_, sizeof im_link_.id_);
 	//Прочитать маркер стороны связи.
-	fin.read((char*)&im_link.ls, sizeof im_link.ls);
+	fin.read((char*)&im_link_.ls_, sizeof im_link_.ls_);
 }
 
 ////Конструктор из бинарного файла.
@@ -32,20 +32,20 @@ void Id_string::init(ifstream & fin, size_t len)
 //Записать в бинарный файл.
 bool Id_string::bin_write(ofstream & fout) const
 {
-	//Записываем id.
-	fout.write((char*)&id, sizeof id);
+	//Записываем id_.
+	fout.write((char*)&id_, sizeof id_);
 	
 	//Получаем размер строки, хранимой объектом.
-	size_t len = data.size() + 1;
+	size_t len = data_.size() + 1;
 	//Записываем этот размер.
 	fout.write((char*)&len, sizeof len);
 	//Записываем саму строку.
-	fout.write(data.c_str(), len);
+	fout.write(data_.c_str(), len);
 	
 	//Записываем айди связи.
-	fout.write((char*)&im_link.id, sizeof im_link.id);
+	fout.write((char*)&im_link_.id_, sizeof im_link_.id_);
 	//Записываем маркер стороны связи.
-	fout.write((char*)&im_link.ls, sizeof im_link.ls);
+	fout.write((char*)&im_link_.ls_, sizeof im_link_.ls_);
 
 	if (fout)//Ели все успешно записано, возвращаем true.
 	{
@@ -65,7 +65,7 @@ bool Id_string::bin_read(ifstream & fin)
 	Id_string temp;//Создается временный объект, с которым и происходят все изменения.
 
 	//Читаем айди строки.
-	if (!fin.read((char*)&temp.id, sizeof temp.id))//Если чтение неудачное (конец файла),
+	if (!fin.read((char*)&temp.id_, sizeof temp.id_))//Если чтение неудачное (конец файла),
 	{
 		return false;//то возвращаем false.
 	}
@@ -90,8 +90,8 @@ bool Id_string::bin_read(ifstream & fin)
 
 	swap(*this, temp);//Если все прошло без исключений, то временный объект обменивается с вызывающим.
 
-	if (counter < id)//Обновляем счетчик,если надо.
-		counter = id;
+	if (counter_ < id_)//Обновляем счетчик,если надо.
+		counter_ = id_;
 
 	if (fin)//Если все прочитано успешно, то возвращаем true.
 	{

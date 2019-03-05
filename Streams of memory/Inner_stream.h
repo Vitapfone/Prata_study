@@ -8,17 +8,17 @@ using Inner_frame = vector<vector<char>>;
 
 class Inner_stream
 {
-	size_t				height		= 0;	//Высота кадра.
-	size_t				width		= 0;	//Ширина кадра.
-	size_t				max_size	= 0;	//Максимальный размер деки и длина потока.
-	Inner_frame			input_frame;		//Кадр потока, в который будут поступать данные из внешнего потока (через фильтр восприятия).
-	deque<Inner_frame>	data;				//Дека, в которой будут последовательно храниться кадры с данными, которые должны быть запомнены.
+	size_t				height_		= 0;	//Высота кадра.
+	size_t				width_		= 0;	//Ширина кадра.
+	size_t				max_size_	= 0;	//Максимальный размер деки и длина потока.
+	Inner_frame			input_frame_;		//Кадр потока, в который будут поступать данные из внешнего потока (через фильтр восприятия).
+	deque<Inner_frame>	data_;				//Дека, в которой будут последовательно храниться кадры с данными, которые должны быть запомнены.
 	
 public:
 
 //КОНСТРУКТОРЫ
 
-	Inner_stream(size_t w, size_t h, size_t l) : height(h), width(w), input_frame(Inner_frame(height, vector<char>(width, ' '))), max_size(l) {}
+	Inner_stream(size_t w, size_t h, size_t l) : height_(h), width_(w), input_frame_(Inner_frame(height_, vector<char>(width_, ' '))), max_size_(l) {}
 
 
 //ЗАПРЕЩЕНО
@@ -34,13 +34,13 @@ public:
 //ГЕТТЕРЫ
 
 	//Получить максимальный размер потока.
-	const size_t get_max_size() const { return max_size; }
+	const size_t get_max_size() const { return max_size_; }
 
 	//Получить текущий размер потока.
-	const size_t get_size() const { return data.size(); }
+	const size_t get_size() const { return data_.size(); }
 
 	//Получить для заполнения кадр ввода. Не просто геттер, а связь потока внешним миром.
-	Inner_frame & Input_frame (){ return input_frame; }
+	Inner_frame & Input_frame (){ return input_frame_; }
 
 	//Получить для чтения произвольный кадр потока.
 	const Inner_frame & get_ro_frame(size_t num) const;
@@ -50,7 +50,7 @@ public:
 //СЕТТЕРЫ
 
 	//Установить новый макс. размер потока.
-	void set_max_size(size_t new_size) { max_size = new_size; }
+	void set_max_size(size_t new_size) { max_size_ = new_size; }
 
 
 //ДРУГОЕ

@@ -7,16 +7,16 @@ using namespace My_names;
 
 class Warning //Класс сообщения от функций первичного управления вниманием.
 {
-	string		message;				//Сообщение о типе обнаруженного.
-	Location	loc			{ 0, 0 };	//Координаты обнаруженного.
-	int			importance	= 10;		//Степень важности сообщения.
+	string		message_;				//Сообщение о типе обнаруженного.
+	Location	loc_			{ 0, 0 };	//Координаты обнаруженного.
+	int			importance_		= 10;		//Степень важности сообщения.
 
 public:
 
 //КОНСТРУКТОРЫ
 
 	Warning() = default;
-	Warning(const string & mes, const Location & l, int imp) : message(mes), loc(l), importance(imp) {}
+	Warning(const string & mes, const Location & l, int imp) : message_(mes), loc_(l), importance_(imp) {}
 	~Warning() {}
 
 //МЕТОДЫ
@@ -24,10 +24,10 @@ public:
 //ГЕТТЕРЫ
 
 	//Возвратить местоположение обнаруженного.
-	const Location where() const { return loc; }
+	const Location where() const { return loc_; }
 
 	//Возвратить важность.
-	int get_importance()const { return importance; }
+	int get_importance()const { return importance_; }
 
 //ДРУГИЕ
 

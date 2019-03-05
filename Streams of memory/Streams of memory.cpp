@@ -95,7 +95,7 @@ int main()
 	if (shape = get_visible_shape(fig.get(), Scale))//Получение отрисовываемой формы на основе типа фигуры.
 	{
 		pos = fig->where();
-		shape->setPosition(pos.x*Scale, pos.y*Scale);
+		shape->setPosition(pos.x_*Scale, pos.y_*Scale);
 	}
 	else
 	{
@@ -311,7 +311,7 @@ int main()
 					cout << "Images are equal!!\t";
 
 					//Через связь надо получить доступ к строке.
-					cout << figure.get_is_link().pl->get_right_ptr()->get_data() << endl;
+					cout << figure.get_is_link().pl_->get_right_ptr()->get_data() << endl;
 
 					break;//Как только совпадение найдено, завершаем проверку.
 				}
@@ -328,7 +328,7 @@ int main()
 
 		//Устанавливаем новое положение формы на экране.
 		pos = fig->where();
-		shape->setPosition(pos.x*Scale, pos.y*Scale);
+		shape->setPosition(pos.x_*Scale, pos.y_*Scale);
 
 
 	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ ///////////////////////////////////////////////////////////////////////////////

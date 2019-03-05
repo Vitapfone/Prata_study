@@ -6,11 +6,11 @@ const Inner_frame & Inner_stream::get_ro_frame(size_t num) const
 {
 	//ќсобенность в том, что num должен считатьс€ с конца деки, т.к. надо, чтобы кадр с большим номером был отсн€т ранее.
 
-	size_t len = data.size();
+	size_t len = data_.size();
 
 	assert(num >= 0 && num < len);
 
-	return data[len - 1 - num];
+	return data_[len - 1 - num];
 }
 
 //ѕолучить произвольный кадр дл€ измен€ющих действий.
@@ -25,7 +25,7 @@ Inner_frame & Inner_stream::get_frame(size_t num)
 void Inner_stream::prepare_for_input()
 {
 	//ѕодготавливаем кадр ввода к приему данных, заполн€€ его пробелами.
-	for (auto &e : input_frame)
+	for (auto &e : input_frame_)
 	{
 		for (auto &e2 : e)
 		{
@@ -38,11 +38,11 @@ void Inner_stream::prepare_for_input()
 void Inner_stream::process()
 {
 	//¬ставл€ем заполненный кадр ввода в деку.
-	data.push_back(input_frame);
+	data_.push_back(input_frame_);
 	
-	if (data.size() > max_size)//≈сли размер деки превышает максимум, то убираем один кадр из начала, где наход€тс€ самые старые данные. 
+	if (data_.size() > max_size_)//≈сли размер деки превышает максимум, то убираем один кадр из начала, где наход€тс€ самые старые данные. 
 	{
-		data.pop_front();
+		data_.pop_front();
 	}
 
 	//ѕодготовить кадр ввода дл€ повторного заполнени€.
@@ -71,7 +71,7 @@ void make_borders(Inner_frame & fr)
 //void Inner_stream::play(unsigned dur)
 //{
 //	Inner_frame frame_copy;// опи€ кадра, чтобы не записывать видимые границы кадра(только дл€ удобства просмотра в консоли) в сам поток.
-//	for (const auto & e : data)
+//	for (const auto & e : data_)
 //	{
 //		frame_copy = e;
 //		print_frame(frame_copy);//ќтрисовываем копию.

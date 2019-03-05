@@ -11,9 +11,9 @@ using Outer_frame = array<array<char, W>, H>;
 template<size_t W, size_t H>
 class Outer_stream
 {
-	Outer_frame<W, H>			input_frame;	//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
-	deque<Outer_frame<W, H>>	data;			//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
-	size_t						max_size;		//Максимальный размер деки и длина потока.
+	Outer_frame<W, H>			input_frame_;	//Кадр потока, в который будут загружать данные функции восприятия внешнего мира.
+	deque<Outer_frame<W, H>>	data_;			//Дека, в которой будут последовательно храниться кадры с данными от органов чувств.
+	size_t						max_size_;		//Максимальный размер деки и длина потока.
 
 public:
 
@@ -35,13 +35,13 @@ public:
 //ГЕТТЕРЫ
 
 	//Получить максимальный размер потока.
-	const size_t get_max_size() const { return max_size; }
+	const size_t get_max_size() const { return max_size_; }
 
 	//Получить текущий размер потока.
-	const size_t get_size() const { return data.size(); }
+	const size_t get_size() const { return data_.size(); }
 
 	//Получить для заполнения кадр ввода. Не просто геттер, а связь потока внешним миром.
-	Outer_frame<W, H> & Input_frame() { return input_frame; }
+	Outer_frame<W, H> & Input_frame() { return input_frame_; }
 
 	//Получить для чтения произвольный кадр потока.
 	const Outer_frame<W, H>  & get_ro_frame(size_t num) const;
@@ -49,7 +49,7 @@ public:
 //СЕТТЕРЫ
 
 	//Установить новый макс. размер потока.
-	void set_max_size(size_t new_size) { max_size = new_size; }
+	void set_max_size(size_t new_size) { max_size_ = new_size; }
 
 //ДРУГОЕ
 
@@ -77,7 +77,7 @@ template<size_t W, size_t H>
 inline void Outer_stream<W, H>::prepare_for_input()
 {
 	//Подготавливаем кадр ввода к приему данных, заполняя его пробелами.
-	for (auto &e : input_frame)
+	for (auto &e : input_frame_)
 	{
 		for (auto &e2 : e)
 		{
@@ -88,7 +88,7 @@ inline void Outer_stream<W, H>::prepare_for_input()
 
 //Конструктор.
 template<size_t W, size_t H>
-Outer_stream<W, H>::Outer_stream(size_t max_sz) : max_size(max_sz)
+Outer_stream<W, H>::Outer_stream(size_t max_sz) : max_size_(max_sz)
 {
 	//Подготавливаем кадр ввода.
 	prepare_for_input();
@@ -132,18 +132,18 @@ const Outer_frame<W, H> & Outer_stream<W, H>::get_ro_frame(size_t num) const
 {
 	//Особенность в том, что num должен считаться с конца деки, т.к. надо, чтобы кадр с большим номером был отснят ранее.
 
-	size_t len = data.size();
+	size_t len = data_.size();
 
 	assert(num >= 0 && num < len);
 
-	return data[len - 1 - num];
+	return data_[len - 1 - num];
 }
 
 //Отладочный вывод кадра ввода.
 template<size_t W, size_t H>
 inline void Outer_stream<W, H>::print_input() const
 {
-	print_frame(input_frame);
+	print_frame(input_frame_);
 }
 
 
@@ -153,7 +153,7 @@ inline void Outer_stream<W, H>::print_input() const
 //{
 //	int i = 0;//Счетчик выведенных кадров.
 //	
-//	for (auto & e : data)//Перебираются все кадры.
+//	for (auto & e : data_)//Перебираются все кадры.
 //	{
 //		print_frame(e);
 //
@@ -169,11 +169,11 @@ template<size_t W, size_t H>
 void Outer_stream<W, H>::process()
 {
 	//Вставляем заполненный кадр ввода в деку.
-	data.push_back(input_frame);
+	data_.push_back(input_frame_);
 	
-	if (data.size() > max_size)//Если размер деки превышает максимум, то убираем один кадр из начала, где находятся самые старые данные. 
+	if (data_.size() > max_size_)//Если размер деки превышает максимум, то убираем один кадр из начала, где находятся самые старые данные. 
 	{
-		data.pop_front();
+		data_.pop_front();
 	}
 
 	//Подготовить кадр ввода для повторного заполнения.

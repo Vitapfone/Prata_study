@@ -9,15 +9,15 @@ using Inner_frame = vector<vector<char>>;
 class Inspector
 {
 	
-	Location	loc	{ 0, 0 };
-	char		bg	= ' ';	//Фон, по умолчанию пробел.
-	char		obj;		//Объект.
+	Location	loc_	{ 0, 0 };
+	char		bg_		= ' ';	//Фон, по умолчанию пробел.
+	char		obj_;		//Объект.
 
 public:
 
 //КОНСТРУКТОР
 
-	Inspector(int x, int y, char b, char o) : loc{ x, y }, bg(b), obj(o) {}
+	Inspector(int x, int y, char b, char o) : loc_{ x, y }, bg_(b), obj_(o) {}
 
 //ЗАПРЕЩЕНО
 
@@ -28,10 +28,10 @@ public:
 
 	//МЕТОДЫ ДВИЖЕНИЯ
 
-	void moveLeft()		{ --loc.x; }
-	void moveRight()	{ ++loc.x; }
-	void moveUp()		{ --loc.y; }
-	void moveDown()		{ ++loc.y; }
+	void moveLeft()		{ --loc_.x_; }
+	void moveRight()	{ ++loc_.x_; }
+	void moveUp()		{ --loc_.y_; }
+	void moveDown()		{ ++loc_.y_; }
 
 	//Функция обхода слева. Второй параметр определяет, будет обход по часовой стрелке или против.
 	template<size_t W, size_t H> 
@@ -63,574 +63,574 @@ const Borders Inspector::left_inspect(const array<array<char, W>, H> &ws, bool c
 	{
 
 		//Если все эл-ты вокруг инспектора принадлежат объекту, то сдвигаем его влево.
-		if (ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj
-			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_
+			&& ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_)
 		{
-			cout << " moveLeft... " << loc.x << " " << loc.y;
+			cout << " moveLeft... " << loc_.x_ << " " << loc_.y_;
 			moveLeft();
 			//continue;
 		}
 		else 
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg //Граница слева
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ //Граница слева
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_)
 		{
 
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);//Заносим координаты в списки.
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);//Заносим координаты в списки.
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)//В верхнем левом углу.
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_)//В верхнем левом углу.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg //Граница сверху.
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ //Граница сверху.
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)//В верхнем правом углу.
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_)//В верхнем правом углу.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg //Граница справа
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ //Граница справа
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)//В нижнем правом углу.
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_)//В нижнем правом углу.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg //Граница снизу.
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ //Граница снизу.
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)//В нижнем левом углу.
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_)//В нижнем левом углу.
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x - 1);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_ - 1);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
+		if (ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg
-			&& ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj
-			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_
+			&& ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
+		if (ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg
-			&& ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1])
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1])
 		{
 			//cout << "pos 8, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y - 1);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_ - 1);
 
 			(clockwise) ? moveRight() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_)
 		{
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_)
 		{
 			//cout << "pos 10, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj
-			&& ws[loc.y - 1][loc.x] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 11, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_)
 		{
 			//cout << "pos 12, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 13, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 14, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x + 1);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_ + 1);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
+		if (ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 15, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
-			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 16, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj
-			&& ws[loc.y][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 17, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
+		if (ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 18, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
-			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 19, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 20, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y + 1);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_ + 1);
 
 			(clockwise) ? moveLeft() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 21, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 22, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj
-			&& ws[loc.y + 1][loc.x] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_
+			&& ws[loc_.y_ + 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 23 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 24, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg
-			&& ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
+		if (ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_)
 		{
 			//cout << "pos 25, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveRight() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_)
 		{
 			//cout << "pos 26, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveLeft();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x + 1] == bg && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg
-			&& ws[loc.y + 1][loc.x - 1] == obj && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj)
+		if (ws[loc_.y_][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ - 1] == obj_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 27, ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 28.";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == bg && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == bg
-			&& ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj && ws[loc.y + 1][loc.x - 1] == obj)
+		if (ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == bg_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_ && ws[loc_.y_ + 1][loc_.x_ - 1] == obj_)
 		{
 			//cout << "pos 29 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			start_y = loc.y + 1;
+			start_y = loc_.y_ + 1;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveDown() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg
-			&& ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == obj && ws[loc.y - 1][loc.x] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 30 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x + 1);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_ + 1);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveLeft() : moveUp();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == bg && ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg
-			&& ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == obj && ws[loc.y + 1][loc.x] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_
+			&& ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_] == obj_)
 		{
 			//cout << "pos 31 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x);
-			yset.insert(loc.y - 1);
+			xset.insert(loc_.x_);
+			yset.insert(loc_.y_ - 1);
 
 			(clockwise) ? moveRight() : moveDown();
 			//continue;
 		}
 		else
-		if (ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == bg && ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == obj && ws[loc.y - 1][loc.x - 1] == bg
-			&& ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == obj && ws[loc.y][loc.x + 1] == obj)
+		if (ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == bg_ && ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == obj_ && ws[loc_.y_ - 1][loc_.x_ - 1] == bg_
+			&& ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == obj_ && ws[loc_.y_][loc_.x_ + 1] == obj_)
 		{
 			//cout << "pos 32 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x - 1);
-			yset.insert(loc.y);
+			xset.insert(loc_.x_ - 1);
+			yset.insert(loc_.y_);
 
 			(clockwise) ? moveUp() : moveRight();
 			//continue;
 		}
 		else
-		if (ws[loc.y - 1][loc.x - 1] == bg && ws[loc.y - 1][loc.x] == obj && ws[loc.y - 1][loc.x + 1] == bg && ws[loc.y][loc.x + 1] == obj && ws[loc.y + 1][loc.x + 1] == bg && ws[loc.y + 1][loc.x] == obj
-			&& ws[loc.y + 1][loc.x - 1] == bg && ws[loc.y][loc.x - 1] == obj)
+		if (ws[loc_.y_ - 1][loc_.x_ - 1] == bg_ && ws[loc_.y_ - 1][loc_.x_] == obj_ && ws[loc_.y_ - 1][loc_.x_ + 1] == bg_ && ws[loc_.y_][loc_.x_ + 1] == obj_ && ws[loc_.y_ + 1][loc_.x_ + 1] == bg_ && ws[loc_.y_ + 1][loc_.x_] == obj_
+			&& ws[loc_.y_ + 1][loc_.x_ - 1] == bg_ && ws[loc_.y_][loc_.x_ - 1] == obj_)
 		{
 			//cout << "pos 33 ";
 			if (start_stop(is_started, is_finished, start_x, start_y))
 				continue;
 
-			xset.insert(loc.x - 1), xset.insert(loc.x), xset.insert(loc.x + 1);
-			yset.insert(loc.y - 1), yset.insert(loc.y), yset.insert(loc.y + 1);
+			xset.insert(loc_.x_ - 1), xset.insert(loc_.x_), xset.insert(loc_.x_ + 1);
+			yset.insert(loc_.y_ - 1), yset.insert(loc_.y_), yset.insert(loc_.y_ + 1);
 			//continue;
 		}
 	}//while (!is_finished)//Пока обход не закончен.

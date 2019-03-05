@@ -8,20 +8,20 @@ using namespace My_names;
 
 using Inner_frame = vector<vector<char>>;
 
-class Link;//Предварительное объявление для класса связи.
+class Link;	//Предварительное объявление для класса связи.
 
 class Image
 {
-	int id				= 0;	//Идентификатор самого образа.
-	static int counter;			//Статический счетчик для получения уникальных айди.
+	int id_				= 0;	//Идентификатор самого образа.
+	static int counter_;			//Статический счетчик для получения уникальных айди.
 
-	vector<vector<bool>> data;	// Вектор булевых векторов, где будет храниться образ.
+	vector<vector<bool>> data_;	// Вектор булевых векторов, где будет храниться образ.
 
-	size_t	width		= 0;	//Высота и ширина образа.
-	size_t	height		= 0;	
-	double	aspect_rate = 0.0;	//Отношение ширины к высоте.
+	size_t	width_			= 0;	//Высота и ширина образа.
+	size_t	height_			= 0;	
+	double	aspect_rate_	= 0.0;	//Отношение ширины к высоте.
 
-	Link_ptr is_link;			//Связь для подтверждающей строки.
+	Link_ptr is_link_;			//Связь для подтверждающей строки.
 	
 public:
 
@@ -38,28 +38,28 @@ public:
 
 //ГЕТТЕРЫ
 
-	size_t	get_widht() const	{ return width; }
-	size_t	get_height() const	{ return height; }
-	double	get_aspect() const	{ return aspect_rate; }
+	size_t	get_widht() const	{ return width_; }
+	size_t	get_height() const	{ return height_; }
+	double	get_aspect() const	{ return aspect_rate_; }
 
-	int get_id()const { return id; }
+	int get_id()const { return id_; }
 
 	//Выдать подтверждающую связь.
-	const Link_ptr get_is_link() const {  return is_link; }
+	const Link_ptr get_is_link() const {  return is_link_; }
 
 	//Выдать вектор образа.
-	const vector<vector<bool>> & get_data() const { return data; }
+	const vector<vector<bool>> & get_data() const { return data_; }
 
 //private:
-	//vector<vector<bool>> & get_data() { return data; }//Выдать вектор образа. Неконстантная закрытая перегрузка.
+	//vector<vector<bool>> & get_data() { return data_; }//Выдать вектор образа. Неконстантная закрытая перегрузка.
 
 //public:
 
 //СЕТТЕРЫ
 
 	//Установить связь.
-	void	set_is_link(Link* is)				{ is_link.pl = is; }
-	void	set_is_link(Link_ptr const & other) { is_link = other; }
+	void	set_is_link(Link* is)				{ is_link_.pl_ = is; }
+	void	set_is_link(Link_ptr const & other) { is_link_ = other; }
 	
 
 //ДРУГИЕ
@@ -71,7 +71,7 @@ public:
 	bool bin_read(ifstream & fin);
 
 	//Уменьшить счетчик.
-	static void decrease_counter() { --counter; }
+	static void decrease_counter() { --counter_; }
 
 private:
 	//Заполнить вн.вектор и айдишники из бин. файла
