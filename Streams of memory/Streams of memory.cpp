@@ -14,29 +14,29 @@
 
 //using namespace My_names;
 
-constexpr size_t	Width		= 120;	//Константа, задающая ширину рабочего пространства.
-constexpr size_t	Height		= 80;	//Константа, задающая высоту рабочего пространства.
-constexpr size_t	Frames		= 200;	//Количество переданных в поток кадров.
-constexpr float		Scale		= 10.0;	//Коэффициент масштаба отображаемого кадра относительно кадра потока.
-constexpr float		Rad			= 5.0;	//Радиус метки фокуса внимания.
+constexpr size_t	WIDTH		= 120;	//Константа, задающая ширину рабочего пространства.
+constexpr size_t	HEIGHT		= 80;	//Константа, задающая высоту рабочего пространства.
+constexpr size_t	FRAMES		= 200;	//Количество переданных в поток кадров.
+constexpr float		SCALE		= 10.0;	//Коэффициент масштаба отображаемого кадра относительно кадра потока.
+constexpr float		RAD			= 5.0;	//Радиус метки фокуса внимания.
 
-constexpr double Equality_min	= 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
+constexpr double EQUALITY_MIN	= 0.85;//Константа, определяющая минимальное сходство образов для решения об их идентичности.
 
 //Движение фигуры в зависимости от стадии цикла записи.
 void figure_moving(Figure &, size_t);
 
 //Заполнение переданных контейнеров базы данных из файлов.
-void database_initialization(const string &			file1,
-							 const string &			file2, 
-							 const string &			file3, 
+void database_initialization(const string &			images_file,
+							 const string &			links_file, 
+							 const string &			strings_file, 
 							 map<int, Image> &		images, 
 							 map<int, Link> &		links, 
 							 map<int, Id_string> &	strings);
 
 //Запись содержимого контейнеров в файлы.
-void database_recording(const string &			file1,
-						const string &			file2,
-						const string &			file3,
+void database_recording(const string &			images_file,
+						const string &			links_file,
+						const string &			strings_file,
 						map<int, Image> &		images,
 						map<int, Link> &		links,
 						map<int, Id_string> &	strings);
@@ -70,8 +70,8 @@ int main()
 	
 	//КОНСТРУИРОВАНИЕ ПОТОКОВ
 
-	Outer_stream<Width, Height> outs(3);		//Внешний поток заданной длины.
-	Inner_stream ins(Width, Height, Frames - 2);//Внутренний поток.
+	Outer_stream<WIDTH, HEIGHT> outs(3);		//Внешний поток заданной длины.
+	Inner_stream ins(WIDTH, HEIGHT, FRAMES - 2);//Внутренний поток.
 
 	Focus_of_attention foc(10, 10, ins.Input_frame());//Задаем начальное положение фокуса внимания.
 
@@ -83,7 +83,7 @@ int main()
 	//ИНИЦИАЛИЗАЦИЯ ГРАФИКИ
 
 	//Создание окна
-	sf::RenderWindow window(sf::VideoMode(Width*static_cast<size_t>(Scale), Height*static_cast<size_t>(Scale)), "Streams of memory");
+	sf::RenderWindow window(sf::VideoMode(WIDTH*static_cast<size_t>(SCALE), HEIGHT*static_cast<size_t>(SCALE)), "Streams of memory");
 	window.setPosition(sf::Vector2i(50, 50));
 
 	//Включение вертикальной синхронизации.
@@ -92,18 +92,18 @@ int main()
 	unique_ptr<sf::Shape>	shape;	//Форма из граф. библиотеки, которая будет представлять наши фигуры.
 	Location				pos;	//Положение этой формы.
 
-	if (shape = get_visible_shape(fig.get(), Scale))//Получение отрисовываемой формы на основе типа фигуры.
+	if (shape = get_visible_shape(fig.get(), SCALE))//Получение отрисовываемой формы на основе типа фигуры.
 	{
 		pos = fig->where();
-		shape->setPosition(pos.x_*Scale, pos.y_*Scale);
+		shape->setPosition(pos.x_*SCALE, pos.y_*SCALE);
 	}
 	else
 	{
-		cout << "Error! Wrong figure!";
+		cerr << "Error! Wrong figure!";
 		exit(EXIT_FAILURE);
 	}
 	
-	sf::CircleShape mark(Rad);//Метка для фокуса внимания.
+	sf::CircleShape mark(RAD);//Метка для фокуса внимания.
 	mark.setFillColor(sf::Color::Red);
 
 
@@ -111,7 +111,7 @@ int main()
 
 
 
-	for (size_t i = 0; window.isOpen() && i < Frames; i++)//Цикл записи. Можно прервать, закрыв графическое окно.
+	for (size_t i = 0; window.isOpen() && i < FRAMES; i++)//Цикл записи. Можно прервать, закрыв графическое окно.
 	{
 		//ОБРАБОТКА СОБЫТИЙ ГРАФИЧЕСКОГО ОКНА
 
@@ -167,7 +167,7 @@ int main()
 		//Передача данных от внешнего потока внутреннему. Пока без каких-либо ограничений и модификаций.
 
 		//Внешний поток выдает свой нулевой кадр. 
-		Outer_frame<Width, Height> outer_data = outs.get_ro_frame(0);
+		Outer_frame<WIDTH, HEIGHT> outer_data = outs.get_ro_frame(0);
 
 		Inner_frame buffer;//Буфер для конвертации данных в формат кадра внутреннего потока.
 
@@ -221,7 +221,7 @@ int main()
 		Image figure(object_area, current_frame, foc.get_background(), foc.get_object());
 		
 		//Устанавливаем положение метки фокуса внимания.
-		mark.setPosition(foc.get_x()*Scale - Rad, foc.get_y()*Scale - Rad);
+		mark.setPosition(foc.get_x()*SCALE - RAD, foc.get_y()*SCALE - RAD);
 		
 		//Отрисовываем текущий кадр.
 	
@@ -241,7 +241,7 @@ int main()
 		{
 			auto & im = e.second;
 
-			if (image_equality(figure, im, Equality_min))//Если образы совпадают.
+			if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 			{
 				match = true;
 
@@ -302,7 +302,7 @@ int main()
 			{
 				auto & im = e.second;
 
-				if (image_equality(figure, im, Equality_min))//Если образы совпадают.
+				if (image_equality(figure, im, EQUALITY_MIN))//Если образы совпадают.
 				{
 					match = true;
 					//Установлена идентичность образов, значит оба образа должны хранить один и тот же указатель.
@@ -327,7 +327,7 @@ int main()
 
 		//Устанавливаем новое положение формы на экране.
 		pos = fig->where();
-		shape->setPosition(pos.x_*Scale, pos.y_*Scale);
+		shape->setPosition(pos.x_*SCALE, pos.y_*SCALE);
 
 
 	//УЧАСТОК ПОДГОТОВКИ К СЛЕДУЮЩЕМУ ЦИКЛУ СОЗНАНИЯ ///////////////////////////////////////////////////////////////////////////////
@@ -335,7 +335,7 @@ int main()
 		//Очищаем список предупреждений, чтобы заполнить его в следующем цикле.
 		warnings.clear();
 
-	}//for (size_t i = 0; window.isOpen() && i < Frames; i++)//Цикл записи.
+	}//for (size_t i = 0; window.isOpen() && i < FRAMES; i++)//Цикл записи.
 
 
 //УЧАСТОК ЗАПИСИ ДАННЫХ В ФАЙЛЫ ПЕРЕД ЗАВЕРШЕНИЕМ ПРОГРАММЫ //////////////////////////////////////////////////////////////////
@@ -355,15 +355,15 @@ int main()
 void figure_moving(Figure & fig, size_t i)
 {
 	//Далее код для простейшего движения фигуры. Фигура пройдет по кругу за время цикла записи.
-	if (i <= Frames / 4)
+	if (i <= FRAMES / 4)
 	{
 		fig.move_right();
 	}
-	else if (i <= Frames / 2)
+	else if (i <= FRAMES / 2)
 	{
 		fig.move_down();
 	}
-	else if (i <= 0.75*Frames)
+	else if (i <= 0.75*FRAMES)
 	{
 		fig.move_left();
 	}

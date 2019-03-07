@@ -13,7 +13,7 @@ void Circle::print(Frame & ws) const
 	{
 		for (int x = where().x_; x <= where().x_ + 2 * radius_; ++x)
 		{
-			if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())
+			if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)
 			{
 				if ((x - (where().x_ + radius_))*(x - (where().x_ + radius_)) + (y - (where().y_ + radius_))*(y - (where().y_ + radius_)) <= radius_ * radius_)
 				{
@@ -34,7 +34,7 @@ void My::Rectangle::print(Frame & ws) const
 	{
 		for (int x = where().x_; x < (where().x_ + 1.6*a_); ++x)//Внутренний цикл печатает символы ряда. Большая сторона  увеличена в 1.6 раза.
 		{
-			if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())//Условие, предостерегающее от выхода за границы массива.
+			if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)//Условие, предостерегающее от выхода за границы массива.
 			{
 				ws[y][x] = '0';
 			}
@@ -52,7 +52,7 @@ void Rhomb::print(Frame & ws) const
 	{
 		for (int x = where().x_; x <= (where().x_ + diagonal_); ++x)
 		{
-			if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())//Условие, предохраняющее от выхода за границы массива.
+			if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)//Условие, предохраняющее от выхода за границы массива.
 			{
 				if (x >= ((where().x_ + diagonal_ / 2) - (y - where().y_)) && x <= (where().x_ + diagonal_ / 2) + (y - where().y_))
 				{
@@ -69,7 +69,7 @@ void Rhomb::print(Frame & ws) const
 		{
 			for (int x = where().x_ + 1; x < (where().x_ + diagonal_ - 1); ++x)
 			{
-				if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())//Условие, предохраняющее от выхода за границы массива.
+				if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)//Условие, предохраняющее от выхода за границы массива.
 				{
 					if (x - 1 >= ((where().x_ + diagonal_ / 2) - (where().y_ + diagonal_ - y)) && x + 1 <= ((where().x_ + diagonal_ / 2) + (where().y_ + diagonal_ - y)))
 					{
@@ -86,7 +86,7 @@ void Rhomb::print(Frame & ws) const
 	{
 		for (int x = where().x_; x < (where().x_ + diagonal_); ++x)
 		{
-			if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())//Условие, предохраняющее от выхода за границы массива.
+			if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)//Условие, предохраняющее от выхода за границы массива.
 			{
 				if (x >= ((where().x_ + diagonal_ / 2) - (where().y_ + diagonal_ - y)) && x <= ((where().x_ + diagonal_ / 2) + (where().y_ + diagonal_ - y)))
 				{
@@ -108,7 +108,7 @@ void Square::print(Frame & ws) const
 	{
 		for (int x = where().x_; x != (where().x_ + a_); ++x)//Внутренний цикл печатает символы ряда
 		{
-			if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())//Условие, предостерегающее от выхода за границы массива.
+			if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)//Условие, предостерегающее от выхода за границы массива.
 			{
 				ws[y][x] = '0';
 			}
@@ -126,7 +126,7 @@ void Triangle::print(Frame & ws) const
 	{
 		for (int x = where().x_; x <= point_B_.x_; ++x)
 		{
-			if (x >= 0 && x < ws[0].size() && y >= 0 && y < ws.size())//Условие, предохраняющее от выхода за границы массива.
+			if (x >= 1 && x < ws[0].size()-1 && y >= 1 && y < ws.size()-1)//Условие, предохраняющее от выхода за границы массива.
 			{
 				if (x - where().x_ < y - where().y_)
 				{

@@ -3,11 +3,11 @@
 #include "Link.h"
 
 //Заполнение переданных контейнеров базы данных из файлов.
-void database_initialization(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
+void database_initialization(const string & images_file, const string & links_file, const string & strings_file, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
 {
 	//Конструирование образов из файлов.
 
-	ifstream ifs_Images(file1, ifstream::binary);
+	ifstream ifs_Images(images_file, ifstream::binary);
 	Image temp1;//Временный объект образа.
 
 	while (temp1.bin_read(ifs_Images))//Чтение из файла во временный объект.
@@ -17,7 +17,7 @@ void database_initialization(const string & file1, const string & file2, const s
 
 	//Чтение связей из файла.
 
-	ifstream ifs_links(file2, ifstream::binary);
+	ifstream ifs_links(links_file, ifstream::binary);
 	Link temp2;
 
 	while (temp2.bin_read(ifs_links))
@@ -27,7 +27,7 @@ void database_initialization(const string & file1, const string & file2, const s
 
 	//Чтение строк из файла.
 
-	ifstream ifs_str(file3, ifstream::binary);
+	ifstream ifs_str(strings_file, ifstream::binary);
 	Id_string temp3;//Временный объект строки.
 
 	while (temp3.bin_read(ifs_str))//Пока не достигнут конец файла.
@@ -67,23 +67,23 @@ void database_initialization(const string & file1, const string & file2, const s
 }
 
 //Запись содержимого контейнеров в файлы.
-void database_recording(const string & file1, const string & file2, const string & file3, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
+void database_recording(const string & images_file, const string & links_file, const string & strings_file, map<int, Image> & images, map<int, Link> & links, map<int, Id_string> & strings)
 {
-	ofstream ofsImages(file1, ofstream::binary);//Создаем файл для записи образов. Папка должна быть создана заранее.
+	ofstream ofsImages(images_file, ofstream::binary);//Создаем файл для записи образов. Папка должна быть создана заранее.
 	//Запистываем все образы.
 	for (const auto & e : images)
 	{
 		e.second.bin_write(ofsImages);
 	}
 
-	ofstream ofs_links(file2, ofstream::binary);
+	ofstream ofs_links(links_file, ofstream::binary);
 	//Записываем все связи.
 	for (const auto & e : links)
 	{
 		e.second.bin_write(ofs_links);
 	}
 
-	ofstream ofstrings(file3, ofstream::binary);//Создаем файл для записи связанных с образами строк.
+	ofstream ofstrings(strings_file, ofstream::binary);//Создаем файл для записи связанных с образами строк.
 	//Записываем все строки из карты.
 	for (const auto &e : strings)
 	{
