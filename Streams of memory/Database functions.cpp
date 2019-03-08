@@ -12,7 +12,7 @@ void database_initialization(const string & images_file, const string & links_fi
 
 	while (temp1.bin_read(ifs_Images))//Чтение из файла во временный объект.
 	{
-		images[temp1.get_id()] = temp1;
+		images.insert({ temp1.get_id(), temp1 });
 	}
 
 	//Чтение связей из файла.
@@ -22,7 +22,7 @@ void database_initialization(const string & images_file, const string & links_fi
 
 	while (temp2.bin_read(ifs_links))
 	{
-		links[temp2.get_id()] = temp2;
+		links.insert({ temp2.get_id(), temp2 });
 	}
 
 	//Чтение строк из файла.
@@ -33,7 +33,7 @@ void database_initialization(const string & images_file, const string & links_fi
 	while (temp3.bin_read(ifs_str))//Пока не достигнут конец файла.
 	{
 		//Вставляем прочитанное в карту.
-		strings[temp3.get_id()] = temp3;
+		strings.insert({ temp3.get_id(), temp3 });
 	}
 
 
