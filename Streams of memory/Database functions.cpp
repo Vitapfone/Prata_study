@@ -42,8 +42,8 @@ void database_initialization(const string & images_file, const string & links_fi
 	//Образы получают связи.
 	for (auto & e : images)
 	{
-		auto & curr_image = e.second;
-		auto & link = links[curr_image.get_is_link().id_];
+		Image & curr_image = e.second;
+		Link & link = links[curr_image.get_is_link().id_];
 		curr_image.set_is_link(&link);
 	}
 

@@ -88,6 +88,7 @@ inline void Outer_stream<W, H>::prepare_for_input()
 
 //Конструктор.
 template<size_t W, size_t H>
+#pragma warning(suppress: 26495)
 Outer_stream<W, H>::Outer_stream(size_t max_sz) : max_size_(max_sz)
 {
 	//Подготавливаем кадр ввода.
