@@ -20,3 +20,8 @@ void Input::train(int d, bool y, float n, bool x)
 {
 	w = w + (d - y)*n*x; //Формула обучения согласно Дельта-правилу.
 }
+//Обучение для сигмоидной функции активации.
+void Input::train_sigma(float d, float y, float n, float x)
+{
+	w = w + (d - y)*y*(1 - y)*x;
+}

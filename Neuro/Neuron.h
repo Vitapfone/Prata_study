@@ -11,7 +11,7 @@ class Neuron
 
 	float tetha = 1; //Предел чувствительности.
 
-	bool y = 0; //Выходной сигнал (состояние) нейрона.
+	float y = 0; //Выходной сигнал (состояние) нейрона.
 
 public:
 
@@ -23,16 +23,22 @@ public:
 	
 	//Главная функция. Вычисляет состояние нейрона. Принимает вектор сигналов с других нейронов.
 	void process(std::vector<bool> & input);
+	//То же для сигмоидной функции активации.
+	void process_sigma(std::vector<float> & input);
 
 	//Функция для обучения нейрона.
 	void train(int d, float n, std::vector<bool> & input);
+	//Обучение с сигмоидной активационной функцией.
+	void train_sigma(float d, float n, std::vector<float> & input);
 
 	//Функция для вывода сигнала.
-	bool signal();
+	float signal();
 
 private:
 
 	//Функция активации.
 	bool activation(float sum);
+	//Сигмоидная активация.
+	float activation_sigma(float sum);
 };
 

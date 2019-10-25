@@ -8,23 +8,23 @@
 using namespace std;
 
 //Функция для чтения данных из файла.
-void reading(ifstream & ifs, vector<bool> & v);
+void reading(ifstream & ifs, vector<float> & v);
 
 //Функция для вывода содержимого вектора.
-void display(vector<bool> & v);
+void display(vector<float> & v);
 
 //Функция, в которой выполняется повторяющаяся работа.
-void process(vector<bool> & v, int d, float n, Neuron & N1);
+void process(vector<float> & v, float d, float n, Neuron & N1);
 
 int main()
 {
-	vector<bool> data(25); //Вектор, в котором будут храниться входные данные для нейрона.
+	vector<float> data(25); //Вектор, в котором будут храниться входные данные для нейрона.
 
 	Neuron N1(25, 1.0); //Нейрон с 25 входами и пределом чувствительности 1.
 
-	int d; //Маркер желаемого результата.
+	float d; //Маркер желаемого результата.
 
-	float n = 0.1; //Коэффициент скорости обучения.
+	float n = 1.5f; //Коэффициент скорости обучения.
 
 	char buf; //Буфер для управляющего символа.
 	cout << "Any char for run. 0 for exit.\n";
@@ -34,7 +34,7 @@ int main()
 		
 
 		ifstream fin("Samples\\K.txt"); //Файловый поток для считывания данных.
-		d = 1; //Для этого варианта нейрон должен активироваться.
+		d = 1.0f; //Для этого варианта нейрон должен активироваться.
 
 		//Чтение.
 		reading(fin, data);
@@ -47,7 +47,7 @@ int main()
 		//Второй пример.
 
 		fin.open("Samples\\E.txt"); //Файловый поток для считывания данных.
-		d = 0; //Для этого варианта нейрон должен оставаться пассивным.
+		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
 
 		//Чтение.
 		reading(fin, data);
@@ -60,7 +60,7 @@ int main()
 		//Третий пример.
 
 		fin.open("Samples\\Y.txt"); //Файловый поток для считывания данных.
-		d = 0; //Для этого варианта нейрон должен оставаться пассивным.
+		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
 
 		//Чтение.
 		reading(fin, data);
@@ -74,7 +74,7 @@ int main()
 		//Четвертый пример.
 
 		fin.open("Samples\\R.txt"); //Файловый поток для считывания данных.
-		d = 0; //Для этого варианта нейрон должен оставаться пассивным.
+		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
 
 		//Чтение.
 		reading(fin, data);
@@ -88,7 +88,7 @@ int main()
 
 
 		fin.open("Samples\\U.txt"); //Файловый поток для считывания данных.
-		d = 0; //Для этого варианта нейрон должен оставаться пассивным.
+		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
 
 		//Чтение.
 		reading(fin, data);
@@ -101,7 +101,7 @@ int main()
 		//Шестой пример.
 
 		fin.open("Samples\\S.txt"); //Файловый поток для считывания данных.
-		d = 0; //Для этого варианта нейрон должен оставаться пассивным.
+		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
 
 		//Чтение.
 		reading(fin, data);
@@ -111,7 +111,8 @@ int main()
 		//Основная работа по обучению и демонстрации.
 		process(data, d, n, N1);
 
-		cout << "Type 0 for exit. Else one more run: ";
+		cout <<"\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+				 \nType 0 for exit. Else one more run: ";
 	}
 
 
@@ -122,7 +123,7 @@ int main()
 
 
 //Функция для чтения данных из файла.
-void reading(ifstream & ifs, vector<bool>& v)
+void reading(ifstream & ifs, vector<float>& v)
 {
 	char buf;
 	//Данные из файла транслируются в вектор.
@@ -131,23 +132,23 @@ void reading(ifstream & ifs, vector<bool>& v)
 		ifs.get(buf);
 		if (buf == '1')
 		{
-			v[i] = true;
+			v[i] = 1.0;
 			++i;
 		}
 		else if (buf == '0')
 		{
-			v[i] = false;
+			v[i] = 0.0;
 			++i;
 		}
 	}
 }
 
 //Функция для вывода содержимого вектора.
-void display(vector<bool>& v)
+void display(vector<float>& v)
 {
 	int i = 0;
 	cout << endl;
-	for (bool e : v)
+	for (float e : v)
 	{
 		cout << e << ' ';
 		++i;
@@ -160,7 +161,7 @@ void display(vector<bool>& v)
 }
 
 //Функция, в которой выполняется повторяющаяся работа.
-void process(vector<bool>& data, int d, float n, Neuron & N1)
+void process(vector<float>& data, float d, float n, Neuron & N1)
 {
 	//Показ для демонстрации правильности считывания.
 	display(data);
@@ -170,22 +171,37 @@ void process(vector<bool>& data, int d, float n, Neuron & N1)
 	N1.display(5);
 
 	//Обработка данных.
-	N1.process(data);
+	N1.process_sigma(data);
 
 	//Демонстрация полученного результата.
 	cout << "\nSignal is: " << N1.signal() << ". ";
 
-	if (N1.signal() == d)
+	if (d == 1.0f)
 	{
-		cout << "Right!!\n";
+		if (N1.signal() >= 0.9*d)
+		{
+			cout << "Right!!\n";
+		}
+		else
+		{
+			cout << "Wrong!!\n";
+		}
 	}
-	else
+	else if (d == 0.0f)
 	{
-		cout << "Wrong!!\n";
+		if (N1.signal() <= (d+0.1f))
+		{
+			cout << "Right!!\n";
+		}
+		else
+		{
+			cout << "Wrong!!\n";
+		}
 	}
+	
 
 	//Обучение.
-	N1.train(d, n, data);
+	N1.train_sigma(d, n, data);
 
 	//Веса после обучения.
 	cout << "\nWeights AFTER training:\n";
