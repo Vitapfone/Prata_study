@@ -99,16 +99,17 @@ void Neuron::train_sigma(float d, float n, std::vector<Neuron> & previous_layer)
 	//Вычисление ошибки.
 	delta = (d - y)*y*(1 - y);
 
-	for (size_t i = 0; i < dendrits.size()-1; i++)
+	size_t i;
+	for (i = 0; i < dendrits.size()-1; i++)
 	{
 		//Каждый вход изменяет свой весовой коэффициент.
 		dendrits[i].train_sigma(delta, n, previous_layer[i].signal());
 	}
 	//Учет воображаемого нейрона смещения.
-	dendrits[dendrits.size()-1].train_sigma(delta, n, 1.0);
+	dendrits[i].train_sigma(delta, n, 1.0);
 }
 
-void Neuron::train_hidden_sigma (const vector<Neuron> & next_layer, float n, int num, const vector<Neuron> & previous_layer)
+void Neuron::train_hidden_sigma (const vector<Neuron> & next_layer, float n, int number_of_neuron, const vector<Neuron> & previous_layer)
 {
 	// где num -- номер позиции этого нейрона в своем слое. Нужен для правильного определения номера входа нейрона следующего слоя при вычислении ошибки.
 
@@ -116,15 +117,18 @@ void Neuron::train_hidden_sigma (const vector<Neuron> & next_layer, float n, int
 	float sum = 0.0f;
 	for (size_t i = 0; i < next_layer.size(); ++i)
 	{
-		sum += next_layer[i].get_delta()*next_layer[i].get_weight(num);
+		sum += next_layer[i].get_delta() * next_layer[i].get_weight(number_of_neuron);
 	}
 	delta = y * (1 - y)*sum;
 
-	for (size_t i = 0; i < dendrits.size()-1; i++)
+	size_t i;
+	for ( i = 0; i < dendrits.size()-1; i++)
 	{
 		//Каждый вход изменяет свой весовой коэффициент.
 		dendrits[i].train_sigma(delta, n, previous_layer[i].signal());
 	}
+	//Обучение входа смещения.
+	dendrits[i].train_sigma(delta, n, 1.0);
 }
 
 //Функция для вывода сигнала.

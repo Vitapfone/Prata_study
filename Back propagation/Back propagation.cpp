@@ -27,7 +27,7 @@ int main()
 	vector<Neuron> hidden_layer;
 	for (size_t i = 0; i < 6; ++i) //Слой содержит 6 нейронов.
 	{
-		Neuron N(26);//Каждый нейрон имеет 26 входов.
+		Neuron N(26);//Каждый нейрон имеет 26 входов. Последний вход всегда для смещения.
 		hidden_layer.push_back(N);
 	}
 
@@ -42,17 +42,15 @@ int main()
 	//Обучающий цикл.
 
 	float n = 2.0f; //Коэффициент скорости обучения.
+
 	char buf; //Буфер для управляющего символа.
 	cout << "Any char for run. 0 for exit.\n";
 	while (cin >> buf && buf != '0')
 	{
 		cin.ignore(1000, '\n');
 
-		
-		
 		process(samples, answers, n, hidden_layer, output_layer);
 		
-
 		cout << "\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 				 \nType 0 for exit. Else one more run: ";
 	}
