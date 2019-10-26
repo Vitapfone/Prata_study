@@ -54,10 +54,10 @@ void Neuron::process(std::vector<bool>& input)
 }
 
 //То же для сигмоидной функции активации.
-void Neuron::process_sigma(std::vector<float>& input)
+void Neuron::process_sigma(std::vector<Neuron>& previous_layer)
 {
 	//Проверка на то, что на вход подан вектор подходящего размера.
-	if (input.size() != dendrits.size())
+	if (previous_layer.size() != (dendrits.size()-1))
 	{
 		cout << "Error! Wrong input size!!" << endl;
 		exit(1);
@@ -66,10 +66,13 @@ void Neuron::process_sigma(std::vector<float>& input)
 	//Суммирование сигналов со входа.
 	float sum = 0.0;
 
-	for (size_t i = 0; i < dendrits.size(); i++)
+	size_t i;
+	for ( i = 0; i < dendrits.size()-1; i++)
 	{
-		sum += dendrits[i].weighing_sigma(input[i]);
+		sum += dendrits[i].weighing_sigma(previous_layer[i].signal());
 	}
+	//Учитываем воображаемый нейрон смещения.
+	sum = sum + dendrits[i].weighing_sigma(1.0);
 
 	//Применение активационной функции. Вычисление состояния нейрона.
 	y = activation_sigma(sum);
@@ -91,26 +94,47 @@ void Neuron::train(int d, float n, std::vector<bool>& input)
 }
 
 //Обучение с сигмоидной активационной функцией.
-void Neuron::train_sigma(float d, float n, std::vector<float> & input)
+void Neuron::train_sigma(float d, float n, std::vector<Neuron> & previous_layer)
 {
 	//Вычисление ошибки.
 	delta = (d - y)*y*(1 - y);
 
-	for (size_t i = 0; i < dendrits.size(); i++)
+	for (size_t i = 0; i < dendrits.size()-1; i++)
 	{
 		//Каждый вход изменяет свой весовой коэффициент.
-		dendrits[i].train_sigma(delta, n, input[i]);
+		dendrits[i].train_sigma(delta, n, previous_layer[i].signal());
+	}
+	//Учет воображаемого нейрона смещения.
+	dendrits[dendrits.size()-1].train_sigma(delta, n, 1.0);
+}
+
+void Neuron::train_hidden_sigma (const vector<Neuron> & next_layer, float n, int num, const vector<Neuron> & previous_layer)
+{
+	// где num -- номер позиции этого нейрона в своем слое. Нужен для правильного определения номера входа нейрона следующего слоя при вычислении ошибки.
+
+	//Вычисление ошибки.
+	float sum = 0.0f;
+	for (size_t i = 0; i < next_layer.size(); ++i)
+	{
+		sum += next_layer[i].get_delta()*next_layer[i].get_weight(num);
+	}
+	delta = y * (1 - y)*sum;
+
+	for (size_t i = 0; i < dendrits.size()-1; i++)
+	{
+		//Каждый вход изменяет свой весовой коэффициент.
+		dendrits[i].train_sigma(delta, n, previous_layer[i].signal());
 	}
 }
 
 //Функция для вывода сигнала.
-float Neuron::signal()
+float Neuron::signal() const
 {
 	return y;
 }
 
 //Выдать произвольный весовой коэффициент.
-float Neuron::get_weight(int i)
+ float Neuron::get_weight(int i) const
 {
 	return dendrits[i].get_weight();
 }

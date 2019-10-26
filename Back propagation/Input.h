@@ -13,7 +13,7 @@ public:
 	Input();
 
 	//Геттер
-	float get_weight() { return w; }
+	float get_weight() const { return w; } 
 
 	//Взвешивание полученного сигнала.
 	float weighing(bool x) { return w * x; }
