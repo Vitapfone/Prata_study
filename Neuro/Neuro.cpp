@@ -7,24 +7,30 @@
 
 using namespace std;
 
+//Функция для подготовки обучающей выборки.
+void preparation(vector < vector<float>> & samp, vector<float> & answ);
+
 //Функция для чтения данных из файла.
 void reading(ifstream & ifs, vector<float> & v);
 
 //Функция для вывода содержимого вектора.
-void display(vector<float> & v);
+void display(const vector<float> & v);
 
 //Функция, в которой выполняется повторяющаяся работа.
 void process(vector<float> & v, float d, float n, Neuron & N1);
 
 int main()
 {
-	vector<float> data(25); //Вектор, в котором будут храниться входные данные для нейрона.
+	//Подготовка вектора обучающих примеров.
 
-	Neuron N1(25, 1.0); //Нейрон с 25 входами и пределом чувствительности 1.
+	vector < vector<float>> samples; //Вектор примеров.
+	vector<float> answers;//Вектор ответов.
+	preparation(samples, answers);
 
-	float d; //Маркер желаемого результата.
 
-	float n = 1.5f; //Коэффициент скорости обучения.
+	Neuron N1(26, 1.0); //Нейрон с 26 входами и пределом чувствительности 1. Последний 26 вход для смещения.
+
+	float n = 2.0f; //Коэффициент скорости обучения.
 
 	char buf; //Буфер для управляющего символа.
 	cout << "Any char for run. 0 for exit.\n";
@@ -32,85 +38,12 @@ int main()
 	{
 		cin.ignore(1000, '\n');
 		
-
-		ifstream fin("Samples\\K.txt"); //Файловый поток для считывания данных.
-		d = 1.0f; //Для этого варианта нейрон должен активироваться.
-
-		//Чтение.
-		reading(fin, data);
-
-		fin.close();
-
-		//Основная работа по обучению и демонстрации.
-		process(data, d, n, N1);
-
-		//Второй пример.
-
-		fin.open("Samples\\E.txt"); //Файловый поток для считывания данных.
-		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
-
-		//Чтение.
-		reading(fin, data);
-
-		fin.close();
-
-		//Основная работа по обучению и демонстрации.
-		process(data, d, n, N1);
-
-		//Третий пример.
-
-		fin.open("Samples\\Y.txt"); //Файловый поток для считывания данных.
-		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
-
-		//Чтение.
-		reading(fin, data);
-
-		fin.close();
-
-		//Основная работа по обучению и демонстрации.
-		process(data, d, n, N1);
-
-
-		//Четвертый пример.
-
-		fin.open("Samples\\R.txt"); //Файловый поток для считывания данных.
-		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
-
-		//Чтение.
-		reading(fin, data);
-
-		fin.close();
-
-		//Основная работа по обучению и демонстрации.
-		process(data, d, n, N1);
-
-		//Пятый пример.
-
-
-		fin.open("Samples\\U.txt"); //Файловый поток для считывания данных.
-		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
-
-		//Чтение.
-		reading(fin, data);
-
-		fin.close();
-
-		//Основная работа по обучению и демонстрации.
-		process(data, d, n, N1);
-
-		//Шестой пример.
-
-		fin.open("Samples\\S.txt"); //Файловый поток для считывания данных.
-		d = 0.0f; //Для этого варианта нейрон должен оставаться пассивным.
-
-		//Чтение.
-		reading(fin, data);
-
-		fin.close();
-
-		//Основная работа по обучению и демонстрации.
-		process(data, d, n, N1);
-
+		//Цикл обучения.
+		for (int i = 0; i < samples.size(); ++i)
+		{
+			process(samples[i], answers[i], n, N1);
+		}
+		
 		cout <<"\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 				 \nType 0 for exit. Else one more run: ";
 	}
@@ -121,6 +54,38 @@ int main()
 	return 0;
 }
 
+//Функция для подготовки обучающей выборки.
+void preparation(vector<vector<float>>& samp, vector<float>& answ)
+{
+	vector<float> data(26); //Вектор, в котором будет храниться одиночный пример.
+	ifstream fin("Samples\\K.txt"); //Файловый поток для считывания данных.
+	//Чтение.
+	reading(fin, data);
+	fin.close();
+	samp.push_back(data);
+	fin.open("Samples\\E.txt");
+	reading(fin, data);
+	fin.close();
+	samp.push_back(data);
+	fin.open("Samples\\Y.txt");
+	reading(fin, data);
+	fin.close();
+	samp.push_back(data);
+	fin.open("Samples\\R.txt");
+	reading(fin, data);
+	fin.close();
+	samp.push_back(data);
+	fin.open("Samples\\U.txt");
+	reading(fin, data);
+	fin.close();
+	samp.push_back(data);
+	fin.open("Samples\\S.txt");
+	reading(fin, data);
+	fin.close();
+	samp.push_back(data);
+
+	answ = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+}
 
 //Функция для чтения данных из файла.
 void reading(ifstream & ifs, vector<float>& v)
@@ -141,16 +106,25 @@ void reading(ifstream & ifs, vector<float>& v)
 			++i;
 		}
 	}
+	v[25] = 1;//Тут как-бы входной нейрон смещения.
 }
 
 //Функция для вывода содержимого вектора.
-void display(vector<float>& v)
+void display( const vector<float>& v)
 {
 	int i = 0;
 	cout << endl;
-	for (float e : v)
+	for (const float e : v)
 	{
-		cout << e << ' ';
+		if (e == 0)
+		{
+			cout << ' ' << ' ';
+		}
+		else
+		{
+			cout << e << ' ';
+		}
+		
 		++i;
 		if (i % 5 == 0)
 		{
@@ -165,10 +139,6 @@ void process(vector<float>& data, float d, float n, Neuron & N1)
 {
 	//Показ для демонстрации правильности считывания.
 	display(data);
-
-	//Демонстрация весов до обучения.
-	cout << "\nWeights BEFORE training:\n";
-	N1.display(5);
 
 	//Обработка данных.
 	N1.process_sigma(data);
@@ -203,7 +173,4 @@ void process(vector<float>& data, float d, float n, Neuron & N1)
 	//Обучение.
 	N1.train_sigma(d, n, data);
 
-	//Веса после обучения.
-	cout << "\nWeights AFTER training:\n";
-	N1.display(5);
 }
