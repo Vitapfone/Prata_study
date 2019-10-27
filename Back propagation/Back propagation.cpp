@@ -15,6 +15,9 @@ void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ);
 //Функция, вобравшая в себя повторяющиеся действия обучения.
 void process(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, float n, vector<Neuron> & hidden, vector<Neuron> & out);
 
+constexpr int NUM = 25;		//Количество нейронов скрытого слоя.
+constexpr float n = 2.0;	//Коэффициент скорости обучения.
+
 int main()
 {
 	//Подготовка вектора обучающих примеров.
@@ -25,7 +28,7 @@ int main()
 
 	//Создание скрытого слоя.
 	vector<Neuron> hidden_layer;
-	for (size_t i = 0; i < 6; ++i) //Слой содержит 6 нейронов.
+	for (size_t i = 0; i < NUM; ++i) //Слой содержит 3 нейронов.
 	{
 		Neuron N(26);//Каждый нейрон имеет 26 входов. Последний вход всегда для смещения.
 		hidden_layer.push_back(N);
@@ -35,15 +38,16 @@ int main()
 	vector<Neuron> output_layer;
 	for (size_t i = 0; i < 6; ++i) //Слой содержит 6 нейронов.
 	{
-		Neuron N(7);//Каждый нейрон имеет 7 входов.
+		Neuron N(NUM+1);//Каждый нейрон имеет 26 входов.
 		output_layer.push_back(N);
 	}
 
 	//Обучающий цикл.
 
-	float n = 2.0f; //Коэффициент скорости обучения.
+	//float n = 1.0f; 
 
 	char buf; //Буфер для управляющего символа.
+	size_t count = 0;
 	cout << "Any char for run. 0 for exit.\n";
 	while (cin >> buf && buf != '0')
 	{
@@ -51,8 +55,9 @@ int main()
 
 		process(samples, answers, n, hidden_layer, output_layer);
 		
+		++count;
 		cout << "\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-				 \nType 0 for exit. Else one more run: ";
+				 \nEpoch " << count << "   Type 0 for exit. Else one more run: ";
 	}
 
 
@@ -109,7 +114,7 @@ void process(vector<vector<Neuron>>& samp, vector<vector<float>>& answ, float n,
 	for (size_t i = 0; i < 6; ++i)
 	{
 		//Прямой ход скрытого слоя.
-		for (size_t j = 0; j < 6; j++)
+		for (size_t j = 0; j < NUM; j++)
 		{
 			hidden[j].process_sigma(samp[i]);
 		}
@@ -148,7 +153,7 @@ void process(vector<vector<Neuron>>& samp, vector<vector<float>>& answ, float n,
 		cout << setprecision(3);
 		for (const Neuron & e : out)
 		{
-			cout << setw(7) << e.signal() << ' ';
+			cout << setw(10) << e.signal() << ' ';
 		}
 		cout << endl;
 
@@ -160,7 +165,7 @@ void process(vector<vector<Neuron>>& samp, vector<vector<float>>& answ, float n,
 		}
 
 		//Обратный ход скрытого слоя.
-		for (size_t j = 0; j < 6; j++)
+		for (size_t j = 0; j < NUM; j++)
 		{
 			hidden[j].train_hidden_sigma(out, n, j, samp[i]);
 		}
