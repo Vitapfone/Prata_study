@@ -24,10 +24,10 @@ constexpr float OUTPUT_SPEED = (1.0 / NUM)*GENERAL_SPEED_MULT; //Скорост�
 int main()
 {
 	//Подготовка вектора обучающих примеров.
-
 	vector < vector<Neuron>> samples; //Вектор входных нейронов для записи в них данных примеров.
 	vector < vector<float>> answers; //Вектор ответов.
 	preparation(samples, answers);
+
 
 	//Создание скрытого слоя.
 	vector<Neuron> hidden_layer;
@@ -45,12 +45,12 @@ int main()
 		output_layer.push_back(N);
 	}
 
+
 	//Обучающий цикл.
 
-	//float n = 1.0f; 
-
 	size_t num_of_epochs; //Количество нужных эпох обучения.
-	size_t count = 0;
+	size_t count = 0; //Счетчик прошедших эпох.
+
 	cout << "Enter number of epochs. 0 for exit.\n";
 	num_of_epochs = only_digits_input();
 
@@ -62,15 +62,15 @@ int main()
 			for (size_t i = 0; i < 6; ++i)
 			{
 				//Прямой ход скрытого слоя.
-				for (size_t j = 0; j < NUM; j++)
+				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 				{
-					hidden_layer[j].process_sigma(samples[i]);
+					hidden_layer[neuron_number].process_sigma(samples[i]);
 				}
 
 				//Прямой ход выходного слоя.
-				for (size_t j = 0; j < 6; j++)
+				for (size_t neuron_number = 0; neuron_number < 6; neuron_number++)
 				{
-					output_layer[j].process_sigma(hidden_layer);
+					output_layer[neuron_number].process_sigma(hidden_layer);
 				}
 
 				//Оглашение результатов.
@@ -107,15 +107,15 @@ int main()
 
 				//Далее начинается обучение.
 				//Обратный ход выходного слоя.
-				for (size_t j = 0; j < 6; j++)
+				for (size_t neuron_number = 0; neuron_number < 6; neuron_number++)
 				{
-					output_layer[j].train_sigma(answers[i][j], OUTPUT_SPEED, hidden_layer);
+					output_layer[neuron_number].train_sigma(answers[i][neuron_number], OUTPUT_SPEED, hidden_layer);
 				}
 
 				//Обратный ход скрытого слоя.
-				for (size_t j = 0; j < NUM; j++)
+				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 				{
-					hidden_layer[j].train_hidden_sigma(output_layer, HIDDEN_SPEED, j, samples[i]);
+					hidden_layer[neuron_number].train_hidden_sigma(output_layer, HIDDEN_SPEED, neuron_number, samples[i]);
 				}
 			}
 
