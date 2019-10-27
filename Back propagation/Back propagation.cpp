@@ -16,7 +16,7 @@ void reading(ifstream & ifs, vector<Neuron> & v);
 void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ);
 
 
-constexpr int NUM = 25;		//Количество нейронов скрытого слоя.
+constexpr int NUM = 6;		//Количество нейронов скрытого слоя.
 constexpr int GENERAL_SPEED_MULT = 25;//Общий множитель для скорости обучения.
 constexpr float HIDDEN_SPEED = 0.04 * GENERAL_SPEED_MULT;	//Коэффициент скорости обучения скрытого слоя. Зависит от количества входов, т.е. нейронов входного слоя/размерности входного вектора.
 constexpr float OUTPUT_SPEED = (1.0 / NUM)*GENERAL_SPEED_MULT; //Скорость обуения для выходного слоя. Зависит от кол-ва нейронов скрытого.
@@ -130,6 +130,10 @@ int main()
 		num_of_epochs = only_digits_input();
 	}
 	
+	for (const Neuron & e : output_layer)
+	{
+		e.display(6);
+	}
 
 }
 

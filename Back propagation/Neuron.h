@@ -21,7 +21,7 @@ public:
 	Neuron(int num = 1, float th = 1) : dendrits(num), tetha(th) {}
 
 	//Функция для вывода на экран всех весов.
-	void display(int width);
+	void display(int width) const;
 	
 	//Главная функция. Вычисляет состояние нейрона. Принимает вектор сигналов с других нейронов.
 	void process(std::vector<bool> & input);

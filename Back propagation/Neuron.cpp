@@ -13,10 +13,10 @@ using namespace std;
 
 
 //Функция для вывода на экран всех весов.
-void Neuron::display(int width)
+void Neuron::display(int width) const
 {
 	int i = 0;
-	for (Input & e : dendrits)
+	for (const Input & e : dendrits)
 	{
 		cout << setprecision(2);
 		cout << setw(8) << e.get_weight() << ' ';
