@@ -15,11 +15,11 @@ void reading(ifstream & ifs, vector<Neuron> & v);
 //Функция для подготовки обучающей выборки.
 void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ);
 
-//Функция, вобравшая в себя повторяющиеся действия обучения.
-void process(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, float n, vector<Neuron> & hidden, vector<Neuron> & out);
 
 constexpr int NUM = 25;		//Количество нейронов скрытого слоя.
-constexpr float n = 1.0;	//Коэффициент скорости обучения.
+constexpr int GENERAL_SPEED_MULT = 25;//Общий множитель для скорости обучения.
+constexpr float HIDDEN_SPEED = 0.04 * GENERAL_SPEED_MULT;	//Коэффициент скорости обучения скрытого слоя. Зависит от количества входов, т.е. нейронов входного слоя/размерности входного вектора.
+constexpr float OUTPUT_SPEED = (1.0 / NUM)*GENERAL_SPEED_MULT; //Скорость обуения для выходного слоя. Зависит от кол-ва нейронов скрытого.
 
 int main()
 {
@@ -56,15 +56,76 @@ int main()
 
 	while (num_of_epochs != 0)
 	{
-		for (size_t i = 0; i < num_of_epochs; ++i)
+		for (size_t e = 0; e < num_of_epochs; ++e)
 		{
-			process(samples, answers, n, hidden_layer, output_layer);
+			//Нейросети надо показывать 6 разных букв.
+			for (size_t i = 0; i < 6; ++i)
+			{
+				//Прямой ход скрытого слоя.
+				for (size_t j = 0; j < NUM; j++)
+				{
+					hidden_layer[j].process_sigma(samples[i]);
+				}
+
+				//Прямой ход выходного слоя.
+				for (size_t j = 0; j < 6; j++)
+				{
+					output_layer[j].process_sigma(hidden_layer);
+				}
+
+				//Оглашение результатов.
+				switch (i)
+				{
+				case 0:
+					cout << "\n\nVariant K:\n";
+					break;
+				case 1:
+					cout << "Variant E:\n";
+					break;
+				case 2:
+					cout << "Variant Y:\n";
+					break;
+				case 3:
+					cout << "Variant R:\n";
+					break;
+				case 4:
+					cout << "Variant U:\n";
+					break;
+				case 5:
+					cout << "Variant S:\n";
+					break;
+				default:
+					break;
+				}
+
+				cout << setprecision(3);
+				for (const Neuron & e : output_layer)
+				{
+					cout << setw(10) << e.signal() << ' ';
+				}
+				cout << endl;
+
+				//Далее начинается обучение.
+				//Обратный ход выходного слоя.
+				for (size_t j = 0; j < 6; j++)
+				{
+					output_layer[j].train_sigma(answers[i][j], OUTPUT_SPEED, hidden_layer);
+				}
+
+				//Обратный ход скрытого слоя.
+				for (size_t j = 0; j < NUM; j++)
+				{
+					hidden_layer[j].train_hidden_sigma(output_layer, HIDDEN_SPEED, j, samples[i]);
+				}
+			}
 
 			++count;
+			cout << "\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+				 \nEpoch " << count << endl;
 		}
 
-		cout << "\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-				 \nEpoch " << count << endl;
+		
+		cout << "GENERAL_SPEED_MULT = " << GENERAL_SPEED_MULT << "  HIDDEN_SPEED = " << HIDDEN_SPEED << "  OUTPUT_SPEED = " << OUTPUT_SPEED << endl;
 		cout << "Enter number of epochs. 0 for exit.\n";
 		num_of_epochs = only_digits_input();
 	}
@@ -116,70 +177,6 @@ void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ)
 	answ.push_back(an);
 }
 
-//Функция, вобравшая в себя повторяющиеся действия обучения.
-void process(vector<vector<Neuron>>& samp, vector<vector<float>>& answ, float n, vector<Neuron>& hidden, vector<Neuron>& out)
-{
-	//Нейросети надо показывать 6 разных букв.
-	for (size_t i = 0; i < 6; ++i)
-	{
-		//Прямой ход скрытого слоя.
-		for (size_t j = 0; j < NUM; j++)
-		{
-			hidden[j].process_sigma(samp[i]);
-		}
-
-		//Прямой ход выходного слоя.
-		for (size_t j = 0; j < 6; j++)
-		{
-			out[j].process_sigma(hidden);
-		}
-
-		//Оглашение результатов.
-		switch (i)
-		{
-		case 0:
-			cout << "\n\nVariant K:\n";
-			break;
-		case 1:
-			cout << "Variant E:\n";
-			break;
-		case 2:
-			cout << "Variant Y:\n";
-			break;
-		case 3:
-			cout << "Variant R:\n";
-			break;
-		case 4:
-			cout << "Variant U:\n";
-			break;
-		case 5:
-			cout << "Variant S:\n";
-			break;
-		default:
-			break;
-		}
-
-		cout << setprecision(3);
-		for (const Neuron & e : out)
-		{
-			cout << setw(10) << e.signal() << ' ';
-		}
-		cout << endl;
-
-		//Далее начинается обучение.
-		//Обратный ход выходного слоя.
-		for (size_t j = 0; j < 6; j++)
-		{
-			out[j].train_sigma(answ[i][j], n, hidden);
-		}
-
-		//Обратный ход скрытого слоя.
-		for (size_t j = 0; j < NUM; j++)
-		{
-			hidden[j].train_hidden_sigma(out, n, j, samp[i]);
-		}
-	}
-}
 
 //Функция для чтения данных из файла.
 void reading(ifstream & ifs, vector<Neuron>& v)
