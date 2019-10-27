@@ -6,6 +6,9 @@
 
 using namespace std;
 
+//Функция для безопасного цифрового ввода.
+size_t only_digits_input();
+
 //Функция для чтения данных из файла.
 void reading(ifstream & ifs, vector<Neuron> & v);
 
@@ -16,7 +19,7 @@ void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ);
 void process(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, float n, vector<Neuron> & hidden, vector<Neuron> & out);
 
 constexpr int NUM = 25;		//Количество нейронов скрытого слоя.
-constexpr float n = 2.0;	//Коэффициент скорости обучения.
+constexpr float n = 1.0;	//Коэффициент скорости обучения.
 
 int main()
 {
@@ -46,20 +49,26 @@ int main()
 
 	//float n = 1.0f; 
 
-	char buf; //Буфер для управляющего символа.
+	size_t num_of_epochs; //Количество нужных эпох обучения.
 	size_t count = 0;
-	cout << "Any char for run. 0 for exit.\n";
-	while (cin >> buf && buf != '0')
+	cout << "Enter number of epochs. 0 for exit.\n";
+	num_of_epochs = only_digits_input();
+
+	while (num_of_epochs != 0)
 	{
-		cin.ignore(1000, '\n');
+		for (size_t i = 0; i < num_of_epochs; ++i)
+		{
+			process(samples, answers, n, hidden_layer, output_layer);
 
-		process(samples, answers, n, hidden_layer, output_layer);
-		
-		++count;
+			++count;
+		}
+
 		cout << "\n\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-				 \nEpoch " << count << "   Type 0 for exit. Else one more run: ";
+				 \nEpoch " << count << endl;
+		cout << "Enter number of epochs. 0 for exit.\n";
+		num_of_epochs = only_digits_input();
 	}
-
+	
 
 }
 
@@ -129,7 +138,7 @@ void process(vector<vector<Neuron>>& samp, vector<vector<float>>& answ, float n,
 		switch (i)
 		{
 		case 0:
-			cout << "Variant K:\n";
+			cout << "\n\nVariant K:\n";
 			break;
 		case 1:
 			cout << "Variant E:\n";
@@ -192,4 +201,19 @@ void reading(ifstream & ifs, vector<Neuron>& v)
 		}
 	}
 	
+}
+
+//Обработка цифрового ввода.
+size_t only_digits_input()
+{
+	size_t ln;
+
+	while (!(cin >> ln))
+	{
+		cout << "Only digits!\n";
+		cin.clear();
+		cin.ignore(1000, '\n');
+	}
+
+	return ln;
 }
