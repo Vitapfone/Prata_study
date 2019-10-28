@@ -12,11 +12,11 @@ size_t only_digits_input();
 //Функция для чтения данных из файла.
 void reading(ifstream & ifs, vector<Neuron> & v);
 
-//Функция для подготовки обучающей выборки.
-void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ);
+//Функция для подготовки обучающей и тестовой выборок.
+void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, vector<vector<Neuron>> & test);
 
 
-constexpr int NUM = 6;		//Количество нейронов скрытого слоя.
+constexpr int NUM = 12;		//Количество нейронов скрытого слоя.
 constexpr int GENERAL_SPEED_MULT = 25;//Общий множитель для скорости обучения.
 constexpr float HIDDEN_SPEED = 0.04 * GENERAL_SPEED_MULT;	//Коэффициент скорости обучения скрытого слоя. Зависит от количества входов, т.е. нейронов входного слоя/размерности входного вектора.
 constexpr float OUTPUT_SPEED = (1.0 / NUM)*GENERAL_SPEED_MULT; //Скорость обуения для выходного слоя. Зависит от кол-ва нейронов скрытого.
@@ -26,7 +26,8 @@ int main()
 	//Подготовка вектора обучающих примеров.
 	vector < vector<Neuron>> samples; //Вектор входных нейронов для записи в них данных примеров.
 	vector < vector<float>> answers; //Вектор ответов.
-	preparation(samples, answers);
+	vector<vector<Neuron>> tests; //Вектор для тестовых образов.
+	preparation(samples, answers, tests);
 
 
 	//Создание скрытого слоя.
@@ -65,12 +66,14 @@ int main()
 				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 				{
 					hidden_layer[neuron_number].process_sigma(samples[i]);
+					//hidden_layer[neuron_number].process(samples[i]);
 				}
 
 				//Прямой ход выходного слоя.
 				for (size_t neuron_number = 0; neuron_number < 6; neuron_number++)
 				{
 					output_layer[neuron_number].process_sigma(hidden_layer);
+					//output_layer[neuron_number].process(hidden_layer);
 				}
 
 				//Оглашение результатов.
@@ -110,12 +113,14 @@ int main()
 				for (size_t neuron_number = 0; neuron_number < 6; neuron_number++)
 				{
 					output_layer[neuron_number].train_sigma(answers[i][neuron_number], OUTPUT_SPEED, hidden_layer);
+					//output_layer[neuron_number].train(answers[i][neuron_number], OUTPUT_SPEED, hidden_layer);
 				}
 
 				//Обратный ход скрытого слоя.
 				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 				{
 					hidden_layer[neuron_number].train_hidden_sigma(output_layer, HIDDEN_SPEED, neuron_number, samples[i]);
+					//hidden_layer[neuron_number].train_hidden(output_layer, HIDDEN_SPEED, neuron_number, samples[i]);
 				}
 			}
 
@@ -130,18 +135,67 @@ int main()
 		num_of_epochs = only_digits_input();
 	}
 	
-	for (const Neuron & e : output_layer)
+	/*for (const Neuron & e : output_layer)
 	{
-		e.display(6);
+		e.display(10);
+	}*/
+
+	//Проверка обобщающей способности сети.
+	cout << "\nTESTING\n\n";
+
+	float sum_k = 0.0f;
+	float sum_u = 0.0f;
+
+	for (size_t i = 0; i < tests.size(); i++)
+	{
+		//Прямой ход скрытого слоя.
+		for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
+		{
+			hidden_layer[neuron_number].process_sigma(tests[i]);
+		}
+		//Прямой ход выходного слоя.
+		for (size_t neuron_number = 0; neuron_number < 6; neuron_number++)
+		{
+			output_layer[neuron_number].process_sigma(hidden_layer);
+		}
+		//Вывод сигналов выходного слоя.
+		cout << setprecision(3);
+		
+		int j = 0;
+		for (const Neuron & e : output_layer)
+		{
+			if (j == 0 && i<=5)
+			{
+				sum_k += e.signal();
+			}
+			else if (j == 4 && i>5)
+			{
+				sum_u += e.signal();
+			}
+			++j;
+			
+			cout << setw(10) << e.signal() << ' ';
+		}
+		if (i == 5 || i==11)
+		{
+			cout << endl;
+		}
+		cout << endl;
+
+		
 	}
 
+	cout << "K generalization is: " << (sum_k / 6) << ". U generalization is: " << (sum_u / 6) << ".\n";
+
+	return 0;
 }
 
 //Функция для подготовки обучающей выборки.
-void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ)
+void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, vector<vector<Neuron>> & test)
 {
 	vector<Neuron> data(25); //Вектор входных нейронов, в котором будут храниться данные одиночного примера.
 	ifstream fin("Samples\\K.txt"); //Файловый поток для считывания данных.
+	
 	//Чтение.
 	reading(fin, data);
 	fin.close();
@@ -179,6 +233,59 @@ void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ)
 	answ.push_back(an);
 	an = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
 	answ.push_back(an);
+
+	
+	//Заполнение вектора тестов.
+	
+	fin.open("Tests\\K1.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\K2.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\K3.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\K4.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\K5.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\K6.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+
+	fin.open("Tests\\U1.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\U2.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\U3.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\U4.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\U5.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
+	fin.open("Tests\\U6.txt");
+	reading(fin, data);
+	fin.close();
+	test.push_back(data);
 }
 
 
@@ -195,7 +302,7 @@ void reading(ifstream & ifs, vector<Neuron>& v)
 			v[i].set_signal(1.0);
 			++i;
 		}
-		else if (buf == '0')
+ 		else if (buf == '0')
 		{
 			v[i].set_signal(0.0);
 			++i;

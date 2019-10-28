@@ -16,12 +16,12 @@ Input::Input()
 }
 
 //Обучение. d - желаемый ответ нейрона, n - коэффициент скорости обучения, а x -- входной сигнал.
-void Input::train(float delta, float n, bool x)
+void Input::train(float delta, float n, float x)
 {
 	w = w + n*delta*x; //Формула обучения согласно Дельта-правилу.
 }
 //Обучение для сигмоидной функции активации.
-void Input::train_sigma(float delta, float n, float x)
+void Input::train_sigma(float delta, float speed, float x)
 {
-	w = w + n * delta*x;
+	w = w + speed * delta*x;
 }
