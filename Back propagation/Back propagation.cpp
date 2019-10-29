@@ -10,10 +10,10 @@ using namespace std;
 size_t only_digits_input();
 
 //Функция для чтения данных из файла.
-void reading(ifstream & ifs, vector<Neuron> & v);
+void reading(ifstream & ifs, vector<float> & v);
 
 //Функция для подготовки обучающей и тестовой выборок.
-void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, vector<vector<Neuron>> & test);
+void preparation(vector < vector<float>> & samp, vector<vector<float>> & answ, vector<vector<float>> & test);
 
 
 constexpr int NUM = 12;		//Количество нейронов скрытого слоя.
@@ -24,15 +24,21 @@ constexpr float OUTPUT_SPEED = (1.0 / NUM)*GENERAL_SPEED_MULT; //Скорост�
 int main()
 {
 	//Подготовка вектора обучающих примеров.
-	vector < vector<Neuron>> samples; //Вектор входных нейронов для записи в них данных примеров.
+	vector < vector<float>> samples; //Вектор для данных примеров.
 	vector < vector<float>> answers; //Вектор ответов.
-	vector<vector<Neuron>> tests; //Вектор для тестовых образов.
+	vector<vector<float>> tests; //Вектор для тестовых образов.
 	preparation(samples, answers, tests);
 
-
+	//Создание входного слоя.
+	vector<Neuron> input_layer;
+	for (size_t i = 0; i < 25; i++)//25 входных нейронов.
+	{
+		Neuron N;
+		input_layer.push_back(N);
+	}
 	//Создание скрытого слоя.
 	vector<Neuron> hidden_layer;
-	for (size_t i = 0; i < NUM; ++i) //Слой содержит 3 нейронов.
+	for (size_t i = 0; i < NUM; ++i) //Слой содержит NUM нейронов.
 	{
 		Neuron N(26);//Каждый нейрон имеет 26 входов. Последний вход всегда для смещения.
 		hidden_layer.push_back(N);
@@ -62,10 +68,16 @@ int main()
 			//Нейросети надо показывать 6 разных букв.
 			for (size_t i = 0; i < 6; ++i)
 			{
+				//Инициализация входного слоя.
+				for (size_t neuron_N = 0; neuron_N < 25; neuron_N++)
+				{
+					input_layer[neuron_N].set_signal(samples[i][neuron_N]);
+				}
+
 				//Прямой ход скрытого слоя.
 				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 				{
-					hidden_layer[neuron_number].process_sigma(samples[i]);
+					hidden_layer[neuron_number].process_sigma(input_layer);
 					//hidden_layer[neuron_number].process(samples[i]);
 				}
 
@@ -119,7 +131,7 @@ int main()
 				//Обратный ход скрытого слоя.
 				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 				{
-					hidden_layer[neuron_number].train_hidden_sigma(output_layer, HIDDEN_SPEED, neuron_number, samples[i]);
+					hidden_layer[neuron_number].train_hidden_sigma(output_layer, HIDDEN_SPEED, neuron_number, input_layer);
 					//hidden_layer[neuron_number].train_hidden(output_layer, HIDDEN_SPEED, neuron_number, samples[i]);
 				}
 			}
@@ -148,10 +160,15 @@ int main()
 
 	for (size_t i = 0; i < tests.size(); i++)
 	{
+		//Инициализация входного слоя.
+		for (size_t neuron_N = 0; neuron_N < 25; neuron_N++)
+		{
+			input_layer[neuron_N].set_signal(tests[i][neuron_N]);
+		}
 		//Прямой ход скрытого слоя.
 		for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
 		{
-			hidden_layer[neuron_number].process_sigma(tests[i]);
+			hidden_layer[neuron_number].process_sigma(input_layer);
 		}
 		//Прямой ход выходного слоя.
 		for (size_t neuron_number = 0; neuron_number < 6; neuron_number++)
@@ -191,9 +208,9 @@ int main()
 }
 
 //Функция для подготовки обучающей выборки.
-void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, vector<vector<Neuron>> & test)
+void preparation(vector < vector<float>> & samp, vector<vector<float>> & answ, vector<vector<float>> & test)
 {
-	vector<Neuron> data(25); //Вектор входных нейронов, в котором будут храниться данные одиночного примера.
+	vector<float> data(25); //Вектор входных нейронов, в котором будут храниться данные одиночного примера.
 	ifstream fin("Samples\\K.txt"); //Файловый поток для считывания данных.
 	
 	//Чтение.
@@ -290,7 +307,7 @@ void preparation(vector < vector<Neuron>> & samp, vector<vector<float>> & answ, 
 
 
 //Функция для чтения данных из файла.
-void reading(ifstream & ifs, vector<Neuron>& v)
+void reading(ifstream & ifs, vector<float>& v)
 {
 	char buf;
 	//Данные из файла транслируются в вектор.
@@ -299,12 +316,12 @@ void reading(ifstream & ifs, vector<Neuron>& v)
 		ifs.get(buf);
 		if (buf == '1')
 		{
-			v[i].set_signal(1.0);
+			v[i] = 1.0f;
 			++i;
 		}
  		else if (buf == '0')
 		{
-			v[i].set_signal(0.0);
+			v[i] = 0.0f;
 			++i;
 		}
 	}
