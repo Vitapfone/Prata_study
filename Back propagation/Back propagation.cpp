@@ -30,17 +30,14 @@ int main()
 	preparation(samples, answers, tests);
 
 	//Создание входного слоя.
-	vector<Neuron> input_layer;
-	for (size_t i = 0; i < 25; i++)//25 входных нейронов.
-	{
-		Neuron N;
-		input_layer.push_back(N);
-	}
+	vector<Neuron> input_layer(25);//25 входных нейронов.
+	
 	//Создание скрытого слоя.
 	vector<Neuron> hidden_layer;
 	for (size_t i = 0; i < NUM; ++i) //Слой содержит NUM нейронов.
 	{
-		Neuron N(26);//Каждый нейрон имеет 26 входов. Последний вход всегда для смещения.
+		int size = input_layer.size() + 1;//Каждый нейрон имеет на 1 вход больше, чем размер предыдущего слоя. Последний вход всегда для смещения.
+		Neuron N(size);
 		hidden_layer.push_back(N);
 	}
 
@@ -48,7 +45,7 @@ int main()
 	vector<Neuron> output_layer;
 	for (size_t i = 0; i < 6; ++i) //Слой содержит 6 нейронов.
 	{
-		Neuron N(NUM+1);//Каждый нейрон имеет 26 входов.
+		Neuron N(NUM+1);//Каждый нейрон имеет на 1 вход больше, чем размер предыдущего слоя. Последний вход всегда для смещения.
 		output_layer.push_back(N);
 	}
 
