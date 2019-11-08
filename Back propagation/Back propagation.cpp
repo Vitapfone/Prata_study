@@ -16,10 +16,10 @@ void reading(ifstream & ifs, vector<float> & v);
 void preparation(vector < vector<float>> & samp, vector<vector<float>> & answ, vector<vector<float>> & test);
 
 
-constexpr int NUM = 12;		//Количество нейронов скрытого слоя.
-constexpr int GENERAL_SPEED_MULT = 25;//Общий множитель для скорости обучения.
+constexpr int NUM_OF_HIDDEN_NEURONS = 12;		//Количество нейронов скрытого слоя.
+constexpr int GENERAL_SPEED_MULT = 1;//Общий множитель для скорости обучения.
 constexpr float HIDDEN_SPEED = 0.04 * GENERAL_SPEED_MULT;	//Коэффициент скорости обучения скрытого слоя. Зависит от количества входов, т.е. нейронов входного слоя/размерности входного вектора.
-constexpr float OUTPUT_SPEED = (1.0 / NUM)*GENERAL_SPEED_MULT; //Скорость обуения для выходного слоя. Зависит от кол-ва нейронов скрытого.
+constexpr float OUTPUT_SPEED = (1.0 / NUM_OF_HIDDEN_NEURONS)*GENERAL_SPEED_MULT; //Скорость обуения для выходного слоя. Зависит от кол-ва нейронов скрытого.
 
 int main()
 {
@@ -34,7 +34,7 @@ int main()
 	
 	//Создание скрытого слоя.
 	vector<Neuron> hidden_layer;
-	for (size_t i = 0; i < NUM; ++i) //Слой содержит NUM нейронов.
+	for (size_t i = 0; i < NUM_OF_HIDDEN_NEURONS; ++i) //Слой содержит NUM нейронов.
 	{
 		int size = input_layer.size() + 1;//Каждый нейрон имеет на 1 вход больше, чем размер предыдущего слоя. Последний вход всегда для смещения.
 		Neuron N(size);
@@ -45,7 +45,7 @@ int main()
 	vector<Neuron> output_layer;
 	for (size_t i = 0; i < 6; ++i) //Слой содержит 6 нейронов.
 	{
-		Neuron N(NUM+1);//Каждый нейрон имеет на 1 вход больше, чем размер предыдущего слоя. Последний вход всегда для смещения.
+		Neuron N(NUM_OF_HIDDEN_NEURONS+1);//Каждый нейрон имеет на 1 вход больше, чем размер предыдущего слоя. Последний вход всегда для смещения.
 		output_layer.push_back(N);
 	}
 
@@ -72,7 +72,7 @@ int main()
 				}
 
 				//Прямой ход скрытого слоя.
-				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
+				for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
 				{
 					hidden_layer[neuron_number].process_sigma(input_layer);
 					//hidden_layer[neuron_number].process(samples[i]);
@@ -126,7 +126,7 @@ int main()
 				}
 
 				//Обратный ход скрытого слоя.
-				for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
+				for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
 				{
 					hidden_layer[neuron_number].train_hidden_sigma(output_layer, HIDDEN_SPEED, neuron_number, input_layer);
 					//hidden_layer[neuron_number].train_hidden(output_layer, HIDDEN_SPEED, neuron_number, samples[i]);
@@ -163,7 +163,7 @@ int main()
 			input_layer[neuron_N].set_signal(tests[i][neuron_N]);
 		}
 		//Прямой ход скрытого слоя.
-		for (size_t neuron_number = 0; neuron_number < NUM; neuron_number++)
+		for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
 		{
 			hidden_layer[neuron_number].process_sigma(input_layer);
 		}
@@ -172,12 +172,14 @@ int main()
 		{
 			output_layer[neuron_number].process_sigma(hidden_layer);
 		}
+
 		//Вывод сигналов выходного слоя.
 		cout << setprecision(3);
 		
 		int j = 0;
 		for (const Neuron & e : output_layer)
 		{
+			//Суммирование отдельных сигналов для вычисления их средних значений.
 			if (j == 0 && i<=5)
 			{
 				sum_k += e.signal();
@@ -235,17 +237,17 @@ void preparation(vector < vector<float>> & samp, vector<vector<float>> & answ, v
 	fin.close();
 	samp.push_back(data);
 
-	vector<float> an = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+	vector<float> an = { 0.99f, 0.01f, 0.01f, 0.01f, 0.01f, 0.01f };
 	answ.push_back(an);
-	an = { 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+	an = { 0.01f, 0.99f, 0.01f, 0.01f, 0.01f, 0.01f };
 	answ.push_back(an);
-	an = { 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f };
+	an = { 0.01f, 0.01f, 0.99f, 0.01f, 0.01f, 0.01f };
 	answ.push_back(an);
-	an = { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f };
+	an = { 0.01f, 0.01f, 0.01f, 0.99f, 0.01f, 0.01f };
 	answ.push_back(an);
-	an = { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f };
+	an = { 0.01f, 0.01f, 0.01f, 0.01f, 0.99f, 0.01f };
 	answ.push_back(an);
-	an = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+	an = { 0.01f, 0.01f, 0.01f, 0.01f, 0.01f, 0.99f };
 	answ.push_back(an);
 
 	
@@ -313,12 +315,12 @@ void reading(ifstream & ifs, vector<float>& v)
 		ifs.get(buf);
 		if (buf == '1')
 		{
-			v[i] = 1.0f;
+			v[i] = 0.99f;
 			++i;
 		}
  		else if (buf == '0')
 		{
-			v[i] = 0.0f;
+			v[i] = 0.01f;
 			++i;
 		}
 	}
