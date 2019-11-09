@@ -34,7 +34,7 @@ int main()
 	
 	//Создание скрытого слоя.
 	vector<Neuron> hidden_layer;
-	for (size_t i = 0; i < NUM_OF_HIDDEN_NEURONS; ++i) //Слой содержит NUM нейронов.
+	for (size_t i = 0; i < NUM_OF_HIDDEN_NEURONS; ++i) //Слой содержит NUM_OF_HIDDEN_NEURONS нейронов.
 	{
 		int size = input_layer.size() + 1;//Каждый нейрон имеет на 1 вход больше, чем размер предыдущего слоя. Последний вход всегда для смещения.
 		Neuron N(size);
