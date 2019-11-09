@@ -178,7 +178,9 @@ int main()
 
 	cout << "GENERAL_SPEED_MULT = " << GENERAL_SPEED_MULT << "  HIDDEN_SPEED = " << HIDDEN_SPEED << "  OUTPUT_SPEED = " << OUTPUT_SPEED << endl;
 
-//ТЕСТИРОВАНИЕ СЕТИ.
+
+
+//ТЕСТИРОВАНИЕ СЕТИ. ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	cout << "\nTESTING\n\n" << "Any key for continue." << endl;
 	cin.get();
@@ -202,9 +204,9 @@ int main()
 		{
 			x = test_xs[j];
 			y = test_ys[j];
-			cout << "Target X is: " << x << ", Y is " << y << ". ";
+			cout << "\nTarget X is: " << x << ", Y is " << y << ". ";
 
-			while (obj_x != x)//Движение будет идти, пока объект не достигнет цели.
+			while ((obj_x != x) || (obj_y != y))//Движение будет идти, пока объект не достигнет цели.
 			{
 				//Нормализация входа.
 				//float signal = normalize(x - obj_x, MINIMAL_SIGNAL, MAXIMAL_SIGNAL, TARGET_RANGE_MINIMUM, TARGET_RANGE_MAXIMUM);
@@ -237,7 +239,7 @@ int main()
 					data_y[0] = 0.99f;
 					data_y[1] = 0.01f;
 				}
-				else if (x_signal > 0)
+				else if (y_signal > 0)
 				{
 					data_y[0] = 0.01f;
 					data_y[1] = 0.99f;
@@ -254,12 +256,21 @@ int main()
 				{
 					input_layer[neuron_N].set_signal(data_x[neuron_N]);
 				}
-				
+
+				for (size_t neuron_N = 0; neuron_N < NUM_OF_INPUT_NEURONS; neuron_N++)
+				{
+					input_layer_2[neuron_N].set_signal(data_y[neuron_N]);
+				}
 
 				//Прямой ход скрытого слоя.
 				for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
 				{
 					hidden_layer[neuron_number].process_sigma(input_layer);
+				}
+
+				for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
+				{
+					hidden_layer_2[neuron_number].process_sigma(input_layer_2);
 				}
 
 				//Прямой ход выходного слоя.
@@ -268,8 +279,16 @@ int main()
 					output_layer[neuron_number].process_sigma(hidden_layer);
 				}
 
+				for (size_t neuron_number = 0; neuron_number < NUM_OF_OUTPUT_NEURONS; neuron_number++)
+				{
+					output_layer_2[neuron_number].process_sigma(hidden_layer_2);
+				}
+
 				//Оглашение результатов. Сигнал первого выходного нейрона соответствует намерению сети двигаться влево, а второго -- вправо.
-				cout << "Left signal is: " << setw(10) << output_layer[0].signal() << ". Right signal is: " << setw(10) << output_layer[1].signal() << ".\n\n";
+				cout << "Left signal is: " << setw(10) << output_layer[0].signal() << ". Right signal is: " << setw(10) << output_layer[1].signal() << ".\n";
+				//Для второй сети сигнал первого выходного нейрона соответствует движению вниз, а второго -- вверх.
+				cout << "Down signal is: " << setw(10) << output_layer_2[0].signal() << ". Up signal is: " << setw(10) << output_layer_2[1].signal() << ".\n\n";
+
 
 				//Если уровень сигнала достаточно высок, то объект передвинется.
 				auto output = output_layer[0].signal();
@@ -284,9 +303,18 @@ int main()
 					obj_x++;//Вправо.
 					cout << "To the right! " << obj_x << "  ";
 				}
-
-
-				
+				output = output_layer_2[0].signal();
+				if (output > 0.9f)
+				{
+					obj_y--;//Вниз.
+					cout << "To the bottom! " << obj_y << "  ";
+				}
+				output = output_layer_2[1].signal();
+				if (output > 0.9f)
+				{
+					obj_y++;//Вверх.
+					cout << "To the top! " << obj_y << "  ";
+				}
 
 			}//while (obj_x != x)
 
