@@ -22,8 +22,8 @@ constexpr float TARGET_RANGE_MINIMUM = -1.0f;//Желаемый минимум �
 constexpr float TARGET_RANGE_MAXIMUM = 1.0f;//Желаемый максимум сигнала.
 
 //Настройки графики.
-constexpr size_t WINDOW_WIDTH = 800;
-constexpr size_t WINDOW_HEIGHT = 800;
+constexpr size_t WINDOW_WIDTH = 600;
+constexpr size_t WINDOW_HEIGHT = 600;
 constexpr int WINDOW_X = 50;
 constexpr int WINDOW_Y = 50;
 constexpr float SCALE = 10;
@@ -218,158 +218,198 @@ int main()
 
 	float obj_x, obj_y;//Координаты объекта.
 
-	for (size_t i = 0; i < object_xs.size(); ++i)//Для каждого положения объекта
-	{
-		obj_x = object_xs[i];
-		obj_y = object_ys[i];
 
-		//Установление координат для видимого объекта.
-		object.setPosition(obj_x * SCALE, WINDOW_HEIGHT - obj_y * SCALE - object.getRadius()*2);//Манипуляции с координатами нужны для правильного отображения в окне и связаны с тем,
-		//что СФМЛ считает координаты от левого верхнего угла, а также с тем, что координатами объекта считаются координаты левого верхнего угла описанного вокруг него прямоугольника.
-
-		float x, y;//Координаты цели.
-
-		//надо перебрать все положения цели.
-		for (size_t j=0; j<test_xs.size(); ++j)
+		for (size_t i = 0; i < object_xs.size() && window.isOpen(); ++i)//Для каждого положения объекта
 		{
-			x = test_xs[j];
-			y = test_ys[j];
+			obj_x = object_xs[i];
+			obj_y = object_ys[i];
 
-			//Установление координат для цели.
-			target.setPosition(x * SCALE, WINDOW_HEIGHT - y * SCALE - target.getRadius()*2);
+			//Установление координат для видимого объекта.
+			object.setPosition(obj_x * SCALE, WINDOW_HEIGHT - obj_y * SCALE - object.getRadius() * 2);//Манипуляции с координатами нужны для правильного отображения в окне и связаны с тем,
+			//что СФМЛ считает координаты от левого верхнего угла, а также с тем, что координатами объекта считаются координаты левого верхнего угла описанного вокруг него прямоугольника.
 
-			cout << "\nTarget X is: " << x << ", Y is " << y << ". ";
+			float x, y;//Координаты цели.
 
-			while ((obj_x != x) || (obj_y != y))//Движение будет идти, пока объект не достигнет цели.
+
+
+
+			//надо перебрать все положения цели.
+			for (size_t j = 0; j < test_xs.size() && window.isOpen(); ++j)
 			{
+				x = test_xs[j];
+				y = test_ys[j];
+
+				//Установление координат для цели.
+				target.setPosition(x * SCALE, WINDOW_HEIGHT - y * SCALE - target.getRadius() * 2);
+
+				cout << "\nTarget X is: " << x << ", Y is " << y << ". ";
 
 
-				//Работа с графикой.
-				window.clear(sf::Color::Black);
-				window.draw(object);
-				window.draw(target);
-				window.display();
-				//Задержка кадра для лучшего восприятия.
-				sf::sleep(sf::seconds(SLEEP_TIME));
-
-
-				float x_signal = x - obj_x;
-				float y_signal = y - obj_y;
-				cout << "X_signal is " << x_signal << ", Y_signal is "<<y_signal<<".\n\n";
-
-				//Создание векторов данных.
-				vector<float> data_x(2);//Для иксов.
-				if (x_signal < 0)
+				while (((obj_x != x) || (obj_y != y)) && window.isOpen())//Движение будет идти, пока объект не достигнет цели.
 				{
-					data_x[0] = 0.99f;
-					data_x[1] = 0.01f;
-				}
-				else if (x_signal > 0)
+
+					//Проверка на событие закрытия окна.
+					sf::Event event;
+					while (window.pollEvent(event))
+					{
+						if (event.type == sf::Event::Closed)
+							window.close();
+					}
+
+					//Работа с графикой.
+					//Задержка кадра для лучшего восприятия.
+					sf::sleep(sf::seconds(SLEEP_TIME));
+					window.clear(sf::Color::Black);
+					window.draw(object);
+					window.draw(target);
+					window.display();
+					
+
+
+					float x_signal = x - obj_x;
+					float y_signal = y - obj_y;
+					cout << "X_signal is " << x_signal << ", Y_signal is " << y_signal << ".\n\n";
+
+					//Создание векторов данных.
+					vector<float> data_x(2);//Для иксов.
+					if (x_signal < 0)
+					{
+						data_x[0] = 0.99f;
+						data_x[1] = 0.01f;
+					}
+					else if (x_signal > 0)
+					{
+						data_x[0] = 0.01f;
+						data_x[1] = 0.99f;
+					}
+					else
+					{
+						data_x[0] = 0.01f;
+						data_x[1] = 0.01f;
+					}
+
+					vector<float> data_y(2);//Для игреков.
+					if (y_signal < 0)
+					{
+						data_y[0] = 0.99f;
+						data_y[1] = 0.01f;
+					}
+					else if (y_signal > 0)
+					{
+						data_y[0] = 0.01f;
+						data_y[1] = 0.99f;
+					}
+					else
+					{
+						data_y[0] = 0.01f;
+						data_y[1] = 0.01f;
+					}
+
+
+					//Инициализация входного слоя.
+					for (size_t neuron_N = 0; neuron_N < NUM_OF_INPUT_NEURONS; neuron_N++)
+					{
+						input_layer[neuron_N].set_signal(data_x[neuron_N]);
+					}
+
+					for (size_t neuron_N = 0; neuron_N < NUM_OF_INPUT_NEURONS; neuron_N++)
+					{
+						input_layer_2[neuron_N].set_signal(data_y[neuron_N]);
+					}
+
+					//Прямой ход скрытого слоя.
+					for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
+					{
+						hidden_layer[neuron_number].process_sigma(input_layer);
+					}
+
+					for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
+					{
+						hidden_layer_2[neuron_number].process_sigma(input_layer_2);
+					}
+
+					//Прямой ход выходного слоя.
+					for (size_t neuron_number = 0; neuron_number < NUM_OF_OUTPUT_NEURONS; neuron_number++)
+					{
+						output_layer[neuron_number].process_sigma(hidden_layer);
+					}
+
+					for (size_t neuron_number = 0; neuron_number < NUM_OF_OUTPUT_NEURONS; neuron_number++)
+					{
+						output_layer_2[neuron_number].process_sigma(hidden_layer_2);
+					}
+
+					//Оглашение результатов. Сигнал первого выходного нейрона соответствует намерению сети двигаться влево, а второго -- вправо.
+					cout << "Left signal is: " << setw(10) << output_layer[0].signal() << ". Right signal is: " << setw(10) << output_layer[1].signal() << ".\n";
+					//Для второй сети сигнал первого выходного нейрона соответствует движению вниз, а второго -- вверх.
+					cout << "Down signal is: " << setw(10) << output_layer_2[0].signal() << ". Up signal is: " << setw(10) << output_layer_2[1].signal() << ".\n\n";
+
+
+					//Если уровень сигнала достаточно высок, то объект передвинется.
+					auto output = output_layer[0].signal();
+					if (output > 0.9f)
+					{
+						obj_x--;//Влево.
+						cout << "To the left! " << obj_x << "  ";
+					}
+					output = output_layer[1].signal();
+					if (output > 0.9f)
+					{
+						obj_x++;//Вправо.
+						cout << "To the right! " << obj_x << "  ";
+					}
+					output = output_layer_2[0].signal();
+					if (output > 0.9f)
+					{
+						obj_y--;//Вниз.
+						cout << "To the bottom! " << obj_y << "  ";
+					}
+					output = output_layer_2[1].signal();
+					if (output > 0.9f)
+					{
+						obj_y++;//Вверх.
+						cout << "To the top! " << obj_y << "  ";
+					}
+
+					object.setPosition(obj_x * SCALE, WINDOW_HEIGHT - obj_y * SCALE - object.getRadius() * 2);
+
+				}//while (obj_x != x)
+
+				if (window.isOpen())
 				{
-					data_x[0] = 0.01f;
-					data_x[1] = 0.99f;
+					cout << "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n\n";
+					cout << "\nTESTING\n\n" << "Any key for continue." << endl;
+					//cin.get();
+					//cin.ignore(1000, '\n');
 				}
-				else
+				//Проверка на событие закрытия окна при ожидании команды на следующий вариант положения цели. Чтобы продолжить тестирование надо ввести любой символ при
+				//активном графическом окне.
+				bool flag = true;
+				while (flag)
 				{
-					data_x[0] = 0.01f;
-					data_x[1] = 0.01f;
+					sf::Event event;
+					while (window.pollEvent(event))
+					{
+						if (event.type == sf::Event::Closed)
+						{
+							window.close();
+							flag = false;
+						}
+							
+						if (event.type == sf::Event::KeyPressed)
+						{
+							flag = false;
+						}
+					}
 				}
+				
+				
 
-				vector<float> data_y(2);//Для игреков.
-				if (y_signal < 0)
-				{
-					data_y[0] = 0.99f;
-					data_y[1] = 0.01f;
-				}
-				else if (y_signal > 0)
-				{
-					data_y[0] = 0.01f;
-					data_y[1] = 0.99f;
-				}
-				else
-				{
-					data_y[0] = 0.01f;
-					data_y[1] = 0.01f;
-				}
+			}//надо перебрать все положения цели. for (float x : target_xs)
 
+		}//for (float obj_x : object_xs)//Для каждого положения объекта
 
-				//Инициализация входного слоя.
-				for (size_t neuron_N = 0; neuron_N < NUM_OF_INPUT_NEURONS; neuron_N++)
-				{
-					input_layer[neuron_N].set_signal(data_x[neuron_N]);
-				}
-
-				for (size_t neuron_N = 0; neuron_N < NUM_OF_INPUT_NEURONS; neuron_N++)
-				{
-					input_layer_2[neuron_N].set_signal(data_y[neuron_N]);
-				}
-
-				//Прямой ход скрытого слоя.
-				for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
-				{
-					hidden_layer[neuron_number].process_sigma(input_layer);
-				}
-
-				for (size_t neuron_number = 0; neuron_number < NUM_OF_HIDDEN_NEURONS; neuron_number++)
-				{
-					hidden_layer_2[neuron_number].process_sigma(input_layer_2);
-				}
-
-				//Прямой ход выходного слоя.
-				for (size_t neuron_number = 0; neuron_number < NUM_OF_OUTPUT_NEURONS; neuron_number++)
-				{
-					output_layer[neuron_number].process_sigma(hidden_layer);
-				}
-
-				for (size_t neuron_number = 0; neuron_number < NUM_OF_OUTPUT_NEURONS; neuron_number++)
-				{
-					output_layer_2[neuron_number].process_sigma(hidden_layer_2);
-				}
-
-				//Оглашение результатов. Сигнал первого выходного нейрона соответствует намерению сети двигаться влево, а второго -- вправо.
-				cout << "Left signal is: " << setw(10) << output_layer[0].signal() << ". Right signal is: " << setw(10) << output_layer[1].signal() << ".\n";
-				//Для второй сети сигнал первого выходного нейрона соответствует движению вниз, а второго -- вверх.
-				cout << "Down signal is: " << setw(10) << output_layer_2[0].signal() << ". Up signal is: " << setw(10) << output_layer_2[1].signal() << ".\n\n";
-
-
-				//Если уровень сигнала достаточно высок, то объект передвинется.
-				auto output = output_layer[0].signal();
-				if (output > 0.9f)
-				{
-					obj_x--;//Влево.
-					cout << "To the left! " << obj_x << "  ";
-				}
-				output = output_layer[1].signal();
-				if (output > 0.9f)
-				{
-					obj_x++;//Вправо.
-					cout << "To the right! " << obj_x << "  ";
-				}
-				output = output_layer_2[0].signal();
-				if (output > 0.9f)
-				{
-					obj_y--;//Вниз.
-					cout << "To the bottom! " << obj_y << "  ";
-				}
-				output = output_layer_2[1].signal();
-				if (output > 0.9f)
-				{
-					obj_y++;//Вверх.
-					cout << "To the top! " << obj_y << "  ";
-				}
-
-				object.setPosition(obj_x * SCALE, WINDOW_HEIGHT - obj_y * SCALE - object.getRadius() * 2);
-
-			}//while (obj_x != x)
-
-			cout << "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n\n";
-			cout << "\nTESTING\n\n" << "Any key for continue." << endl;
-			cin.get();
-			cin.ignore(1000, '\n');
-
-		}//надо перебрать все положения цели. for (float x : target_xs)
-
-	}//for (float obj_x : object_xs)//Для каждого положения объекта
+	
 
 	return 0;
 }
