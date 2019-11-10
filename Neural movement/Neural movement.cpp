@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include "Neuron.h"
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 using std::cout; using std::cin;
@@ -19,6 +20,14 @@ constexpr float MINIMAL_SIGNAL = -100.0F;//Минимальный входной
 constexpr float MAXIMAL_SIGNAL = 100.0f;//Максимальный входной сигнал.
 constexpr float TARGET_RANGE_MINIMUM = -1.0f;//Желаемый минимум сигнала.
 constexpr float TARGET_RANGE_MAXIMUM = 1.0f;//Желаемый максимум сигнала.
+
+//Настройки графики.
+constexpr size_t WINDOW_WIDTH = 800;
+constexpr size_t WINDOW_HEIGHT = 800;
+constexpr int WINDOW_X = 50;
+constexpr int WINDOW_Y = 50;
+constexpr float SCALE = 10;
+constexpr float SLEEP_TIME = 0.05f;
 
 //Функция для приведения входного сигнала к нужному диапазону.
 float normalize(float current_signal, float minimal_signal, float maximal_signal, float target_range_minimum, float target_range_maximum);
@@ -184,6 +193,23 @@ int main()
 
 	cout << "\nTESTING\n\n" << "Any key for continue." << endl;
 	cin.get();
+	cin.ignore(1000, '\n');
+
+	//Графика для наглядности.
+
+	//Создание окна
+	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Neural movement");
+	window.setPosition(sf::Vector2i(WINDOW_X, WINDOW_Y));
+
+	//Включение вертикальной синхронизации.
+	window.setVerticalSyncEnabled(true);
+
+	//Кружок будет представлять наш объект.
+	sf::CircleShape object(10.0f, 10);
+	object.setFillColor(sf::Color::White);
+	//Красный кружок будет целью.
+	sf::CircleShape target(10.0f, 10);
+	target.setFillColor(sf::Color::Red);
 
 	//Создание второй сети для движения по игреку. Она будет копией уже обученной сети.
 	auto input_layer_2(input_layer);	//Входной слой.
@@ -197,6 +223,10 @@ int main()
 		obj_x = object_xs[i];
 		obj_y = object_ys[i];
 
+		//Установление координат для видимого объекта.
+		object.setPosition(obj_x * SCALE, WINDOW_HEIGHT - obj_y * SCALE - object.getRadius()*2);//Манипуляции с координатами нужны для правильного отображения в окне и связаны с тем,
+		//что СФМЛ считает координаты от левого верхнего угла, а также с тем, что координатами объекта считаются координаты левого верхнего угла описанного вокруг него прямоугольника.
+
 		float x, y;//Координаты цели.
 
 		//надо перебрать все положения цели.
@@ -204,12 +234,24 @@ int main()
 		{
 			x = test_xs[j];
 			y = test_ys[j];
+
+			//Установление координат для цели.
+			target.setPosition(x * SCALE, WINDOW_HEIGHT - y * SCALE - target.getRadius()*2);
+
 			cout << "\nTarget X is: " << x << ", Y is " << y << ". ";
 
 			while ((obj_x != x) || (obj_y != y))//Движение будет идти, пока объект не достигнет цели.
 			{
-				//Нормализация входа.
-				//float signal = normalize(x - obj_x, MINIMAL_SIGNAL, MAXIMAL_SIGNAL, TARGET_RANGE_MINIMUM, TARGET_RANGE_MAXIMUM);
+
+
+				//Работа с графикой.
+				window.clear(sf::Color::Black);
+				window.draw(object);
+				window.draw(target);
+				window.display();
+				//Задержка кадра для лучшего восприятия.
+				sf::sleep(sf::seconds(SLEEP_TIME));
+
 
 				float x_signal = x - obj_x;
 				float y_signal = y - obj_y;
@@ -316,11 +358,14 @@ int main()
 					cout << "To the top! " << obj_y << "  ";
 				}
 
+				object.setPosition(obj_x * SCALE, WINDOW_HEIGHT - obj_y * SCALE - object.getRadius() * 2);
+
 			}//while (obj_x != x)
 
 			cout << "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n\n";
 			cout << "\nTESTING\n\n" << "Any key for continue." << endl;
 			cin.get();
+			cin.ignore(1000, '\n');
 
 		}//надо перебрать все положения цели. for (float x : target_xs)
 
