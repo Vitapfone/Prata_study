@@ -9,7 +9,7 @@ using namespace std;
 using std::cout; using std::cin;
 
 constexpr int NUM_OF_INPUT_NEURONS = 2;			//Количество нейронов входного слоя.
-constexpr int NUM_OF_HIDDEN_NEURONS = 24;		//Количество нейронов скрытого слоя.
+constexpr int NUM_OF_HIDDEN_NEURONS = 2;		//Количество нейронов скрытого слоя. Минимальное количество определено как 2 для этой задачи.
 constexpr int NUM_OF_OUTPUT_NEURONS = 2;		//Количество нейронов выходного слоя.
 constexpr int GENERAL_SPEED_MULT = 25;		//Общий множитель для скорости обучения.
 constexpr float HIDDEN_SPEED = (1.0 / NUM_OF_INPUT_NEURONS) * GENERAL_SPEED_MULT;	//Коэффициент скорости обучения скрытого слоя. Зависит от количества входов, т.е. нейронов входного слоя/размерности входного вектора.
@@ -26,8 +26,8 @@ constexpr size_t WINDOW_WIDTH = 600;
 constexpr size_t WINDOW_HEIGHT = 600;
 constexpr int WINDOW_X = 50;
 constexpr int WINDOW_Y = 50;
-constexpr float SCALE = 10;
-constexpr float SLEEP_TIME = 0.05f;
+constexpr float SCALE = 10;		//Масштаб, на который умножаются все координаты для отображения расстояний графически.
+constexpr float SLEEP_TIME = 0.05f;		//Задержка кадра для лучшего восприятия.
 
 //Функция для приведения входного сигнала к нужному диапазону.
 float normalize(float current_signal, float minimal_signal, float maximal_signal, float target_range_minimum, float target_range_maximum);
@@ -132,13 +132,13 @@ int main()
 
 				//Если уровень сигнала достаточно высок, то объект передвинется.
 				auto output = output_layer[0].signal();
-				if (output > 0.9f)
+				if (output > 0.95f)
 				{
 					obj_x--;//Влево.
 					cout << "To the left! " << obj_x << "  ";
 				}
 				output = output_layer[1].signal();
-				if (output > 0.9f)
+				if (output > 0.95f)
 				{
 					obj_x++;//Вправо.
 					cout << "To the right! " << obj_x << "  ";
